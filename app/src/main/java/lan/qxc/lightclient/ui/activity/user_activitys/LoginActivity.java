@@ -1,6 +1,8 @@
 package lan.qxc.lightclient.ui.activity.user_activitys;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,13 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,6 +46,7 @@ import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.JsonUtils;
 import lan.qxc.lightclient.util.MyDialog;
 import lan.qxc.lightclient.util.NumberUtil;
+import lan.qxc.lightclient.util.PermissionUtil;
 import lan.qxc.lightclient.util.SharePerferenceUtil;
 import lan.qxc.lightclient.util.UIUtils;
 import retrofit2.Call;
@@ -142,6 +150,7 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
                     break;
         }
     }
+
 
 
     void doLogin(){
@@ -257,7 +266,6 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         }
 
     }
-
 
 
 }
