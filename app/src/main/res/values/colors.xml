@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#b5dbf7</color>
+    <color name="colorPrimaryDark">#b5dbf7</color>
+    <color name="colorAccent">#b5dbf7</color>
+
+    <color name="my_grey_back">#ECEFF1</color>
+    <color name="my_blue">#b5dbf7</color>
+    <color name="my_grey_label">#989EB4</color>
+
+    <color name="transparent">#00000000</color>
+
+</resources>

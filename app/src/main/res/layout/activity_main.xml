@@ -1,0 +1,23 @@
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <lan.qxc.lightclient.ui.view.movingimage.MovingImageView
+        android:id="@+id/moving_image"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:src="@drawable/fragment_mine_pic"
+        app:miv_load_on_create="true"
+        app:miv_max_relative_size="3"
+        app:miv_min_relative_offset="0.2"
+        app:miv_start_delay="1000"
+        app:miv_repetitions="-1"
+        app:miv_speed="100" />
+
+
+
+
+</FrameLayout>

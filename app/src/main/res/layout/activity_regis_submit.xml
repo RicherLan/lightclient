@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+    <ImageView
+        android:id="@+id/iv_register_submit_back_lable"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_regis_submitinfo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/iv_register_submit_back_lable"
+        android:textSize="33sp"
+        android:textColor="#000000"
+        android:text="输入昵称和密码">
+    </TextView>
+
+
+    <EditText
+        android:id="@+id/et_regis_submit_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="45dp"
+        android:background="@null"
+        android:layout_below="@+id/tv_regis_submitinfo1"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:hint="昵称">
+    </EditText>
+
+    <View
+        android:id="@+id/view_regis_submit1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DEDFE0"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/et_regis_submit_nickname"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+
+    <EditText
+        android:id="@+id/et_regis_submit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:layout_below="@+id/view_regis_submit1"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:hint="密码">
+    </EditText>
+
+
+    <View
+        android:id="@+id/view_regis_submit2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DEDFE0"
+        android:layout_below="@+id/et_regis_submit_password"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/bt_regis_submit"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_circle_shape"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/view_regis_submit2"
+        android:text="注册"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF">
+
+    </Button>
+
+
+
+</RelativeLayout>

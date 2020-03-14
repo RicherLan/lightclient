@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+    <ImageView
+        android:id="@+id/iv_register_back_lable"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_info1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/iv_register_back_lable"
+        android:textSize="32sp"
+        android:textColor="#000000"
+        android:text="请输入手机号码">
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/layout_regis_wufutext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_info1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_register_back_lable"
+            android:textSize="15sp"
+            android:textColor="#969AA6"
+            android:text="已阅读并同意">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_register_back_lable"
+            android:textSize="15sp"
+            android:textColor="#42A5F5"
+            android:text="服务协议">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_regis_phone_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_regis_wufutext"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#878B99"
+            android:text="+86  ">
+
+        </TextView>
+        <EditText
+            android:id="@+id/et_regis_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@null"
+            android:layout_below="@+id/layout_regis_wufutext"
+            android:textSize="20dp"
+            android:textColor="#000000">
+        </EditText>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_regis"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DEDFE0"
+        android:layout_below="@+id/layout_regis_phone_input"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+
+   <Button
+       android:id="@+id/bt_regis_next"
+       android:layout_width="match_parent"
+       android:layout_height="45dp"
+       android:layout_marginTop="30dp"
+       android:background="@drawable/button_circle_shape"
+       android:layout_marginLeft="30dp"
+       android:layout_marginRight="30dp"
+       android:layout_below="@+id/view_regis"
+       android:text="下一步"
+       android:textSize="20sp"
+       android:textColor="#FFFFFF">
+
+   </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_regis_next"
+        android:textSize="15sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:textColor="#969AA6"
+        android:text="快来加入大家庭吧。">
+    </TextView>
+
+
+</RelativeLayout>
