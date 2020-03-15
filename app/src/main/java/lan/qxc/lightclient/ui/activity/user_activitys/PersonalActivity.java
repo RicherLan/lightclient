@@ -1,9 +1,22 @@
 package lan.qxc.lightclient.ui.activity.user_activitys;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.TimeUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -13,6 +26,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -24,7 +38,14 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+import java.util.Timer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
@@ -34,6 +55,8 @@ import lan.qxc.lightclient.ui.fragment.personal.Personal_dongtai_fragment;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_info_fragment;
 import lan.qxc.lightclient.ui.view.movingimage.MovingImageView;
 import lan.qxc.lightclient.util.DensityUtil;
+import lan.qxc.lightclient.util.DensityUtiltwo;
+import lan.qxc.lightclient.util.PermissionUtil;
 
 public class PersonalActivity extends BaseForCloseActivity implements View.OnClickListener {
 
@@ -65,8 +88,8 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
     private TabLayout tablayout_personal;
     private ViewPager view_pager_personal;
 
-
-
+    private Uri mImageUri;
+    private File imageFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -224,7 +247,7 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
                 break;
 
             case R.id.iv_headicon_personal:
-
+                showChooseHeadIconDialog();
                 break;
 
             case R.id.layout_guanzhu_num_personal:
@@ -281,6 +304,177 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
             params.rightMargin = right;
             child.setLayoutParams(params);
             child.invalidate();
+        }
+    }
+
+
+    void showChooseHeadIconDialog(){
+        final Dialog bottomDialog = new Dialog(this,R.style.BottomDialog);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_choose_photo, null);
+        bottomDialog.setContentView(contentView);
+
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
+        params.width = getResources().getDisplayMetrics().widthPixels - DensityUtiltwo.dp2px(this, 16f);
+        params.bottomMargin = DensityUtiltwo.dp2px(this, 16f);
+        contentView.setLayoutParams(params);
+
+        bottomDialog.setCanceledOnTouchOutside(true);
+        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+        bottomDialog.show();
+
+        TextView nextToPhotos=(TextView)contentView.findViewById(R.id.next_choose_photo);
+        TextView nextToCamera=(TextView)contentView.findViewById(R.id.next_to_camera);
+        TextView cancel=(TextView)contentView.findViewById(R.id.cancel_choose_photo);
+
+        nextToPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String[] strings = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+
+                if(new PermissionUtil().isPermissionOk(PersonalActivity.this,strings)){
+                    Intent intent = new Intent(Intent.ACTION_PICK, null);
+                    //打开文件
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, 2);
+                    bottomDialog.dismiss();
+                }else{
+                    requestPhotoPer(strings);
+                }
+
+            }
+        });
+
+        nextToCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String[] strings = new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE};
+                if(new PermissionUtil().isPermissionOk(PersonalActivity.this,strings)){
+
+                    takePhotoByCamera();
+
+                    bottomDialog.dismiss();
+
+                }else{
+                    requestPhotoPer(strings);
+                }
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    void requestPhotoPer( String[] strings){
+        new PermissionUtil().requestPermission(this,1, strings);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 1:
+                break;
+            case 2:           //打开相册选择图片
+                if(resultCode == RESULT_OK){
+                    cropPhoto(data.getData());// 裁剪图片
+                }
+                break;
+
+            case 3:
+                if(resultCode == RESULT_OK){
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
+                    iv_headicon_personal.setImageBitmap(bitmap);
+
+                    cropPhoto(mImageUri);// 裁剪图片
+                }
+                break;
+
+            case 4:      //裁剪之后返回图片
+                if(resultCode == RESULT_OK){
+                    System.out.println("2222222222222222222222222222222222222222222222");
+                    Bundle bundle = data.getExtras();
+                    setHeadIcon((Bitmap) bundle.getParcelable("data"));
+                }
+                System.out.println("1111111111111111111111111111111111111111111111111111");
+
+                break;
+        }
+
+    }
+
+
+
+    void takePhotoByCamera(){
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
+        if(takePhotoIntent.resolveActivity(getPackageManager())!=null){//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
+            File imageFile = createImageFile();//创建用来保存照片的文件
+            if(imageFile!=null){
+
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+                    /*7.0以上要通过FileProvider将File转化为Uri*/
+                    mImageUri = FileProvider.getUriForFile(this,"lan.qxc.lightclient.provider",imageFile);
+                }else {
+                    /*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*/
+                    mImageUri = Uri.fromFile(imageFile);
+                }
+                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,mImageUri);//将用于输出的文件Uri传递给相机
+                startActivityForResult(takePhotoIntent, 3);//打开相机
+            }
+        }
+
+    }
+    private File createImageFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_"+timeStamp+"_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        imageFile = null;
+        try {
+            imageFile = File.createTempFile(imageFileName,".jpg",storageDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageFile;
+    }
+
+    public void cropPhoto(Uri uri) {
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+
+        //android 7  以上版本要加上这两句话   否则  显示    照片无法加载
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 250);
+        intent.putExtra("outputY", 250);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 4);
+    }
+
+    private void setHeadIcon(Bitmap bitmap){
+        if(bitmap!=null){
+
+            iv_headicon_personal.setImageBitmap(bitmap);
+
         }
     }
 

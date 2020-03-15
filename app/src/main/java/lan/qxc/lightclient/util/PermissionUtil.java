@@ -13,6 +13,19 @@ import androidx.core.content.ContextCompat;
  */
 public class PermissionUtil {
 
+    public boolean isPermissionOk(Activity activity,String[] permissionNames){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            for(String s : permissionNames){
+                int permissionCheck = ContextCompat.checkSelfPermission(activity,s);
+                if(permissionCheck != PackageManager.PERMISSION_GRANTED){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public boolean requestPermission(Activity activity,final int requestCode,String permissionName){
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
