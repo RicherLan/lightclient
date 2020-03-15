@@ -36,6 +36,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 
+
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
@@ -46,6 +48,10 @@ dependencies {
     implementation 'com.chen.wakehao.library:bottom-navigation-bar:1.0.0'
 
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.2'
+
+
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+
 
 
 

@@ -30,6 +30,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_mine_personal"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:orientation="horizontal">
