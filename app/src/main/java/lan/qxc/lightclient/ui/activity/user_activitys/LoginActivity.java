@@ -185,18 +185,18 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
                 String message = result.getMessage();
                 if(message.equals("SUCCESS")){
                     String jsonstr = JsonUtils.objToJson(result.getData());
-                    User user = (User)JsonUtils.jsonToObj(User.class,jsonstr);
-                    System.out.println((user.toString()));
+                    GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,jsonstr);
+                  //  System.out.println((user.toString()));
 
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
 
-                    user.setPassword(password);
+                    GlobalInfoUtil.personalInfo.setPassword(password);
                     Map<String ,String > map = new HashMap<>();
                     map.put(SharePerferenceUtil.sh_login_username,phone);
                     map.put(SharePerferenceUtil.sh_login_password,password);
                     map.put(SharePerferenceUtil.sh_kip_login,"Y");
-                    map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(user));
+                    map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
 
                     SharePerferenceUtil.save_User_SP(LoginActivity.this,map);
 

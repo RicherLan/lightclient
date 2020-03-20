@@ -23,8 +23,8 @@ public class User implements Serializable{
     private Byte sex;
     private String icon;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    private Date birthday;
+    //1997-11-13
+    private String birthday;
 
     private String introduce;
     private String location;

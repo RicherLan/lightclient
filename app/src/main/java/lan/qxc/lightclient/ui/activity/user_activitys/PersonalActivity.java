@@ -23,6 +23,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -40,6 +41,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -50,13 +52,20 @@ import java.util.Timer;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.AdapterPage;
+import lan.qxc.lightclient.result.Result;
+import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_dongtai_fragment;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_info_fragment;
 import lan.qxc.lightclient.ui.view.movingimage.MovingImageView;
 import lan.qxc.lightclient.util.DensityUtil;
 import lan.qxc.lightclient.util.DensityUtiltwo;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.PermissionUtil;
+import lan.qxc.lightclient.util.SharePerferenceUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PersonalActivity extends BaseForCloseActivity implements View.OnClickListener {
 
@@ -129,6 +138,8 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
         tablayout_personal = this.findViewById(R.id.tablayout_personal);
         view_pager_personal = this.findViewById(R.id.view_pager_personal);
 
+
+//        iv_headicon_personal.setImageURI();
 
     }
 
@@ -242,8 +253,9 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
                 finish();
                 break;
 
-            case R.id.tv_edit_userinfo_personal:
-
+            case R.id.tv_edit_userinfo_personal:   //编辑个人资料
+                Intent intent = new Intent(getApplicationContext(),UpdatePersonalInfoActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.iv_headicon_personal:
@@ -331,7 +343,8 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
             @Override
             public void onClick(View view) {
 
-                String[] strings = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+                String[] strings = new String[]{  Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE};
 
                 if(new PermissionUtil().isPermissionOk(PersonalActivity.this,strings)){
                     Intent intent = new Intent(Intent.ACTION_PICK, null);
@@ -405,11 +418,11 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
 
             case 4:      //裁剪之后返回图片
                 if(resultCode == RESULT_OK){
-                    System.out.println("2222222222222222222222222222222222222222222222");
+
                     Bundle bundle = data.getExtras();
                     setHeadIcon((Bitmap) bundle.getParcelable("data"));
                 }
-                System.out.println("1111111111111111111111111111111111111111111111111111");
+
 
                 break;
         }
@@ -450,6 +463,30 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
         return imageFile;
     }
 
+    //裁剪完  保存
+    private File saveBitmapIcon(Bitmap bitmap){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_"+timeStamp+"_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File file = null;
+        try {
+            file = File.createTempFile(imageFileName,".jpg",storageDir);
+            //文件输出流
+            FileOutputStream fileOutputStream=new FileOutputStream(file);
+            //压缩图片，如果要保存png，就用Bitmap.CompressFormat.PNG，要保存jpg就用Bitmap.CompressFormat.JPEG,质量是100%，表示不压缩
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+            //写入，这里会卡顿，因为图片较大
+            fileOutputStream.flush();
+            //记得要关闭写入流
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return file;
+    }
+
     public void cropPhoto(Uri uri) {
 
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -470,10 +507,41 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
         startActivityForResult(intent, 4);
     }
 
-    private void setHeadIcon(Bitmap bitmap){
+    private void setHeadIcon(final Bitmap bitmap){
         if(bitmap!=null){
 
-            iv_headicon_personal.setImageBitmap(bitmap);
+            File file = saveBitmapIcon(bitmap);
+            if(file!=null){
+
+                Call<Result> call = UserService.getInstance().uploadHeadic(file, GlobalInfoUtil.personalInfo.getUserid());
+                call.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(Call<Result> call, Response<Result> response) {
+
+
+                        Result result = response.body();
+                        String message = result.getMessage();
+                        if(message.equals("SUCCESS")){
+                            iv_headicon_personal.setImageBitmap(bitmap);
+
+                            String headicNetPath = (String)result.getData();
+                            GlobalInfoUtil.personalInfo.setIcon(headicNetPath);
+                            SharePerferenceUtil.savePeronalInfo(PersonalActivity.this);
+                            System.out.println(headicNetPath);
+                        }else{
+                            Toast.makeText(PersonalActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result> call, Throwable t) {
+                        Toast.makeText(PersonalActivity.this,"error!!!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+            }
 
         }
     }

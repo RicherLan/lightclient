@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
 
 public class SharePerferenceUtil {
 
@@ -35,6 +38,14 @@ public class SharePerferenceUtil {
             editor.putString(key,value);
         }
         return editor.commit();
+    }
+
+
+    public static boolean savePeronalInfo(Context context){
+        Map<String ,String > map = new HashMap<>();
+        map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
+
+        return SharePerferenceUtil.save_User_SP(context,map);
     }
 
 }

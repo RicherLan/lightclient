@@ -1,11 +1,17 @@
 package lan.qxc.lightclient.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.RetrofitHelper;
+import lan.qxc.lightclient.retrofit_util.RetrofitTools;
 import lan.qxc.lightclient.retrofit_util.service.UserRequestService;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 
 public class UserService {
@@ -42,6 +48,21 @@ public class UserService {
         map.put("username",username);
         map.put("password",password);
         return service.resgisUser(map);
+    }
+
+    public Call<Result> udpateUserInfo(User user){
+        UserRequestService service = RetrofitHelper.getInstance().create(UserRequestService.class);
+        return service.udpateUserInfo(user);
+    }
+
+
+    public Call<Result> uploadHeadic(File file,Long userid){
+        UserRequestService service = RetrofitHelper.getInstance().create(UserRequestService.class);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("headic", file.getName(), requestFile);
+
+        return service.uploadHeadIc(part,userid);
     }
 
 

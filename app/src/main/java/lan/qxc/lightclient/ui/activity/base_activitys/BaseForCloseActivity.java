@@ -42,7 +42,7 @@ public class BaseForCloseActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         MyDialog.dismissBottomLoadingDialog();
-                        Toast.makeText( BaseForCloseActivity.this,"服务器繁忙,请稍后重试!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText( BaseForCloseActivity.this,"发生错误,请稍后重试!",Toast.LENGTH_SHORT).show();
 
                     }
                 });

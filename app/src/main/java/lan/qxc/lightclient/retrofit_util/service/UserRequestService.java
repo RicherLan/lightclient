@@ -5,6 +5,7 @@ package lan.qxc.lightclient.retrofit_util.service;
 import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.UserAPI;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import retrofit2.Call;
@@ -33,5 +34,9 @@ public interface UserRequestService {
 
     @POST(UserAPI.UPDATE_USER_INFO)
     Call<Result> udpateUserInfo(@Body User user);
+
+    @Multipart()
+    @POST(UserAPI.UPLOAD_USER_ICON)
+    Call<Result> uploadHeadIc(@Part MultipartBody.Part body,@Query("userid") Long userid);
 
 }
