@@ -29,7 +29,7 @@
         </provider>
 
 
-        <activity android:name=".ui.activity.user_activitys.PersonalActivity"
+        <activity android:name=".ui.activity.user_activitys.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/loginTheme"
@@ -64,6 +64,11 @@
             android:theme="@style/AppTheme.Personalinfo">
         </activity>
 
+        <activity android:name=".ui.activity.user_activitys.PersonalActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Personalinfo">
+        </activity>
 
     </application>
 

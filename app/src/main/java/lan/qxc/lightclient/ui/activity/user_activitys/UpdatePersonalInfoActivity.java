@@ -24,7 +24,6 @@ import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
-import lan.qxc.lightclient.ui.fragment.personal.Personal_info_fragment;
 import lan.qxc.lightclient.util.DensityUtiltwo;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.JsonUtils;
@@ -126,7 +125,7 @@ public class UpdatePersonalInfoActivity extends BaseForCloseActivity implements 
 
 
         final User user = (User)JsonUtils.jsonToObj(User.class,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
-
+        user.setPassword(null);
 
         tv_sex_up_personal_activity = this.findViewById(R.id.tv_sex_up_personal_activity);
 
@@ -192,11 +191,12 @@ public class UpdatePersonalInfoActivity extends BaseForCloseActivity implements 
                 if(message.equals("SUCCESS")){
 
                     Toast.makeText(UpdatePersonalInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                    GlobalInfoUtil.personalInfo = user;
 
+                    String jsonstr = JsonUtils.objToJson(result.getData());
+                    GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,jsonstr);
 
                     Map<String ,String > map = new HashMap<>();
-                    map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(user));
+                    map.put(SharePerferenceUtil.sh_personal_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
                     SharePerferenceUtil.save_User_SP(UpdatePersonalInfoActivity.this,map);
 
                     finish();

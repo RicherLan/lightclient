@@ -30,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -52,7 +53,10 @@ import java.util.Timer;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.AdapterPage;
+import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
+import lan.qxc.lightclient.retrofit_util.api.APIUtil;
+import lan.qxc.lightclient.retrofit_util.api.BaseAPI;
 import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_dongtai_fragment;
@@ -61,6 +65,7 @@ import lan.qxc.lightclient.ui.view.movingimage.MovingImageView;
 import lan.qxc.lightclient.util.DensityUtil;
 import lan.qxc.lightclient.util.DensityUtiltwo;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
+import lan.qxc.lightclient.util.ImageUtil;
 import lan.qxc.lightclient.util.PermissionUtil;
 import lan.qxc.lightclient.util.SharePerferenceUtil;
 import retrofit2.Call;
@@ -140,6 +145,11 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
 
 
 //        iv_headicon_personal.setImageURI();
+
+            //加载头像
+            String headIcPath = APIUtil.getUrl(GlobalInfoUtil.personalInfo.getIcon());
+            ImageUtil.getInstance().setNetImageToView(this,headIcPath,iv_headicon_personal);
+
 
     }
 

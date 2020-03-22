@@ -45,19 +45,6 @@ public class Personal_info_fragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_personal_info, null);
 
-        GlobalInfoUtil.personalInfo = new User();
-        GlobalInfoUtil.personalInfo.setUserid(new Long(1));
-        GlobalInfoUtil.personalInfo.setPhone("15054190193");
-        GlobalInfoUtil.personalInfo.setHometown("青岛");
-        GlobalInfoUtil.personalInfo.setUsername("小蓝");
-
-
-        GlobalInfoUtil.personalInfo.setBirthday("1997-11-13");
-        GlobalInfoUtil.personalInfo.setIntroduce("我是一种态度");
-        GlobalInfoUtil.personalInfo.setJob("it民工");
-        GlobalInfoUtil.personalInfo.setLocation(null);
-        GlobalInfoUtil.personalInfo.setSex(new Byte("1"));
-        GlobalInfoUtil.personalInfo.setPhone("15054190193");
 
         initView();
         initEvent();

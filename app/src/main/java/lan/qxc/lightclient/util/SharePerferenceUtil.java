@@ -7,15 +7,17 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
+import lan.qxc.lightclient.entity.User;
 
 public class SharePerferenceUtil {
 
     public static String sh_user = "user";
     public static String sh_login_username = "login_username";
     public static String sh_login_password = "login_password";
+    public static String sh_personal_headicon = "personal_headic";
+
     public static String sh_kip_login = "kip_login";
-    public static String sh_user_info = "user_info";
+    public static String sh_personal_info = "user_info";
 
 
     /*
@@ -43,9 +45,20 @@ public class SharePerferenceUtil {
 
     public static boolean savePeronalInfo(Context context){
         Map<String ,String > map = new HashMap<>();
-        map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
+        map.put(SharePerferenceUtil.sh_personal_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
 
         return SharePerferenceUtil.save_User_SP(context,map);
+    }
+
+    public static boolean getPersonalInfo(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sh_user, Activity.MODE_PRIVATE);
+        String json = sharedPreferences.getString(sh_personal_info,"");
+
+        if(!json.isEmpty()){
+            GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,json);
+            return true;
+        }
+        return false;
     }
 
 }

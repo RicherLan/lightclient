@@ -3,7 +3,6 @@ package lan.qxc.lightclient.ui.activity.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.DragEvent;
-import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -19,10 +18,11 @@ import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.WePagerAdapter;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.home.IndexFragment;
-import lan.qxc.lightclient.ui.fragment.home.MimeFragment;
+import lan.qxc.lightclient.ui.fragment.home.MineFragment;
 import lan.qxc.lightclient.ui.fragment.home.NotificationFragment;
 import lan.qxc.lightclient.ui.fragment.home.SecondFragment;
-import lan.qxc.lightclient.util.UIUtils;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
+import lan.qxc.lightclient.util.SharePerferenceUtil;
 
 public class HomeActivity extends BaseForCloseActivity {
 
@@ -40,6 +40,14 @@ public class HomeActivity extends BaseForCloseActivity {
         initview();
         initEvent();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(GlobalInfoUtil.personalInfo==null){
+            SharePerferenceUtil.getPersonalInfo(this);
+        }
     }
 
     void initview(){
@@ -66,7 +74,7 @@ public class HomeActivity extends BaseForCloseActivity {
         fragmentList.add(new IndexFragment());
         fragmentList.add(new SecondFragment());
         fragmentList.add(new NotificationFragment());
-        fragmentList.add(new MimeFragment());
+        fragmentList.add(new MineFragment());
         wePagerAdapter=new WePagerAdapter(getSupportFragmentManager(),fragmentList);
         mViewPager.setAdapter(wePagerAdapter);
         mViewPager.setCurrentItem(0);

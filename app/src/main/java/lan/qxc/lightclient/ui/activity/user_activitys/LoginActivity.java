@@ -1,12 +1,9 @@
 package lan.qxc.lightclient.ui.activity.user_activitys;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -15,38 +12,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import lan.qxc.lightclient.MainActivity;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.entity.User;
-import lan.qxc.lightclient.https.BaseCallBack;
-import lan.qxc.lightclient.https.BaseOkHttpClient;
 import lan.qxc.lightclient.result.Result;
-import lan.qxc.lightclient.retrofit_util.api.UserAPI;
+import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
+import lan.qxc.lightclient.util.ImageUtil;
 import lan.qxc.lightclient.util.JsonUtils;
-import lan.qxc.lightclient.util.MyDialog;
 import lan.qxc.lightclient.util.NumberUtil;
-import lan.qxc.lightclient.util.PermissionUtil;
 import lan.qxc.lightclient.util.SharePerferenceUtil;
 import lan.qxc.lightclient.util.UIUtils;
 import retrofit2.Call;
@@ -75,12 +59,17 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         setContentView(R.layout.activity_login);
         UIUtils.makeStatusBarTransparent(this);
        // UIUtils.setStatusBarLightMode(this,false);
+
+
+
         initView();
         initVideoView();
         initEvent();
 
         String phone = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_login_username);
         String password = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_login_password);
+        String headic_path = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_personal_headicon);
+
 
         if(phone!=null&&!phone.isEmpty()){
             ed_user_account.setText(phone);
@@ -89,7 +78,12 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
             ed_user_password.setText(password);
         }
 
-        String userinfo_json = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_user_info);
+        if(headic_path!=null&&!headic_path.isEmpty()){
+            String headic_url = APIUtil.getUrl(headic_path);
+            ImageUtil.getInstance().setNetImageToView(this,headic_url,headImage);
+        }
+
+        String userinfo_json = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_personal_info);
         GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,userinfo_json);
     }
 
@@ -195,8 +189,10 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
                     Map<String ,String > map = new HashMap<>();
                     map.put(SharePerferenceUtil.sh_login_username,phone);
                     map.put(SharePerferenceUtil.sh_login_password,password);
+                    map.put(SharePerferenceUtil.sh_personal_headicon,GlobalInfoUtil.personalInfo.getIcon());
+
                     map.put(SharePerferenceUtil.sh_kip_login,"Y");
-                    map.put(SharePerferenceUtil.sh_user_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
+                    map.put(SharePerferenceUtil.sh_personal_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));
 
                     SharePerferenceUtil.save_User_SP(LoginActivity.this,map);
 

@@ -16,7 +16,7 @@
         android:fragment="lan.qxc.lightclient.ui.fragment.home.NotificationFragment"
         android:title="消息"/>
     <item
-        android:fragment="lan.qxc.lightclient.ui.fragment.home.MimeFragment"
+        android:fragment="lan.qxc.lightclient.ui.fragment.home.MineFragment"
         android:title="我的"
         android:id="@+id/pager_menu_myself"
         android:icon="@drawable/ic_myself"/>
