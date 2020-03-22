@@ -17,8 +17,13 @@
     <color name="viewcolor">#f0f0f0</color>
     <color name="my_font_grey">#666666</color>
 
+    <color name="my_back_grey">#F5F6FA</color>
 
-<!--    //时间选择框的一些颜色-->
+    <color name="my_splitor_gray">#EEEEEE</color>
+
+
+
+    <!--    //时间选择框的一些颜色-->
     <color name="DeepSkyBlue1">#b5dbf7</color>
     <color name="item_selector_line">#C2C2C2</color>
     <color name="item_selector_rect">#FFFFFF</color>

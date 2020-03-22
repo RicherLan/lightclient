@@ -254,6 +254,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_setting_mine_frag"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:orientation="horizontal">

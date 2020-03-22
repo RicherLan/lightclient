@@ -39,4 +39,8 @@ public interface UserRequestService {
     @POST(UserAPI.UPLOAD_USER_ICON)
     Call<Result> uploadHeadIc(@Part MultipartBody.Part body,@Query("userid") Long userid);
 
+    @POST(UserAPI.UPDATE_USER_PASSWORD)
+    @FormUrlEncoded
+    Call<Result> updateUserPassword(@FieldMap Map<String, Object> map);
+
 }

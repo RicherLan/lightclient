@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
+import lan.qxc.lightclient.ui.activity.setting_activities.SettingActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.PersonalActivity;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
@@ -29,6 +30,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private TextView tv_intro_mine_frag;
 
 
+    private LinearLayout layout_setting_mine_frag;
 
 
     @Nullable
@@ -50,12 +52,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         tv_usernameq_mine_frag = view.findViewById(R.id.tv_usernameq_mine_frag);
         tv_intro_mine_frag = view.findViewById(R.id.tv_intro_mine_frag);
 
-
+        layout_setting_mine_frag = view.findViewById(R.id.layout_setting_mine_frag);
 
     }
 
     void initEvent(){
         layout_mine_personal.setOnClickListener(this);
+
+        layout_setting_mine_frag.setOnClickListener(this);
     }
 
 
@@ -66,6 +70,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             case R.id.layout_mine_frag:
                 Intent intent = new Intent(MineFragment.this.getContext(), PersonalActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.layout_setting_mine_frag:
+                Intent intent1 = new Intent(getContext(), SettingActivity.class);
+                startActivity(intent1);
                 break;
         }
 

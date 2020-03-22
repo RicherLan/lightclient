@@ -65,5 +65,16 @@ public class UserService {
         return service.uploadHeadIc(part,userid);
     }
 
+    public Call<Result> updateUserPassword(Long userid,String oldpassword,String newPassword){
+
+        UserRequestService userRequestService = RetrofitHelper.getInstance().create(UserRequestService.class);
+        Map<String ,Object> map = new HashMap<>();
+        map.put("userid",userid);
+        map.put("oldpassword",oldpassword);
+        map.put("newpassword",newPassword);
+
+        return userRequestService.updateUserPassword(map);
+    }
+
 
 }
