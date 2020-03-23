@@ -69,7 +69,7 @@ public class HomeActivity extends BaseForCloseActivity {
         bottomNavigationBar.disMissNum(3);
         bottomNavigationBar.getViewPager();
 
-        mViewPager.setOnPageChangeListener(new MyPagerChangeListener());
+        //mViewPager.setOnPageChangeListener(new MyPagerChangeListener());
         fragmentList=new ArrayList<>();
         fragmentList.add(new IndexFragment());
         fragmentList.add(new SecondFragment());
@@ -87,6 +87,7 @@ public class HomeActivity extends BaseForCloseActivity {
 
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode!=RESULT_OK||requestCode!=1)return;
@@ -100,16 +101,16 @@ public class HomeActivity extends BaseForCloseActivity {
         return bottomNavigationBar;
     }
 
-    public class MyPagerChangeListener implements ViewPager.OnPageChangeListener{
-        public void onPageScrollStateChanged(int arg0) {
-        }
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-        @Override
-        public void onPageSelected(int arg0) {
-        }
-    }
+//    public class MyPagerChangeListener implements ViewPager.OnPageChangeListener{
+//        public void onPageScrollStateChanged(int arg0) {
+//        }
+//        @Override
+//        public void onPageScrolled(int arg0, float arg1, int arg2) {
+//        }
+//        @Override
+//        public void onPageSelected(int arg0) {
+//        }
+//    }
 
 
 

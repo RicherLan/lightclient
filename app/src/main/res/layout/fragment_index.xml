@@ -36,6 +36,7 @@
              android:layout_gravity="center"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_guanzhu_index_frag"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="关注"
@@ -45,6 +46,7 @@
                 android:gravity="center_horizontal">
             </TextView>
             <View
+                android:id="@+id/view_guanzhu_index_frag"
                 android:layout_marginTop="5dp"
                 android:layout_width="38dp"
                 android:layout_height="3dp"
@@ -60,15 +62,18 @@
              android:layout_marginLeft="15dp"
              android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_tuijian_index_frag"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:text="推荐"
-                android:textColor="#000000"
-                android:textSize="19sp">
+                android:textColor="#939393"
+                android:textSize="18sp">
             </TextView>
             <View
+                android:id="@+id/view_tuijian_index_frag"
+                android:visibility="invisible"
                 android:layout_marginTop="5dp"
                 android:layout_width="38dp"
                 android:layout_height="3dp"
@@ -82,6 +87,7 @@
       </LinearLayout>
 
       <ImageView
+          android:id="@+id/iv_add_index_frag"
           android:layout_marginRight="10dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -101,6 +107,7 @@
    </View>
 
    <androidx.viewpager.widget.ViewPager
+       android:id="@+id/viewpager_index_frag"
        android:layout_below="@+id/view_below_title_index_frag"
        android:layout_width="match_parent"
        android:layout_height="match_parent"

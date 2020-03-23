@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 
@@ -25,10 +26,13 @@ public class ImageUtil {
 
     //显示网络图片到imageview
     public void setNetImageToView (Context context , String path, ImageView view){
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.drawable.default_icon);
+        options.error(R.drawable.default_icon);
+
         Glide.with(context)
                 .load(path)
-                .placeholder(R.drawable.default_icon)
-                .error(R.drawable.default_icon)
+                .apply(options)
                 .into(view);
     }
 

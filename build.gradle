@@ -4,7 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
@@ -18,7 +18,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
+        //picture selector 总是failed resolve  就加了下面这个
+        maven { url 'https://jitpack.io' }
     }
 }
 
