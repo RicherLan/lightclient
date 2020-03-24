@@ -1,9 +1,12 @@
 package lan.qxc.lightclient.ui.fragment.dongtai;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,13 +16,17 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtailVO;
+import lan.qxc.lightclient.listener.EndlessRecyclerOnScrollListener;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
 
 public class DTTuijianFragment extends Fragment implements View.OnClickListener {
@@ -52,6 +59,9 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initEvent(){
+
+        layout_refresh_dt_tuijian_frag.setColorSchemeResources(R.color.my_green);
+      //  layout_refresh_dt_tuijian_frag.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.my_blue));
 
         //下拉刷新
         layout_refresh_dt_tuijian_frag.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -98,6 +108,60 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
 
         recyclerview_dt_tuijian_frag.setAdapter(dongtaiAdapter);
 
+        //下拉刷新
+        layout_refresh_dt_tuijian_frag.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                layout_refresh_dt_tuijian_frag.setRefreshing(false);
+                            }
+                        });
+                    }
+                },10000);
+
+                //请求服务器
+            }
+        });
+
+        //监听上拉刷新
+        recyclerview_dt_tuijian_frag.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING);
+
+                //请求服务器
+
+            }
+        });
+
+        dongtaiAdapter.setTransmitListener(new ClickTransmitListener() {
+            @Override
+            public void clickTransmit(int position) {
+                Toast.makeText(getContext(),"点击转发 "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dongtaiAdapter.setCommonListener(new ClickCommonListener() {
+            @Override
+            public void clickCommon(int position) {
+                Toast.makeText(getContext(),"点击评论 "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        dongtaiAdapter.setLikeListener(new ClickLikeListener() {
+            @Override
+            public void clickLike(int position) {
+                Toast.makeText(getContext(),"点击点赞 "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -105,5 +169,15 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
+    }
+
+    public interface ClickTransmitListener{
+        void clickTransmit(int position);
+    }
+    public interface ClickCommonListener{
+        void clickCommon(int position);
+    }
+    public interface ClickLikeListener{
+        void clickLike(int position);
     }
 }
