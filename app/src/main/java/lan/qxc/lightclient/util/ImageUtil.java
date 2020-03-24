@@ -27,8 +27,8 @@ public class ImageUtil {
     //显示网络图片到imageview
     public void setNetImageToView (Context context , String path, ImageView view){
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.drawable.default_icon);
-        options.error(R.drawable.default_icon);
+        options.placeholder(R.drawable.default_picture);
+        options.error(R.drawable.default_picture);
 
         Glide.with(context)
                 .load(path)

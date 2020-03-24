@@ -31,7 +31,7 @@
         </provider>
 
 
-        <activity android:name=".ui.activity.dongtai.AddNewDongtaiActiviy"
+        <activity android:name=".ui.activity.user_activitys.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/loginTheme"

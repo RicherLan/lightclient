@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
+
+    <RelativeLayout
+        android:id="@+id/layout_title_dt_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_headic_dt_item"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true">
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_nickname_dt_item"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/my_orange"
+                        android:text="小蓝"/>
+                    <ImageView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_man"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_time_dt_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/gray"
+                        android:text="16:45"
+                        android:textSize="11sp"/>
+                    <TextView
+                        android:id="@+id/tv_phone_type_dt_item"
+                        android:layout_marginLeft="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textSize="11sp"
+                        android:textColor="@color/gray"
+                        android:text="来自 android11"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_guanzhu_dt_item"
+            android:layout_width="55dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+
+            android:gravity="center"
+            android:background="@drawable/redis_layout"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_guanzhu_addlable_dt_item"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_add">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tv_guanzhu_text_dt_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="关注"
+                android:textSize="13sp"
+                android:textColor="@color/my_orange_light">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/layout_dongtai_body_dt_item"
+        android:layout_below="@+id/layout_title_dt_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_dongtai_text_dt_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:text="一起留下点什么吧！">
+        </TextView>
+
+        <lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/layout_dongtai_pic_dt_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_splitor_dt_item"
+        android:layout_below="@+id/layout_dongtai_body_dt_item"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/my_splitor_gray">
+    </View>
+
+    <LinearLayout
+        android:id="@+id/layout_zan_commit_dt_item"
+        android:layout_below="@+id/view_splitor_dt_item"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/layout_transmit_dt_item"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_transmit_label_dt_item"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_transmit" />
+            <TextView
+                android:id="@+id/tv_transmit_text_dt_item"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp"
+                android:text="转发"
+                android:textColor="@color/gray"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_common_dt_item"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_common_label_dt_item"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_comment" />
+            <TextView
+                android:id="@+id/tv_common_text_dt_item"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp"
+                android:text="评论"
+                android:textColor="@color/gray"/>
+        </LinearLayout>
+        <LinearLayout
+
+            android:id="@+id/layout_like_dt_item"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_like_label_dt_item"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_like" />
+            <TextView
+                android:id="@+id/tv_like_text_dt_item"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp"
+                android:text="喜欢"
+                android:textColor="@color/gray"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

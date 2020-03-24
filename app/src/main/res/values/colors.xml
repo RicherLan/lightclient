@@ -8,6 +8,11 @@
     <color name="my_blue">#b5dbf7</color>
     <color name="my_grey_label">#989EB4</color>
 
+    <color name="my_orange">#F46200</color>
+    <color name="my_orange_light">#FF8200</color>
+
+
+
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
