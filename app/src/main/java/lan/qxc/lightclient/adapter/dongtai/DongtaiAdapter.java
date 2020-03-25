@@ -36,6 +36,8 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private DTTuijianFragment.ClickCommonListener commonListener;
     private DTTuijianFragment.ClickLikeListener likeListener;
 
+    private MessagePicturesLayout.Callback mCallback;      //点击某张图片  放大显示
+
     private int pos=0;
 
     private int loadState = 2;
@@ -74,6 +76,11 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     public void setLikeListener(DTTuijianFragment.ClickLikeListener likeListener){
         this.likeListener = likeListener;
+    }
+
+    public DongtaiAdapter setPictureClickCallback(MessagePicturesLayout.Callback callback) {
+        mCallback = callback;
+        return this;
     }
 
 
@@ -118,7 +125,6 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((DongtaiViewHolder)holder).tv_transmit_text_dt_item.setText("863");
             ((DongtaiViewHolder)holder).tv_common_text_dt_item.setText("7");
             ((DongtaiViewHolder)holder).tv_like_text_dt_item.setText("5.3万");
-
 
 
             ((DongtaiViewHolder)holder).layout_transmit_dt_item.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +251,7 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             iv_like_label_dt_item = view.findViewById(R.id.iv_like_label_dt_item);
             tv_like_text_dt_item = view.findViewById(R.id.tv_like_text_dt_item);
 
+            layout_dongtai_pic_dt_item.setCallback(mCallback);
         }
 
     }

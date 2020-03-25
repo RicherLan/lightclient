@@ -1,5 +1,6 @@
 package lan.qxc.lightclient.ui.fragment.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.WePagerAdapter;
+import lan.qxc.lightclient.ui.activity.dongtai.AddNewDongtaiActiviy;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTGuanzhuFragment;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 
@@ -67,7 +69,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         viewpager_index_frag = view.findViewById(R.id.viewpager_index_frag);
 
         fragmentList=new ArrayList<>();
-        fragmentList.add(new DTGuanzhuFragment());
+        fragmentList.add(new DTTuijianFragment());
         fragmentList.add(new DTTuijianFragment());
 
         pagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
@@ -142,7 +144,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_add_index_frag:
-
+                Intent intent = new Intent(getContext(), AddNewDongtaiActiviy.class);
+                startActivity(intent);
                 break;
 
             case R.id.tv_guanzhu_index_frag:

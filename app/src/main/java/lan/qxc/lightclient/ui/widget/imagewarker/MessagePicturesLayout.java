@@ -128,12 +128,17 @@ public class MessagePicturesLayout extends FrameLayout implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (mCallback != null) {
-            mCallback.onThumbPictureClick((ImageView) v, mVisiblePictureList, mDataList);
+           for (int i = 0; i < mVisiblePictureList.size(); i++) {
+                if(v==mVisiblePictureList.get(i)){
+                    mCallback.onThumbPictureClick(i,(ImageView) v, mVisiblePictureList, mDataList);
+                }
+           }
+
         }
     }
 
     public interface Callback {
-        void onThumbPictureClick(ImageView i, List<ImageView> imageGroupList, List<String> urlList);
+        void onThumbPictureClick(int pos,ImageView i, List<ImageView> imageGroupList, List<String> urlList);
     }
 
     public void setCallback(Callback callback) {

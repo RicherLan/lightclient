@@ -15,17 +15,24 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.config.PictureSelectConstants;
+import lan.qxc.lightclient.result.Result;
+import lan.qxc.lightclient.service.DongtaiServicce;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.PersonalActivity;
 import lan.qxc.lightclient.ui.widget.nice9layout.ImageNice9Layout;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.MyPictureSelectorUtil;
 import lan.qxc.lightclient.util.PermissionUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /*
     发表动态  编辑页面
@@ -111,13 +118,58 @@ public class AddNewDongtaiActiviy extends BaseForCloseActivity implements View.O
                 break;
 
             case R.id.tv_submit_adddt_activity:
-
+                doUpload();
                 break;
 
             case R.id.iv_camera_select_pic_adddt:
                 selectPic(PictureSelectConstants.MAX_SELECT_PIC_NUM - picPathList.size());
                 break;
         }
+    }
+
+    //提交
+    private void doUpload(){
+
+        String dtText = edit_text_add_dt_ac.getText().toString();
+
+        if((picPathList.size()==0||picPathList==null)&&(dtText==null||dtText.trim().equals(""))){
+            return;
+        }
+
+        List<File> files = new ArrayList<>();
+        for(String s : picPathList){
+            File file = new File(s);
+            files.add(file);
+        }
+
+        setSeconds(60000);
+        startLoadingDialog();
+
+        Call<Result> call = DongtaiServicce.getInstance().addDongtai(files,dtText, GlobalInfoUtil.personalInfo.getUserid());
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                cancelLoadingDialog();
+                Result result = response.body();
+                String message = result.getMessage();
+                if(message.equals("SUCCESS")){
+                    Toast.makeText(AddNewDongtaiActiviy.this,"发布成功",Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(AddNewDongtaiActiviy.this,message,Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                cancelLoadingDialog();
+                Toast.makeText(AddNewDongtaiActiviy.this,"error!!!",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
     }
 
 

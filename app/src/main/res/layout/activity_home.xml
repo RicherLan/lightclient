@@ -37,11 +37,6 @@
         android:layout_alignParentLeft="true">
     </FrameLayout>
 
-<!--    <byc.imagewatcher.ImageWatcher-->
-<!--        android:id="@+id/image_watcher"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-<!--    </byc.imagewatcher.ImageWatcher>-->
 
 
 </RelativeLayout>

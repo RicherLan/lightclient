@@ -66,7 +66,7 @@
             android:gravity="start"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="来了就留下点什么吧......"
+            android:hint="是怎样的心情......"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:textColor="#000"

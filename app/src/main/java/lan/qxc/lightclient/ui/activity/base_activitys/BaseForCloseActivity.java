@@ -19,6 +19,7 @@ public class BaseForCloseActivity extends AppCompatActivity {
 
     NetWorkStatusReceiver netWorkStatusReceiver;
     private Timer timer;
+    private int seconds = 28000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +31,9 @@ public class BaseForCloseActivity extends AppCompatActivity {
         ActivityCollector.addActivity(this);
     }
 
+    public void setSeconds(int seconds){
+        this.seconds = seconds;
+    }
 
     public void startLoadingDialog(){
         MyDialog.dismissBottomLoadingDialog();
@@ -47,7 +51,7 @@ public class BaseForCloseActivity extends AppCompatActivity {
                     }
                 });
             }
-        },28000);
+        },seconds);
     }
 
     public void cancelLoadingDialog(){

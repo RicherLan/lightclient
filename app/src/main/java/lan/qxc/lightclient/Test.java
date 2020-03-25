@@ -47,7 +47,7 @@ public class Test {
     public static void main(String[] args) {
 
 
-        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        UserRequestService service = RetrofitHelper.getInstance().create(UserRequestService.class);
 
         Dongtai dongtai = new Dongtai();
        // dongtai.setDtid(new Long(1));
@@ -57,7 +57,7 @@ public class Test {
 
 
 
-            Call<Result> call = DongtaiServicce.getInstance().getDongtai_New_List();
+            Call<Result> call = UserService.getInstance().login("15054190193","123");
             call.enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {

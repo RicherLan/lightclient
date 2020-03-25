@@ -1,11 +1,18 @@
 package lan.qxc.lightclient.ui.fragment.dongtai;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,20 +23,28 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.listener.EndlessRecyclerOnScrollListener;
+import lan.qxc.lightclient.ui.widget.bigimage_looker.BigImageLookerActivity;
+import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
+import lan.qxc.lightclient.ui.widget.imagewarker.Utils;
 
-public class DTTuijianFragment extends Fragment implements View.OnClickListener {
+public class DTTuijianFragment extends Fragment implements View.OnClickListener , MessagePicturesLayout.Callback{
 
     private View view;
 
@@ -37,6 +52,8 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
     private RecyclerView recyclerview_dt_tuijian_frag;
 
     private DongtaiAdapter dongtaiAdapter;
+
+    boolean isTranslucentStatus;
 
     @Nullable
     @Override
@@ -60,8 +77,10 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
 
     private void initEvent(){
 
+
+
         layout_refresh_dt_tuijian_frag.setColorSchemeResources(R.color.my_green);
-      //  layout_refresh_dt_tuijian_frag.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.my_blue));
+        layout_refresh_dt_tuijian_frag.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.my_orange_light));
 
         //下拉刷新
         layout_refresh_dt_tuijian_frag.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -79,7 +98,7 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
         dongtailVO.setUsername("杨丞琳");
 
         dongtailVO.setIcon("/uploadfile/headic/20200324_19300369.jpg");
-        dongtailVO.setDtpic("/uploadfile/dongtai_ic/1.jpg /uploadfile/dongtai_ic/2.jpg");
+        dongtailVO.setDtpic("/uploadfile/dongtai_ic_sl/1_thumbnail.jpg /uploadfile/dongtai_ic/2.jpg");
 
 
 
@@ -102,11 +121,12 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
         dongtailVOS.add(dongtailVO2);
 
 
-        dongtaiAdapter = new DongtaiAdapter(getContext(),dongtailVOS);
+        dongtaiAdapter = new DongtaiAdapter(getActivity(),dongtailVOS);
+
         recyclerview_dt_tuijian_frag.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview_dt_tuijian_frag.addItemDecoration(new SpaceItemDecoration(getActivity()).setSpace(12).setSpaceColor(0xFFEEEEEE));
 
-        recyclerview_dt_tuijian_frag.setAdapter(dongtaiAdapter);
+        recyclerview_dt_tuijian_frag.setAdapter(dongtaiAdapter.setPictureClickCallback(this));
 
         //下拉刷新
         layout_refresh_dt_tuijian_frag.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -170,6 +190,26 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
 
     }
+
+    //点击了图片
+    @Override
+    public void onThumbPictureClick(int pos,ImageView i, List<ImageView> imageGroupList, List<String> urlList) {
+       // vImageWatcher.show(i, imageGroupList, urlList);
+
+     //   Toast.makeText(getActivity(),"点击了第"+pos+"张图片",Toast.LENGTH_SHORT).show();
+
+        ArrayList<String> titles  = new ArrayList<>();
+
+        Intent intent = new Intent(getActivity(), BigImageLookerActivity.class);
+        intent.putExtra("pos",pos);
+        intent.putStringArrayListExtra("imgPaths", (ArrayList<String>) urlList);
+        intent.putStringArrayListExtra("titles",titles);
+
+        startActivity(intent);
+
+    }
+
+
 
     public interface ClickTransmitListener{
         void clickTransmit(int position);

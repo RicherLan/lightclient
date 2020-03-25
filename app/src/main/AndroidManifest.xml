@@ -90,6 +90,18 @@
             android:theme="@style/AppTheme.Personalinfo">
         </activity>
 
+        <activity android:name=".ui.activity.dongtai.AddNewDongtaiActiviy"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Personalinfo">
+        </activity>
+
+        <activity android:name=".ui.widget.bigimage_looker.BigImageLookerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Personalinfo">
+        </activity>
+
     </application>
 
 </manifest>
