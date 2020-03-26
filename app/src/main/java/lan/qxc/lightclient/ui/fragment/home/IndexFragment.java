@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,6 +77,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @NonNull
             @Override
             public Fragment getItem(int position) {
+
                 return fragmentList.get(position);
             }
 
@@ -86,7 +88,26 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
 
         viewpager_index_frag.setAdapter(pagerAdapter);
-        viewpager_index_frag.setCurrentItem(0);
+        viewpager_index_frag.setCurrentItem(1);
+        setSelect(1);
+
+        viewpager_index_frag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+               // Toast.makeText(getActivity(),"点击了第"+position+"个界面",Toast.LENGTH_SHORT).show();
+                setSelect(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 

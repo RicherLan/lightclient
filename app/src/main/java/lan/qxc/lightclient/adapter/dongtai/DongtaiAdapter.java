@@ -14,17 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
-import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
-import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
+import lan.qxc.lightclient.util.PhoneSystemUtil;
 
 public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -53,7 +51,8 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ITEM_TYPE_USER,
         ITEM_TYPE_AUTH,
         ITEM_TYPE_AD,
-        TYPE_FOOT;
+        TYPE_FOOT,
+        TYPE_NONE;
     }
 
     public void setLoadState(int loadState) {
@@ -94,7 +93,7 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return new FootViewHolder(layoutInflater.inflate(R.layout.item_footer_dongtai_frag,parent,false));
         }
 
-        return null;
+        return new NoneViewHolder(layoutInflater.inflate(R.layout.item_none_dongtai_frag,parent,false));
     }
 
     @Override
@@ -104,8 +103,11 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(holder instanceof DongtaiViewHolder){
             DongtailVO dongtailVO = dongtais.get(position);
             ((DongtaiViewHolder)holder).tv_nickname_dt_item.setText(dongtailVO.getUsername());
-            ((DongtaiViewHolder)holder).tv_phone_type_dt_item.setText("来自  android 28");
-            ((DongtaiViewHolder)holder).tv_time_dt_item.setText(dongtailVO.getDtcreatetime().substring(dongtailVO.getDtcreatetime().indexOf("-")));
+            if(dongtailVO.getDeviceinfo()!=null){
+                ((DongtaiViewHolder)holder).tv_phone_type_dt_item.setText("来自  "+ dongtailVO.getDeviceinfo());
+            }
+
+            ((DongtaiViewHolder)holder).tv_time_dt_item.setText(dongtailVO.getDtcreatetime().substring(dongtailVO.getDtcreatetime().indexOf("-")+1,dongtailVO.getDtcreatetime().lastIndexOf(":")));
 
             String headIcPath = APIUtil.getUrl(dongtailVO.getIcon());
             ImageUtil.getInstance().setNetImageToView(mContext,headIcPath,((DongtaiViewHolder)holder).iv_headic_dt_item);
@@ -115,7 +117,7 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 List<String> iclist=new ArrayList<String>();
                 String [] ss = dongtailVO.getDtpic().split(" ");
                 for(String str : ss){
-                    iclist.add(APIUtil.getUrl(str));
+                    iclist.add(APIUtil.getSLUrl(str));    //缩略图
                 }
 
                 ((DongtaiViewHolder)holder).layout_dongtai_pic_dt_item.set(iclist,iclist);
@@ -172,6 +174,8 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     break;
             }
 
+        }else if(holder instanceof NoneViewHolder){
+
         }
 
 
@@ -184,6 +188,11 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position){
+
+        if(getItemCount()==1){
+            return  ITEM_TYPE.TYPE_NONE.ordinal();
+        }
+
         if(position+1==getItemCount()){
             pos = position;
             return ITEM_TYPE.TYPE_FOOT.ordinal();
@@ -268,6 +277,14 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvLoading = (TextView) itemView.findViewById(R.id.tv_loading);
             llEnd = (LinearLayout) itemView.findViewById(R.id.ll_end);
         }
+    }
+
+    class NoneViewHolder extends RecyclerView.ViewHolder{
+
+        NoneViewHolder(View itemView){
+            super(itemView);
+        }
+
     }
 
 

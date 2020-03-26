@@ -40,11 +40,11 @@ public interface DongtaiRequestService {
 
     @Multipart()
     @POST(DongtaiAPI.ADD_DONGTAI)
-    Call<Result> addDongtai(@Part()   List<MultipartBody.Part> body,@Query("dttext") String dttext,@Query("userid") Long userid);
+    Call<Result> addDongtai(@Part()   List<MultipartBody.Part> body,@Query("dttext") String dttext,@Query("deviceinfo") String deviceinfo,@Query("userid") Long userid);
 
     @POST(DongtaiAPI.ADD_DONGTAI_NOT_PIC)
     @FormUrlEncoded
-    Call<Result> addDongtaiNotPic(@Field("dttext") String dttext,@Field("userid") Long userid);
+    Call<Result> addDongtaiNotPic(@Field("dttext") String dttext,@Query("deviceinfo") String deviceinfo,@Field("userid") Long userid);
 
 
 

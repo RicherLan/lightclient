@@ -26,10 +26,12 @@ import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.DongtaiServicce;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.PersonalActivity;
+import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.widget.nice9layout.ImageNice9Layout;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.MyPictureSelectorUtil;
 import lan.qxc.lightclient.util.PermissionUtil;
+import lan.qxc.lightclient.util.PhoneSystemUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,6 +137,7 @@ public class AddNewDongtaiActiviy extends BaseForCloseActivity implements View.O
         if((picPathList.size()==0||picPathList==null)&&(dtText==null||dtText.trim().equals(""))){
             return;
         }
+        String deviceinfo = PhoneSystemUtil.getPhoneModel();
 
         List<File> files = new ArrayList<>();
         for(String s : picPathList){
@@ -145,7 +148,7 @@ public class AddNewDongtaiActiviy extends BaseForCloseActivity implements View.O
         setSeconds(60000);
         startLoadingDialog();
 
-        Call<Result> call = DongtaiServicce.getInstance().addDongtai(files,dtText, GlobalInfoUtil.personalInfo.getUserid());
+        Call<Result> call = DongtaiServicce.getInstance().addDongtai(files,dtText,deviceinfo, GlobalInfoUtil.personalInfo.getUserid());
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -154,6 +157,10 @@ public class AddNewDongtaiActiviy extends BaseForCloseActivity implements View.O
                 String message = result.getMessage();
                 if(message.equals("SUCCESS")){
                     Toast.makeText(AddNewDongtaiActiviy.this,"发布成功",Toast.LENGTH_SHORT).show();
+
+                    if(DTTuijianFragment.tuijianFragment!=null){
+                        DTTuijianFragment.tuijianFragment.requestNewDongtai();
+                    }
                     finish();
                 }else{
                     Toast.makeText(AddNewDongtaiActiviy.this,message,Toast.LENGTH_SHORT).show();

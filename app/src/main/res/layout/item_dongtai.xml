@@ -61,15 +61,14 @@
                         android:layout_height="20dp"
                         android:textColor="@color/gray"
                         android:text="16:45"
-                        android:textSize="11sp"/>
+                        android:textSize="12sp"/>
                     <TextView
                         android:id="@+id/tv_phone_type_dt_item"
                         android:layout_marginLeft="15dp"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:textSize="11sp"
-                        android:textColor="@color/gray"
-                        android:text="来自 android11"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/gray" />
                 </LinearLayout>
 
             </LinearLayout>

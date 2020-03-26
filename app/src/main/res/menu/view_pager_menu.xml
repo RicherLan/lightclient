@@ -3,22 +3,22 @@
     <item
         android:id="@+id/pager_menu_home"
         android:title="首页"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_home_home"
         android:fragment="lan.qxc.lightclient.ui.fragment.home.IndexFragment"/>
     <item
         android:id="@+id/pager_menu_notification"
         android:title="发现"
-        android:icon="@drawable/ic_notifications"
+        android:icon="@drawable/ic_siyecao_home"
         android:fragment="lan.qxc.lightclient.ui.fragment.home.SecondFragment"/>
     <item
         android:id="@+id/pager_menu_friendship"
-        android:icon="@drawable/ic_friendship"
+        android:icon="@drawable/ic_message_home"
         android:fragment="lan.qxc.lightclient.ui.fragment.home.NotificationFragment"
         android:title="消息"/>
     <item
         android:fragment="lan.qxc.lightclient.ui.fragment.home.MineFragment"
         android:title="我的"
         android:id="@+id/pager_menu_myself"
-        android:icon="@drawable/ic_myself"/>
+        android:icon="@drawable/ic_me_home"/>
 
 </menu>

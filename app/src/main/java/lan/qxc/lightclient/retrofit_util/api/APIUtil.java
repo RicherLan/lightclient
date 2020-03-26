@@ -23,8 +23,22 @@ public class APIUtil {
         return list;
     }
 
+    //判断某图片是不是缩略图
+    public static boolean isSLUrl(String path){
+
+        if(path.contains("_thumbnail")){
+            return true;
+        }
+        return false;
+    }
+
     //获得缩略图url
     public static String getSLUrl(String path){
+
+        if(isSLUrl(path)){
+            return path;
+        }
+
         String suffix = path.substring(path.lastIndexOf(".")+1);
         String filenameNotSuffix = path.substring(path.lastIndexOf("/")+1,path.lastIndexOf("."));
         String newfilname = filenameNotSuffix+"_thumbnail."+suffix;
@@ -39,6 +53,11 @@ public class APIUtil {
 
     //缩略图转原图
     public static String SLUrlToOrienlUrl(String slpath){
+
+        if(!isSLUrl(slpath)){
+            return slpath;
+        }
+
         String suffix = slpath.substring(slpath.lastIndexOf(".")+1);
         String filenameNotSuffix = slpath.substring(slpath.lastIndexOf("/")+1,slpath.lastIndexOf("."));
         String newFilename = filenameNotSuffix.substring(0,filenameNotSuffix.lastIndexOf("_"))+"."+suffix;

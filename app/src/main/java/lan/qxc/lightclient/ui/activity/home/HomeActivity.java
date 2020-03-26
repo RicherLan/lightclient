@@ -64,9 +64,11 @@ public class HomeActivity extends BaseForCloseActivity {
         //可动态改变item的标题
 //        bar.setTitle(0,"home(99)");
         bottomNavigationBar.showNum(0,0);
-        bottomNavigationBar.showNum(1,100);
-        bottomNavigationBar.showNum(2,-2);
-        bottomNavigationBar.disMissNum(3);
+        bottomNavigationBar.showNum(1,0);
+        bottomNavigationBar.showNum(2,0);
+        bottomNavigationBar.showNum(3,0);
+
+//        bottomNavigationBar.disMissNum(1);
         bottomNavigationBar.getViewPager();
 
         //mViewPager.setOnPageChangeListener(new MyPagerChangeListener());

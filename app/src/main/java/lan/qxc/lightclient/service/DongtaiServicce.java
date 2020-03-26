@@ -49,7 +49,7 @@ public class DongtaiServicce {
         return service.getDongtai_New_List();
     }
 
-    public Call<Result> addDongtai(List<File> files, String dttext, Long uesrid){
+    public Call<Result> addDongtai(List<File> files, String dttext, String deviceinfo,Long uesrid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
 
         List<MultipartBody.Part> parts = new ArrayList<>();
@@ -60,10 +60,10 @@ public class DongtaiServicce {
             parts.add(part);
         }
         if(parts.size()==0){
-            return service.addDongtaiNotPic(dttext,uesrid);
+            return service.addDongtaiNotPic(dttext,deviceinfo,uesrid);
         }
 
-        return service.addDongtai(parts,dttext,uesrid);
+        return service.addDongtai(parts,dttext,deviceinfo,uesrid);
     }
 
 }

@@ -25,7 +25,7 @@ public class DongtailVO implements Serializable {
 
     //1997-11-13 12:35:22
     private String dtcreatetime;
-
+    private String deviceinfo;
 
 
 }

@@ -1,5 +1,10 @@
 package lan.qxc.lightclient.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import lan.qxc.lightclient.entity.Dongtai;
+import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.entity.User;
 
 /*
@@ -8,6 +13,8 @@ import lan.qxc.lightclient.entity.User;
 public class GlobalInfoUtil {
 
     public static User personalInfo;
+
+
 
 
 }
