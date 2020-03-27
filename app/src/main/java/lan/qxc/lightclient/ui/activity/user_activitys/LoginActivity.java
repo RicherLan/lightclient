@@ -24,6 +24,7 @@ import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
+import lan.qxc.lightclient.service.NettyService;
 import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
@@ -60,9 +61,11 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         UIUtils.makeStatusBarTransparent(this);
        // UIUtils.setStatusBarLightMode(this,false);
 
-
-
         initView();
+
+        Intent intent = new Intent(LoginActivity.this, NettyService.class);
+        startService(intent);
+
         initVideoView();
         initEvent();
 

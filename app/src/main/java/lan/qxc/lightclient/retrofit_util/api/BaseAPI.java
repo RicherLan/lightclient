@@ -2,7 +2,9 @@ package lan.qxc.lightclient.retrofit_util.api;
 
 public interface BaseAPI {
 
-    String BASE_URL =  "http://192.168.43.7:8989";
+    String nettyServerIP = "192.168.1.5";
+    int nettyServerPort = 8988;
+    String BASE_URL =  "http://192.168.1.5:8989";
 
 
 
