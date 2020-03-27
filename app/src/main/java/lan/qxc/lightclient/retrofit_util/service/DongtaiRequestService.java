@@ -38,6 +38,15 @@ public interface DongtaiRequestService {
     @POST(DongtaiAPI.GET_DONGTAI_NEW_LIST)
     Call<Result> getDongtai_New_List();
 
+    @POST(DongtaiAPI.GET_USER_DONGTAI_BACK_LIST)
+    @FormUrlEncoded
+    Call<Result> getUserDongtai_Back_List(@Field("userid") Long userid,@Field("dtid") Long dtid);
+
+    @POST(DongtaiAPI.GET_USER_DONGTAI_NEW_LIST)
+    @FormUrlEncoded
+    Call<Result> getUserDongtai_New_List(@Field("userid") Long userid);
+
+
     @Multipart()
     @POST(DongtaiAPI.ADD_DONGTAI)
     Call<Result> addDongtai(@Part()   List<MultipartBody.Part> body,@Query("dttext") String dttext,@Query("deviceinfo") String deviceinfo,@Query("userid") Long userid);

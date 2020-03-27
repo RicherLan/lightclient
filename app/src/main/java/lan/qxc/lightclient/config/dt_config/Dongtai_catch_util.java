@@ -3,7 +3,9 @@ package lan.qxc.lightclient.config.dt_config;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtailVO;
@@ -13,13 +15,34 @@ public class Dongtai_catch_util {
     public static List<DongtailVO> tjDongtailVOS = new ArrayList<>();
     public static List<DongtailVO> gzDongtailVOS = new ArrayList<>();
 
+    //存储用户的动态   key为用户id
+    public static Map<Long,List<DongtailVO>> dtMap = new HashMap<>();
+
+    public static void updateNewTJDTList(Long userid,List<DongtailVO> list){
+        if(dtMap.containsKey(userid)){
+            updateNewTJDTList(dtMap.get(userid),list);
+        }else{
+            dtMap.put(userid,list);
+        }
+    }
+
+    public static void updateOldTJDTList(Long userid,List<DongtailVO> list){
+        if(dtMap.containsKey(userid)){
+            updateOldTJDTList(dtMap.get(userid),list);
+        }else{
+            dtMap.put(userid,list);
+        }
+    }
 
     //请求服务器新的动态列表
-    public static void updateNewTJDTList(List<DongtailVO> list){
+    public static void updateNewTJDTList(List<DongtailVO> orignList,List<DongtailVO> list){
 
+        if(orignList==null){
+            orignList = new ArrayList<DongtailVO>();
+        }
         //更新头像
         for(DongtailVO newdt : list){
-            for(DongtailVO  dongtailVO : tjDongtailVOS){
+            for(DongtailVO  dongtailVO : orignList){
                 if(dongtailVO.getDtid()==newdt.getDtid()){
                     dongtailVO.setIcon(newdt.getIcon());
                 }
@@ -27,7 +50,7 @@ public class Dongtai_catch_util {
         }
 
         List<DongtailVO> del = new ArrayList<>();
-        for(DongtailVO  dongtailVO : tjDongtailVOS){
+        for(DongtailVO  dongtailVO : orignList){
 
             for(DongtailVO newdt : list){
                 if(newdt.getDtid()==dongtailVO.getDtid()){
@@ -37,21 +60,21 @@ public class Dongtai_catch_util {
         }
 
         for(DongtailVO dongtailVO : del){
-            tjDongtailVOS.remove(dongtailVO);
+            orignList.remove(dongtailVO);
         }
         del = null;
 
-        tjDongtailVOS.addAll(list);
+        orignList.addAll(list);
 
-        sortDtvos(tjDongtailVOS);
+        sortDtvos(orignList);
     }
 
     //请求服务器旧的动态列表
-    public static void updateOldTJDTList(List<DongtailVO> list){
+    public static void updateOldTJDTList(List<DongtailVO> orignList,List<DongtailVO> list){
 
         //更新头像
         for(DongtailVO newdt : list){
-            for(DongtailVO  dongtailVO : tjDongtailVOS){
+            for(DongtailVO  dongtailVO : orignList){
                 if(dongtailVO.getDtid()==newdt.getDtid()){
                     dongtailVO.setIcon(newdt.getIcon());
                 }
@@ -59,7 +82,7 @@ public class Dongtai_catch_util {
         }
 
         List<DongtailVO> del = new ArrayList<>();
-        for(DongtailVO  dongtailVO : tjDongtailVOS){
+        for(DongtailVO  dongtailVO : orignList){
 
             for(DongtailVO newdt : list){
                 if(newdt.getDtid()==dongtailVO.getDtid()){
@@ -69,13 +92,13 @@ public class Dongtai_catch_util {
         }
 
         for(DongtailVO dongtailVO : del){
-            tjDongtailVOS.remove(dongtailVO);
+            orignList.remove(dongtailVO);
         }
         del = null;
 
-        tjDongtailVOS.addAll(list);
+        orignList.addAll(list);
 
-        sortDtvos(tjDongtailVOS);
+        sortDtvos(orignList);
     }
 
 

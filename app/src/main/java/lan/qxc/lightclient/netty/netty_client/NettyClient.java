@@ -12,6 +12,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lan.qxc.lightclient.netty.codec.PacketCodecHandler;
 import lan.qxc.lightclient.netty.codec.Spliter;
+import lan.qxc.lightclient.netty.handler.IMHandler;
 import lan.qxc.lightclient.netty.handler.netHandler.HeartBeatResponseHandler;
 import lan.qxc.lightclient.netty.handler.netHandler.HeartBeatTimerHandler;
 import lan.qxc.lightclient.netty.handler.netHandler.IMIdleStateHandler;
@@ -59,7 +60,7 @@ public class NettyClient {
 
                         ch.pipeline().addLast(new HeartBeatResponseHandler());
                         //业务处理器
-                       // ch.pipeline().addLast(new IMHandler());
+                        ch.pipeline().addLast(new IMHandler());
                         // 心跳定时器
                         ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }

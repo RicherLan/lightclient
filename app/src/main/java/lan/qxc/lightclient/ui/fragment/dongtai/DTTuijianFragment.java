@@ -203,7 +203,7 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
 
                     String jsonstr = JsonUtils.objToJson(result.getData());
                     List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateNewTJDTList(dongtailVOs);
+                    Dongtai_catch_util.updateNewTJDTList(Dongtai_catch_util.tjDongtailVOS,dongtailVOs);
 
                    // Toast.makeText(getActivity(),"刷新成功",Toast.LENGTH_SHORT).show();
 
@@ -269,11 +269,9 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
                 if(message.equals("SUCCESS")){
 
 
-
-
                     String jsonstr = JsonUtils.objToJson(result.getData());
                     List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateOldTJDTList(dongtailVOs);
+                    Dongtai_catch_util.updateOldTJDTList(Dongtai_catch_util.tjDongtailVOS,dongtailVOs);
 
                     if(dongtailVOs.size()==0){
                         dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_END);

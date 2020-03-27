@@ -5,12 +5,16 @@ import java.util.Map;
 
 import io.netty.buffer.ByteBuf;
 import lan.qxc.lightclient.netty.protocol.request.netRequest.HeartBeatRequestPacket;
+import lan.qxc.lightclient.netty.protocol.request.user_request.LoginRequestPacket;
 import lan.qxc.lightclient.netty.protocol.response.netResponse.HeartBeatResponsePacket;
+import lan.qxc.lightclient.netty.protocol.response.user_response.LoginResponsePacket;
 import lan.qxc.lightclient.netty.serialize.Serializer;
 import lan.qxc.lightclient.netty.serialize.impl.JSONSerializer;
 
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_REQUEST;
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_RESPONSE;
+import static lan.qxc.lightclient.netty.protocol.command.Command.LOGIN_REQUEST;
+import static lan.qxc.lightclient.netty.protocol.command.Command.LOGIN_RESPONSE;
 
 
 public class PacketCodec {
@@ -26,6 +30,9 @@ public class PacketCodec {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(HEARTBEAT_REQUEST, HeartBeatRequestPacket.class);
         packetTypeMap.put(HEARTBEAT_RESPONSE, HeartBeatResponsePacket.class);
+
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
 
 
         serializerMap = new HashMap<>();

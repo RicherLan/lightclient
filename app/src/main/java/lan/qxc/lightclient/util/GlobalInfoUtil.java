@@ -5,6 +5,7 @@ import java.util.List;
 
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtailVO;
+import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.User;
 
 /*
@@ -12,7 +13,7 @@ import lan.qxc.lightclient.entity.User;
  */
 public class GlobalInfoUtil {
 
-    public static User personalInfo;
+    public static PersonalInfo personalInfo;
 
 
 

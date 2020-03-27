@@ -150,6 +150,10 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
             String headIcPath = APIUtil.getUrl(GlobalInfoUtil.personalInfo.getIcon());
             ImageUtil.getInstance().setNetImageToView(this,headIcPath,iv_headicon_personal);
 
+            tv_guanzhu_num_personal.setText(GlobalInfoUtil.personalInfo.getMy_guanzhu_num()+"");
+        tv_fenxi_num_personal.setText(GlobalInfoUtil.personalInfo.getGuanzhu_me_num()+"");
+        tv_friend_num_personal.setText(GlobalInfoUtil.personalInfo.getMy_friend_num()+"");
+
 
     }
 

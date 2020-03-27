@@ -1,6 +1,9 @@
 package lan.qxc.lightclient.ui.activity.user_activitys;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,13 +24,17 @@ import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
+import lan.qxc.lightclient.config.ContextActionStr;
+import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.User;
+import lan.qxc.lightclient.netty.command_to_server.SendToServer;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.NettyService;
 import lan.qxc.lightclient.service.UserService;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
+import lan.qxc.lightclient.util.FixedThreadPool;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
 import lan.qxc.lightclient.util.JsonUtils;
@@ -63,6 +70,8 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
 
         initView();
 
+        FixedThreadPool.startThreadPool();
+
         Intent intent = new Intent(LoginActivity.this, NettyService.class);
         startService(intent);
 
@@ -87,7 +96,7 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         }
 
         String userinfo_json = SharePerferenceUtil.getUserFromSP(this,SharePerferenceUtil.sh_personal_info);
-        GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,userinfo_json);
+        GlobalInfoUtil.personalInfo = (PersonalInfo)JsonUtils.jsonToObj(PersonalInfo.class,userinfo_json);
     }
 
     void initView(){
@@ -171,6 +180,9 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
 
         setButtonLogining();
 
+        SendToServer.login(phone,password);
+
+        /*
         Call<Result> call = UserService.getInstance().login(phone,password);
 
         call.enqueue(new Callback<Result>() {
@@ -219,7 +231,7 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
                 Toast.makeText(LoginActivity.this,"error!!!",Toast.LENGTH_SHORT).show();
             }
         });
-
+        */
 
     }
 
@@ -256,6 +268,15 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         tv_login.setVisibility(View.VISIBLE);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ContextActionStr.login_activity_action);
+        registerReceiver(broadcastReceiver, filter);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -263,8 +284,32 @@ public class LoginActivity extends BaseForCloseActivity implements View.OnClickL
         if(loginTimer!=null){
             loginTimer.cancel();
         }
+        unregisterReceiver(broadcastReceiver);
 
     }
+
+
+    BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(ContextActionStr.login_activity_action.equals(intent.getAction())){
+
+                String type = intent.getStringExtra("type");
+                if(type!=null&&type.equals("loginrs")){
+                    resetLoginButton();
+                    String message = intent.getStringExtra("rs");
+                    if(message.equals("SUCCESS")){
+                        Intent intent2 = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent2);
+                        LoginActivity.this.finish();
+                    }else{
+                        Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }
+    };
 
 
 }

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lan.qxc.lightclient.R;
+import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.UserService;
@@ -193,7 +194,7 @@ public class UpdatePersonalInfoActivity extends BaseForCloseActivity implements 
                     Toast.makeText(UpdatePersonalInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
 
                     String jsonstr = JsonUtils.objToJson(result.getData());
-                    GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,jsonstr);
+                    GlobalInfoUtil.personalInfo = (PersonalInfo)JsonUtils.jsonToObj(PersonalInfo.class,jsonstr);
 
                     Map<String ,String > map = new HashMap<>();
                     map.put(SharePerferenceUtil.sh_personal_info,JsonUtils.objToJson(GlobalInfoUtil.personalInfo));

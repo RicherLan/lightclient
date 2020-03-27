@@ -49,6 +49,17 @@ public class DongtaiServicce {
         return service.getDongtai_New_List();
     }
 
+    public Call<Result> getUserDongtai_Back_List(Long userid,Long dtid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.getUserDongtai_Back_List(userid,dtid);
+    }
+
+    public Call<Result> getUserDongtai_New_List(Long userid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.getUserDongtai_New_List(userid);
+    }
+
+
     public Call<Result> addDongtai(List<File> files, String dttext, String deviceinfo,Long uesrid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
 

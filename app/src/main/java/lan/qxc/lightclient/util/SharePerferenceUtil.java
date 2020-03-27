@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.User;
 
 public class SharePerferenceUtil {
@@ -55,7 +56,7 @@ public class SharePerferenceUtil {
         String json = sharedPreferences.getString(sh_personal_info,"");
 
         if(!json.isEmpty()){
-            GlobalInfoUtil.personalInfo = (User)JsonUtils.jsonToObj(User.class,json);
+            GlobalInfoUtil.personalInfo = (PersonalInfo)JsonUtils.jsonToObj(PersonalInfo.class,json);
             return true;
         }
         return false;
