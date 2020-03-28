@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.netty.buffer.ByteBuf;
+import lan.qxc.lightclient.netty.protocol.packet.friend_msg_packet.FriendMsgPacket;
 import lan.qxc.lightclient.netty.protocol.request.netRequest.HeartBeatRequestPacket;
 import lan.qxc.lightclient.netty.protocol.request.user_request.LoginRequestPacket;
 import lan.qxc.lightclient.netty.protocol.response.netResponse.HeartBeatResponsePacket;
@@ -11,6 +12,7 @@ import lan.qxc.lightclient.netty.protocol.response.user_response.LoginResponsePa
 import lan.qxc.lightclient.netty.serialize.Serializer;
 import lan.qxc.lightclient.netty.serialize.impl.JSONSerializer;
 
+import static lan.qxc.lightclient.netty.protocol.command.Command.Friend_GUANZHU_MSG;
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_REQUEST;
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_RESPONSE;
 import static lan.qxc.lightclient.netty.protocol.command.Command.LOGIN_REQUEST;
@@ -33,6 +35,8 @@ public class PacketCodec {
 
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+
+        packetTypeMap.put(Friend_GUANZHU_MSG, FriendMsgPacket.class);
 
 
         serializerMap = new HashMap<>();

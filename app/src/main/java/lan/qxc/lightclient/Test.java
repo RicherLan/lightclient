@@ -49,7 +49,7 @@ public class Test {
     public static void main(String[] args) {
 
 
-            Call<Result> call = GuanzhuService.getInstance().getMyFriendNum(new Long(4));
+            Call<Result> call = GuanzhuService.getInstance().guanzhu(new Long(3),new Long(1));
             call.enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {

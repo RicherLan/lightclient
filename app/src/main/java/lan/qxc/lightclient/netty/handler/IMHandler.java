@@ -5,10 +5,12 @@ import java.util.Map;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lan.qxc.lightclient.netty.handler.user_handler.FriendMsgResponseHandler;
 import lan.qxc.lightclient.netty.handler.user_handler.LoginResponseHandler;
 import lan.qxc.lightclient.netty.netty_client.NettyClient;
 import lan.qxc.lightclient.netty.protocol.Packet;
 
+import static lan.qxc.lightclient.netty.protocol.command.Command.Friend_GUANZHU_MSG;
 import static lan.qxc.lightclient.netty.protocol.command.Command.LOGIN_RESPONSE;
 
 public class IMHandler extends SimpleChannelInboundHandler<Packet> {
@@ -19,6 +21,8 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
         handlerMap = new HashMap<>();
 
         handlerMap.put(LOGIN_RESPONSE, new LoginResponseHandler());
+        handlerMap.put(Friend_GUANZHU_MSG, new FriendMsgResponseHandler());
+
 
     }
 
