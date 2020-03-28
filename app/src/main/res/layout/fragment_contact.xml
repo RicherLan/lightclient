@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/view_top_contact_frag"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FAFAFA">
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/layout_toptitle_contact_frag"
+        android:layout_below="@+id/view_top_contact_frag"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FAFAFA">
+
+        <TextView
+            android:id="@+id/tv_title_contact_frag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="联系人"
+            android:textSize="19sp">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/iv_add_contact_frag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_contact_aad"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            >
+        </ImageView>
+
+    </RelativeLayout>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/layout_refresh_contact_frag"
+        android:layout_below="@+id/layout_toptitle_contact_frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/layout_search_contact_frag"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:background="@drawable/redis_grey_back_layout"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search">
+                </ImageView>
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="搜索"
+                    android:textColor="@color/my_grey_label">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_guanzhu_menu_contact_frag"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/redis_fenzu_menu_select_layout">
+                    <TextView
+                        android:id="@+id/tv_guanzhu_menu_contact_frag"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="关注"
+                        android:textSize="17sp"
+                        android:textColor="@color/friend_fenzu_font_select"
+                        android:gravity="center">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_friend_menu_contact_frag"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_friend_menu_contact_frag"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="好友"
+                        android:textSize="17sp"
+                        android:textColor="@color/friend_fenzu_font_normal"
+                        android:gravity="center">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_fensi_menu_contact_frag"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_fensi_menu_contact_frag"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="粉丝"
+                        android:textSize="17sp"
+                        android:textColor="@color/friend_fenzu_font_normal"
+                        android:gravity="center">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_group_menu_contact_frag"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_group_menu_contact_frag"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="群聊"
+                        android:textSize="17sp"
+                        android:textColor="@color/friend_fenzu_font_normal"
+                        android:gravity="center">
+                    </TextView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp">
+            </View>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager_contact_frag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+</RelativeLayout>

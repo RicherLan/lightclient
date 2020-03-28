@@ -20,7 +20,7 @@ import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.home.IndexFragment;
 import lan.qxc.lightclient.ui.fragment.home.MineFragment;
 import lan.qxc.lightclient.ui.fragment.home.NotificationFragment;
-import lan.qxc.lightclient.ui.fragment.home.SecondFragment;
+import lan.qxc.lightclient.ui.fragment.home.ContactFragment;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.SharePerferenceUtil;
 
@@ -74,7 +74,7 @@ public class HomeActivity extends BaseForCloseActivity {
         //mViewPager.setOnPageChangeListener(new MyPagerChangeListener());
         fragmentList=new ArrayList<>();
         fragmentList.add(new IndexFragment());
-        fragmentList.add(new SecondFragment());
+        fragmentList.add(new ContactFragment());
         fragmentList.add(new NotificationFragment());
         fragmentList.add(new MineFragment());
         wePagerAdapter=new WePagerAdapter(getSupportFragmentManager(),fragmentList);

@@ -84,7 +84,7 @@
             android:layout_marginRight="20dp"
 
             android:gravity="center"
-            android:background="@drawable/redis_layout"
+            android:background="@drawable/redis_guanzhu_layout"
             android:orientation="horizontal">
 
             <ImageView
@@ -92,7 +92,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_add">
+                android:src="@drawable/ic_add_guanzhu">
             </ImageView>
 
             <TextView

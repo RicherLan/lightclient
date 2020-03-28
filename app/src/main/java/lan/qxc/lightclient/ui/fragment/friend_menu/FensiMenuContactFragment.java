@@ -1,4 +1,4 @@
-package lan.qxc.lightclient.ui.fragment.home;
+package lan.qxc.lightclient.ui.fragment.friend_menu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,24 @@ import androidx.fragment.app.Fragment;
 
 import lan.qxc.lightclient.R;
 
-public class SecondFragment extends Fragment {
-    View view=null;
+public class FensiMenuContactFragment extends Fragment implements View.OnClickListener {
+
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_second,container,false);
+        if(view==null){
+            view = inflater.inflate(R.layout.fragment_fensi_menu_contact,container,false);
+        }
 
         return view;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

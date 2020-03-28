@@ -40,5 +40,14 @@
     <color name="item_selector_rect">#FFFFFF</color>
 
 
+    <color name="friend_fenzu_back_select">#E6FAFF</color>
+    <color name="friend_fenzu_font_select">#00CAFC</color>
+
+    <color name="friend_fenzu_back_normal">#00000000</color>
+    <color name="friend_fenzu_font_normal">#878B99</color>
+
+
+
+
 
 </resources>

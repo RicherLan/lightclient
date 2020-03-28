@@ -7,9 +7,9 @@
         android:fragment="lan.qxc.lightclient.ui.fragment.home.IndexFragment"/>
     <item
         android:id="@+id/pager_menu_notification"
-        android:title="发现"
+        android:title="联系人"
         android:icon="@drawable/ic_siyecao_home"
-        android:fragment="lan.qxc.lightclient.ui.fragment.home.SecondFragment"/>
+        android:fragment="lan.qxc.lightclient.ui.fragment.home.ContactFragment"/>
     <item
         android:id="@+id/pager_menu_friendship"
         android:icon="@drawable/ic_message_home"
