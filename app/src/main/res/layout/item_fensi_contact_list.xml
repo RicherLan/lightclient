@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_title_fensi_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_headic_fensi_list_item"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center">
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_nickname_fensi_list_item"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/my_orange"
+                        android:text="小蓝"/>
+                    <ImageView
+                        android:visibility="invisible"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_man"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_intro_fensi_list_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/gray"
+                        android:text="16:45"
+                        android:textSize="12sp"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_phone_type_dt_item"-->
+<!--                        android:layout_marginLeft="15dp"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:textColor="@color/gray" />-->
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_gz_fensi_contact_list_item"
+            android:layout_width="55dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:background="@drawable/redis_guanzhu_layout"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_gz_addlable_fensi_contact_item"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_add_guanzhu">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tv_gz_text_fensi_contact_list_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="关注"
+                android:textSize="13sp"
+                android:textColor="@color/my_orange_light">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
