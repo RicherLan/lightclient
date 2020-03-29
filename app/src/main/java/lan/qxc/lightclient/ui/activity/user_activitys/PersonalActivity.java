@@ -160,7 +160,7 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
     void initViewPager(){
         AdapterPage adapterPage = new AdapterPage(getSupportFragmentManager());
         adapterPage.addFragment(new Personal_info_fragment(),"资料卡");
-        adapterPage.addFragment(new Personal_dongtai_fragment(),"西西墙");
+        adapterPage.addFragment(new Personal_dongtai_fragment(GlobalInfoUtil.personalInfo.getUserid()),"西西墙");
         view_pager_personal.setAdapter(adapterPage);
 
         tablayout_personal.setupWithViewPager(view_pager_personal);

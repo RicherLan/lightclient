@@ -35,9 +35,7 @@ import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.FriendMsgService;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
-import lan.qxc.lightclient.ui.fragment.friend_menu.FensiMenuContactFragment;
-import lan.qxc.lightclient.ui.fragment.friend_menu.FriendMenuContactFragment;
-import lan.qxc.lightclient.ui.fragment.friend_menu.GuanzhuMenuContactFragment;
+import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.JsonUtils;
@@ -107,9 +105,14 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             public void getPosition(int pos) {
 
                 Message message = MessageCacheUtil.messages.get(pos);
-                int mestype = message.getType();
                 if(message.getType()== MessageType.FRIEND_MSG){
                     FriendMsgVO friendMsgVO = (FriendMsgVO)message;
+
+                    Long userid = friendMsgVO.getUserid();
+                    Intent intent = new Intent(getActivity(), UserDetailInfoActivity.class);
+                    intent.putExtra("userid",userid);
+                    startActivity(intent);
+
                     if(friendMsgVO.getReadstate()==0){
                         friendMsgVO.setReadstate(new Byte("1"));
                         notiMsgAdapter.notifyDataSetChanged();

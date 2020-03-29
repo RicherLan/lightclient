@@ -1,7 +1,9 @@
 package lan.qxc.lightclient.config.friends_config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lan.qxc.lightclient.entity.FriendVO;
 
@@ -9,6 +11,9 @@ import lan.qxc.lightclient.entity.FriendVO;
 
  */
 public class FriendCatcheUtil {
+
+    //存储平时缓存的用户的信息
+    public static Map<Long,FriendVO> userInfoMap = new HashMap<>();
 
     public static List<FriendVO> guanzhuList = new ArrayList<>();
     public static List<FriendVO> friendList = new ArrayList<>();
@@ -78,6 +83,19 @@ public class FriendCatcheUtil {
             fensiList.remove(friendVO);
         }
 
+    }
+
+
+    public static void updateUserInfoMap(){
+        for(FriendVO friendVO : fensiList){
+            userInfoMap.put(friendVO.getUserid(),friendVO);
+        }
+        for(FriendVO friendVO : guanzhuList){
+            userInfoMap.put(friendVO.getUserid(),friendVO);
+        }
+        for(FriendVO friendVO : friendList){
+            userInfoMap.put(friendVO.getUserid(),friendVO);
+        }
     }
 
 

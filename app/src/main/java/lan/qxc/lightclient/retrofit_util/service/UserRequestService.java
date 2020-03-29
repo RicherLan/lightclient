@@ -43,4 +43,9 @@ public interface UserRequestService {
     @FormUrlEncoded
     Call<Result> updateUserPassword(@FieldMap Map<String, Object> map);
 
+
+    @POST(UserAPI.GET_USER_DETAIL_INFO)
+    @FormUrlEncoded
+    Call<Result> getUserDetailInfo(@Field("userid") Long userid,@Field("uid") Long uid);
+
 }

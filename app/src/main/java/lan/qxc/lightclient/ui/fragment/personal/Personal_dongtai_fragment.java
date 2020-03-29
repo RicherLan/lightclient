@@ -58,6 +58,11 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
 
     boolean isTranslucentStatus;
 
+    private Long userid;
+    public Personal_dongtai_fragment(Long userid){
+        this.userid = userid;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -192,7 +197,7 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
             }
         },25000);
 
-        DongtaiFreshExecutor.getInstance().requestUserNewDongtai(GlobalInfoUtil.personalInfo.getUserid(),new DongtaiFreshExecutor.DongtaiFreshListener() {
+        DongtaiFreshExecutor.getInstance().requestUserNewDongtai(userid,new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
             public void getResult(String message) {
                 refreshDTTimer.cancel();
@@ -240,7 +245,7 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
         Long olddtid = Dongtai_catch_util.tjDongtailVOS.get(Dongtai_catch_util.tjDongtailVOS.size()-1).getDtid();
 
 
-        DongtaiFreshExecutor.getInstance().requestUserOldDongtai(GlobalInfoUtil.personalInfo.getUserid(),new DongtaiFreshExecutor.DongtaiFreshListener() {
+        DongtaiFreshExecutor.getInstance().requestUserOldDongtai(userid,new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
             public void getResult(String message) {
                 refreshDTTimer.cancel();

@@ -54,6 +54,8 @@ public class FreshFriendListExecutor {
                     FriendCatcheUtil.guanzhuList.clear();
                     FriendCatcheUtil.guanzhuList.addAll(friendVOList);
 
+                    FriendCatcheUtil.updateUserInfoMap();
+
                 }else{
                 }
                 listListener.getResult(message);
@@ -87,6 +89,8 @@ public class FreshFriendListExecutor {
                     FriendCatcheUtil.friendList.clear();
                     FriendCatcheUtil.friendList.addAll(friendVOList);
 
+                    FriendCatcheUtil.updateUserInfoMap();
+
                 }else{
                 }
                 listListener.getResult(message);
@@ -119,6 +123,8 @@ public class FreshFriendListExecutor {
                     List<FriendVO> friendVOList = new Gson().fromJson(jsonstr,new TypeToken<List<FriendVO>>(){}.getType());
                     FriendCatcheUtil.fensiList.clear();
                     FriendCatcheUtil.fensiList.addAll(friendVOList);
+
+                    FriendCatcheUtil.updateUserInfoMap();
 
                 }else{
                 }

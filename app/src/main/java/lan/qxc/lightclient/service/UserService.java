@@ -76,5 +76,11 @@ public class UserService {
         return userRequestService.updateUserPassword(map);
     }
 
+    public Call<Result> getUserDetailInfo(Long userid,Long uid){
+
+        UserRequestService userRequestService = RetrofitHelper.getInstance().create(UserRequestService.class);
+        return userRequestService.getUserDetailInfo(userid,uid);
+    }
+
 
 }
