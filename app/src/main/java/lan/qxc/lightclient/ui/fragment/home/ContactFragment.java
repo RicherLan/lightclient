@@ -1,5 +1,9 @@
 package lan.qxc.lightclient.ui.fragment.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,10 +32,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import lan.qxc.lightclient.R;
+import lan.qxc.lightclient.config.ContextActionStr;
 import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.GuanzhuService;
+import lan.qxc.lightclient.ui.activity.home.HomeActivity;
+import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.fragment.friend_menu.FensiMenuContactFragment;
 import lan.qxc.lightclient.ui.fragment.friend_menu.FriendMenuContactFragment;
@@ -434,5 +441,43 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ContextActionStr.contact_frag_action);
+        getContext().registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(broadcastReceiver);
+    }
+
+    BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(ContextActionStr.contact_frag_action.equals(intent.getAction())){
+
+                String type = intent.getStringExtra("type");
+                if(type!=null&&type.equals("freshadapter")){
+                    if(GuanzhuMenuContactFragment.instance!=null){
+                        GuanzhuMenuContactFragment.instance.adapter.notifyDataSetChanged();
+                    }
+                    if(FriendMenuContactFragment.instance!=null){
+                        FriendMenuContactFragment.instance.adapter.notifyDataSetChanged();
+                    }
+                    if(FensiMenuContactFragment.instance!=null){
+                        FensiMenuContactFragment.instance.adapter.notifyDataSetChanged();
+                    }
+
+
+                }
+
+            }
+        }
+    };
 
 }

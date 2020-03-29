@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
+import static lan.qxc.lightclient.entity.message.MessageType.FRIEND_MSG;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,5 +30,10 @@ public class FriendMsgVO extends Message implements Serializable {
     private Byte readstate;
 
     private String createtime;
+
+    @Override
+    public int getType() {
+        return FRIEND_MSG;
+    }
 
 }
