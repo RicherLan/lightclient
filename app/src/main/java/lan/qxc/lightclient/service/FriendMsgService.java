@@ -17,9 +17,9 @@ public class FriendMsgService {
         return FriendMsgService.FriendMsgServiceHolder.instance;
     }
 
-    public Call<Result> setMsgHadRead(Long userid){
+    public Call<Result> setMsgHadRead(Long msgid){
         FriendMsgRequestService service = RetrofitHelper.getInstance().create(FriendMsgRequestService.class);
-        return service.setMsgHadRead(userid);
+        return service.setMsgHadRead(msgid);
     }
 
     public Call<Result> getUserFriendMsgNotRead(Long userid){

@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
 
@@ -50,7 +51,13 @@ public class MessageCacheUtil {
         }
         del = null;
 
-        friendMsgs.addAll(messages);
+        for(FriendMsgVO msg : messages){
+            if(msg.getMsgtype()!=2){
+                friendMsgs.add(msg);
+            }
+        }
+
+        messages = null;
 
         freshMessages();
     }

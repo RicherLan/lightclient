@@ -30,24 +30,29 @@ public class FriendMsgResponseHandler extends SimpleChannelInboundHandler<Friend
 
         FriendMsgVO friendMsgVO =    packet.getFriendMsgVO();
 
+        List<FriendMsgVO> list = new ArrayList<>();
+        list.add(friendMsgVO);
+        MessageCacheUtil.updateFriendMsgs(list);
+
         //取关   ui不显示     朋友列表界面要刷新
-        if(friendMsgVO.getMsgtype().equals(2)){
+        if(friendMsgVO.getMsgtype()==2){
             FriendCatcheUtil.userDelGuanzhu(friendMsgVO.getUserid());
 
-            Intent intent=new Intent(ContextActionStr.notification_msg_frag_action);
+            Intent intent=new Intent(ContextActionStr.contact_frag_action);
             intent.putExtra("type","freshadapter");
             NettyService.nettyService.sendCast(intent);
 
             return;
         }
 
-        List<FriendMsgVO> list = new ArrayList<>();
-        list.add(friendMsgVO);
-        MessageCacheUtil.updateFriendMsgs(list);
 
         Intent intent=new Intent(ContextActionStr.notification_msg_frag_action);
         intent.putExtra("type","freshadapter");
         NettyService.nettyService.sendCast(intent);
+
+        Intent intent2=new Intent(ContextActionStr.contact_frag_action);
+        intent2.putExtra("type","freshadapter");
+        NettyService.nettyService.sendCast(intent2);
 
     }
 

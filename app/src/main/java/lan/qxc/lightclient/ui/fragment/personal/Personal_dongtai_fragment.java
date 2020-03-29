@@ -33,6 +33,7 @@ import lan.qxc.lightclient.listener.EndlessRecyclerOnScrollListener;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.DongtaiServicce;
+import lan.qxc.lightclient.service.service_callback.DongtaiFreshExecutor;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.widget.bigimage_looker.BigImageLookerActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
@@ -191,43 +192,19 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
             }
         },25000);
 
-
-        Call<Result> call = DongtaiServicce.getInstance().getUserDongtai_New_List(GlobalInfoUtil.personalInfo.getUserid());
-        call.enqueue(new Callback<Result>() {
+        DongtaiFreshExecutor.getInstance().requestUserNewDongtai(GlobalInfoUtil.personalInfo.getUserid(),new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void getResult(String message) {
                 refreshDTTimer.cancel();
                 layout_refresh_dt_tuijian_frag.setRefreshing(false);
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-
-                    Dongtai_catch_util.updateNewTJDTList(GlobalInfoUtil.personalInfo.getUserid(),dongtailVOs);
-
-                    // Toast.makeText(getActivity(),"刷新成功",Toast.LENGTH_SHORT).show();
-
-
                     dongtaiAdapter.notifyDataSetChanged();
-
 
                 }else{
                     Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
                 }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                refreshDTTimer.cancel();
-                Toast.makeText(getActivity(),"error!!!",Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
@@ -262,41 +239,26 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
 
         Long olddtid = Dongtai_catch_util.tjDongtailVOS.get(Dongtai_catch_util.tjDongtailVOS.size()-1).getDtid();
 
-        Call<Result> call = DongtaiServicce.getInstance().getUserDongtai_Back_List(GlobalInfoUtil.personalInfo.getUserid(),olddtid);
-        call.enqueue(new Callback<Result>() {
+
+        DongtaiFreshExecutor.getInstance().requestUserOldDongtai(GlobalInfoUtil.personalInfo.getUserid(),new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                oldFreshDTTimer.cancel();
-
-                Result result = response.body();
-                String message = result.getMessage();
-                if(message.equals("SUCCESS")){
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateOldTJDTList(GlobalInfoUtil.personalInfo.getUserid(),dongtailVOs);
-
-                    if(dongtailVOs.size()==0){
+            public void getResult(String message) {
+                refreshDTTimer.cancel();
+                if(message.startsWith("SUCCESS")){
+                    if(message.contains("END")){
                         dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_END);
                     }else{
                         dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_COMPLETE);
                     }
-
                     dongtaiAdapter.notifyDataSetChanged();
 
                 }else{
                     dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_COMPLETE);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
                 }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                oldFreshDTTimer.cancel();
-                Toast.makeText(getActivity(),"error!!!",Toast.LENGTH_SHORT).show();
             }
         });
+
 
     }
 

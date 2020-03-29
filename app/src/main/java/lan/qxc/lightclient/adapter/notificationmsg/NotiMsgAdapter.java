@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +24,7 @@ import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.ui.fragment.home.NotificationFragment;
 import lan.qxc.lightclient.util.ImageUtil;
+import lan.qxc.lightclient.util.MyTimeUtil;
 
 public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -71,8 +73,21 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_username_friend_msg_item.setText(friendMsgVO.getUsername());
                 ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_msg_friend_msg_item.setText("关注了你");
-                ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_time_friend_msg_item.setText(friendMsgVO.getCreatetime());
-                ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_msgnum_friend_msg_item.setText("1");
+
+                String time = friendMsgVO.getCreatetime();
+                Date date = MyTimeUtil.getDateByStr(time,"yyyy-MM-dd HH:mm:ss");
+                if(date!=null){
+                    String timetext = MyTimeUtil.getTime(date);
+                    ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_time_friend_msg_item.setText(timetext);
+                }
+
+                if(friendMsgVO.getReadstate()==0){
+                    ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_msgnum_friend_msg_item.setVisibility(View.VISIBLE);
+                    ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_msgnum_friend_msg_item.setText("1");
+                }else{
+                    ((NotiMsgAdapter.FriendMsgViewHolder)holder).tv_msgnum_friend_msg_item.setVisibility(View.INVISIBLE);
+                }
+
             }
 
 

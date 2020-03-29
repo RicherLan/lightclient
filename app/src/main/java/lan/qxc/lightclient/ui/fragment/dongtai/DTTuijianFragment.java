@@ -1,5 +1,6 @@
 package lan.qxc.lightclient.ui.fragment.dongtai;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,15 +31,23 @@ import java.util.TimerTask;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
 import lan.qxc.lightclient.config.dt_config.Dongtai_catch_util;
+import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.entity.DongtailVO;
+import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.listener.EndlessRecyclerOnScrollListener;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.DongtaiServicce;
+import lan.qxc.lightclient.service.GuanzhuService;
+import lan.qxc.lightclient.service.service_callback.DongtaiFreshExecutor;
+import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
+import lan.qxc.lightclient.ui.fragment.home.ContactFragment;
 import lan.qxc.lightclient.ui.widget.bigimage_looker.BigImageLookerActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.JsonUtils;
+import lan.qxc.lightclient.util.MyDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -131,8 +141,120 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
             }
         });
 
+        dongtaiAdapter.setGuanzhuMenuListener(new ClickGuanzhuMenuListener() {
+            @Override
+            public void getPosition(int pos) {
+                clickGZMenu(pos);
+            }
+        });
+
 
     }
+
+
+    private void clickGZMenu(int pos){
+
+        int gzType = Dongtai_catch_util.tjDongtailVOS.get(pos).getGuanzhu_type();
+
+        if(gzType==0||gzType==1){
+
+            AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
+                    .setTitle("确定取消关注吗")
+//                    .setMessage("有多个按钮")
+//                    .setIcon(R.mipmap.ic_launcher)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            delGuanzhu(pos);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .create();
+            alertDialog2.show();
+
+        }else{
+            guanzhu(pos);
+        }
+
+    }
+
+    Timer guanzhuTimer;
+    void startLoading(){
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+        guanzhuTimer = new Timer();
+        MyDialog.showBottomLoadingDialog(getContext());
+        guanzhuTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(),"提交失败,请稍后再试!",Toast.LENGTH_SHORT).show();
+            }
+        },20000);
+    }
+
+    void cancleLoading(){
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+        MyDialog.dismissBottomLoadingDialog();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(refreshDTTimer!=null){
+            refreshDTTimer.cancel();
+        }
+
+        if(oldFreshDTTimer!=null){
+            oldFreshDTTimer.cancel();
+        }
+
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+    }
+    private void delGuanzhu(int pos){
+        DongtailVO dongtailVO = Dongtai_catch_util.tjDongtailVOS.get(pos);
+        startLoading();
+        GuanzhuExecutor.getInstance().delGuanzhu(getContext(), GlobalInfoUtil.personalInfo.getUserid(), dongtailVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                            dongtaiAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void guanzhu(int pos){
+        DongtailVO dongtailVO = Dongtai_catch_util.tjDongtailVOS.get(pos);
+        startLoading();
+
+        GuanzhuExecutor.getInstance().guanzhu(getContext(), GlobalInfoUtil.personalInfo.getUserid(), dongtailVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                            dongtaiAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -188,42 +310,18 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
             }
         },25000);
 
-
-        Call<Result> call = DongtaiServicce.getInstance().getDongtai_New_List();
-        call.enqueue(new Callback<Result>() {
+        DongtaiFreshExecutor.getInstance().requestNewDongtai(new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void getResult(String message) {
                 refreshDTTimer.cancel();
                 layout_refresh_dt_tuijian_frag.setRefreshing(false);
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateNewTJDTList(Dongtai_catch_util.tjDongtailVOS,dongtailVOs);
-
-                   // Toast.makeText(getActivity(),"刷新成功",Toast.LENGTH_SHORT).show();
-
-
                     dongtaiAdapter.notifyDataSetChanged();
-
-
                 }else{
                     Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
                 }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                refreshDTTimer.cancel();
-                Toast.makeText(getActivity(),"error!!!",Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
@@ -258,64 +356,30 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
 
         Long olddtid = Dongtai_catch_util.tjDongtailVOS.get(Dongtai_catch_util.tjDongtailVOS.size()-1).getDtid();
 
-        Call<Result> call = DongtaiServicce.getInstance().getDongtai_Back_List(olddtid);
-        call.enqueue(new Callback<Result>() {
+        DongtaiFreshExecutor.getInstance().requestOldDongtai(olddtid,new DongtaiFreshExecutor.DongtaiFreshListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void getResult(String message) {
                 oldFreshDTTimer.cancel();
-
-                Result result = response.body();
-                String message = result.getMessage();
-                if(message.equals("SUCCESS")){
-
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateOldTJDTList(Dongtai_catch_util.tjDongtailVOS,dongtailVOs);
-
-                    if(dongtailVOs.size()==0){
+                layout_refresh_dt_tuijian_frag.setRefreshing(false);
+                if(message.startsWith("SUCCESS")){
+                    if(message.contains("END")){
                         dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_END);
                     }else{
                         dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_COMPLETE);
                     }
-
                     dongtaiAdapter.notifyDataSetChanged();
-
                 }else{
                     dongtaiAdapter.setLoadState(dongtaiAdapter.LOADING_COMPLETE);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
                 }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                oldFreshDTTimer.cancel();
-                Toast.makeText(getActivity(),"error!!!",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-//        Toast.makeText(getActivity(),"resume",Toast.LENGTH_SHORT).show();
-//        requestNewDongtai();
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(refreshDTTimer!=null){
-            refreshDTTimer.cancel();
-        }
-
-        if(oldFreshDTTimer!=null){
-            oldFreshDTTimer.cancel();
-        }
+    public interface ClickGuanzhuMenuListener{
+        void getPosition(int pos);
     }
 
     public interface ClickTransmitListener{

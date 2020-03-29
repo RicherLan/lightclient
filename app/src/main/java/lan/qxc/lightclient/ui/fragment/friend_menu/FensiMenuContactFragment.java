@@ -23,8 +23,10 @@ import lan.qxc.lightclient.adapter.friend_menu.FriendMenuAdapter;
 import lan.qxc.lightclient.adapter.friend_menu.GuanzhuMenuAdapter;
 import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.entity.FriendVO;
+import lan.qxc.lightclient.entity.Guanzhu;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.GuanzhuService;
+import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
 import lan.qxc.lightclient.ui.fragment.home.ContactFragment;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.MyDialog;
@@ -161,62 +163,36 @@ public class FensiMenuContactFragment extends Fragment implements View.OnClickLi
     private void delGuanzhu(int pos){
         FriendVO friendVO = FriendCatcheUtil.fensiList.get(pos);
         startLoading();
-        Call<Result> call = GuanzhuService.getInstance().del_guanzhu(GlobalInfoUtil.personalInfo.getUserid(),friendVO.getUserid());
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                cancleLoading();
-                Result result = response.body();
-                String message = result.getMessage();
-                if(message.equals("SUCCESS")){
-                    FriendCatcheUtil.fensiList.remove(pos);
-                    adapter.notifyDataSetChanged();
-                    ContactFragment.instance.freshAllList();
-
-                }else{
-                    Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                cancleLoading();
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        GuanzhuExecutor.getInstance().delGuanzhu(getContext(), GlobalInfoUtil.personalInfo.getUserid(), friendVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void guanzhu(int pos){
         FriendVO friendVO = FriendCatcheUtil.fensiList.get(pos);
         startLoading();
-        Call<Result> call = GuanzhuService.getInstance().guanzhu(GlobalInfoUtil.personalInfo.getUserid(),friendVO.getUserid());
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                cancleLoading();
-                Result result = response.body();
-                String message = result.getMessage();
-                if(message.equals("SUCCESS")){
-                    FriendCatcheUtil.fensiList.get(pos).setGuanzhu_type(1);
-                    adapter.notifyDataSetChanged();
 
-                    ContactFragment.instance.freshAllList();
-
-                }else{
-                    Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                cancleLoading();
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        GuanzhuExecutor.getInstance().guanzhu(getContext(), GlobalInfoUtil.personalInfo.getUserid(), friendVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 

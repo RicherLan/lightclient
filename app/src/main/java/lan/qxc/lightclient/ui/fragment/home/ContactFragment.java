@@ -37,6 +37,7 @@ import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.GuanzhuService;
+import lan.qxc.lightclient.service.service_callback.FreshFriendListExecutor;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
@@ -254,6 +255,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         freshFensiListData();
     }
 
+
+
     void disrefresh(){
         if(refreshTimer!=null){
             refreshTimer.cancel();
@@ -329,116 +332,53 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     public  void freshGuanzhuListData(){
 
-        Call<Result> call = GuanzhuService.getInstance().getMyGuanzhu(GlobalInfoUtil.personalInfo.getUserid());
-        call.enqueue(new Callback<Result>() {
+        FreshFriendListExecutor.getInstance().freshGuanzhuListData(new FreshFriendListExecutor.FreshListListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-
+            public void getResult(String message) {
                 disrefresh();
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<FriendVO> friendVOList = new Gson().fromJson(jsonstr,new TypeToken<List<FriendVO>>(){}.getType());
-                    FriendCatcheUtil.guanzhuList.clear();
-                    FriendCatcheUtil.guanzhuList.addAll(friendVOList);
                     if(GuanzhuMenuContactFragment.instance!=null){
                         GuanzhuMenuContactFragment.instance.adapter.notifyDataSetChanged();
                     }
-//                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-
                 }else{
                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                disrefresh();
-
-                ContactFragment.instance.layout_refresh_contact_frag.setRefreshing(false);
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     public  void freshFriendListData(){
-
-        Call<Result> call = GuanzhuService.getInstance().getFriendsByUserid(GlobalInfoUtil.personalInfo.getUserid());
-        call.enqueue(new Callback<Result>() {
+        FreshFriendListExecutor.getInstance().freshFriendListData(new FreshFriendListExecutor.FreshListListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-
+            public void getResult(String message) {
                 disrefresh();
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<FriendVO> friendVOList = new Gson().fromJson(jsonstr,new TypeToken<List<FriendVO>>(){}.getType());
-                    FriendCatcheUtil.friendList.clear();
-                    FriendCatcheUtil.friendList.addAll(friendVOList);
                     if(FriendMenuContactFragment.instance!=null){
                         FriendMenuContactFragment.instance.adapter.notifyDataSetChanged();
                     }
-//                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-
                 }else{
                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                disrefresh();
-
-                ContactFragment.instance.layout_refresh_contact_frag.setRefreshing(false);
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     public  void freshFensiListData(){
-
-        Call<Result> call = GuanzhuService.getInstance().getUsersGuanzhuMe(GlobalInfoUtil.personalInfo.getUserid());
-        call.enqueue(new Callback<Result>() {
+        FreshFriendListExecutor.getInstance().freshFensiListData(new FreshFriendListExecutor.FreshListListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-
+            public void getResult(String message) {
                 disrefresh();
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<FriendVO> friendVOList = new Gson().fromJson(jsonstr,new TypeToken<List<FriendVO>>(){}.getType());
-                    FriendCatcheUtil.fensiList.clear();
-                    FriendCatcheUtil.fensiList.addAll(friendVOList);
                     if(FensiMenuContactFragment.instance!=null){
                         FensiMenuContactFragment.instance.adapter.notifyDataSetChanged();
                     }
-//                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-
                 }else{
                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                disrefresh();
-
-                ContactFragment.instance.layout_refresh_contact_frag.setRefreshing(false);
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
-            }
         });
-
     }
 
 
@@ -447,13 +387,13 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ContextActionStr.contact_frag_action);
-        getContext().registerReceiver(broadcastReceiver, filter);
+        getActivity().registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getContext().unregisterReceiver(broadcastReceiver);
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {

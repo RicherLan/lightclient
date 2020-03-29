@@ -27,5 +27,7 @@ public class DongtailVO implements Serializable {
     private String dtcreatetime;
     private String deviceinfo;
 
+    //1代表我关注了他    2代表他关注了我   0代表好友
+    private Integer guanzhu_type;
 
 }

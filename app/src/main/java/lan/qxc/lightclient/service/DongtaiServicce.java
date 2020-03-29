@@ -39,24 +39,24 @@ public class DongtaiServicce {
         return service.updateDongtai(dongtai);
     }
 
-    public Call<Result> getDongtai_Back_List(Long dtid){
+    public Call<Result> getDongtai_Back_List(Long userid,Long dtid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
-        return service.getDongtai_Back_List(dtid);
+        return service.getDongtai_Back_List(userid,dtid);
     }
 
-    public Call<Result> getDongtai_New_List(){
+    public Call<Result> getDongtai_New_List(Long userid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
-        return service.getDongtai_New_List();
+        return service.getDongtai_New_List(userid);
     }
 
-    public Call<Result> getUserDongtai_Back_List(Long userid,Long dtid){
+    public Call<Result> getUserDongtai_Back_List(Long uid,Long userid,Long dtid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
-        return service.getUserDongtai_Back_List(userid,dtid);
+        return service.getUserDongtai_Back_List(uid,userid,dtid);
     }
 
-    public Call<Result> getUserDongtai_New_List(Long userid){
+    public Call<Result> getUserDongtai_New_List(Long uid,Long userid){
         DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
-        return service.getUserDongtai_New_List(userid);
+        return service.getUserDongtai_New_List(uid,userid);
     }
 
 

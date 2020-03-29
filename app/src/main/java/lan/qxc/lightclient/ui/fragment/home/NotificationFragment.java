@@ -30,8 +30,11 @@ import lan.qxc.lightclient.adapter.notificationmsg.NotiMsgAdapter;
 import lan.qxc.lightclient.config.ContextActionStr;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
+import lan.qxc.lightclient.entity.message.Message;
+import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.FriendMsgService;
+import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
 import lan.qxc.lightclient.ui.fragment.friend_menu.FensiMenuContactFragment;
 import lan.qxc.lightclient.ui.fragment.friend_menu.FriendMenuContactFragment;
 import lan.qxc.lightclient.ui.fragment.friend_menu.GuanzhuMenuContactFragment;
@@ -102,7 +105,25 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         notiMsgAdapter.setClickLayoutListener(new ClickLayoutListener() {
             @Override
             public void getPosition(int pos) {
-                Toast.makeText(getContext(),"点击了第"+pos+"个",Toast.LENGTH_SHORT).show();
+
+                Message message = MessageCacheUtil.messages.get(pos);
+                int mestype = message.getType();
+                if(message.getType()== MessageType.FRIEND_MSG){
+                    FriendMsgVO friendMsgVO = (FriendMsgVO)message;
+                    if(friendMsgVO.getReadstate()==0){
+                        friendMsgVO.setReadstate(new Byte("1"));
+                        notiMsgAdapter.notifyDataSetChanged();
+
+                        FriendMsgExecutor.getInstance().setFriendMsgHadRead(friendMsgVO.getId(), new FriendMsgExecutor.FriendMsgListener() {
+                            @Override
+                            public void getResult(String message) {
+
+                            }
+                        });
+
+                    }
+                }
+
             }
         });
 
@@ -199,14 +220,14 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ContextActionStr.notification_msg_frag_action);
-        getContext().registerReceiver(broadcastReceiver, filter);
+        getActivity().registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         cancleTimer();
-        getContext().unregisterReceiver(broadcastReceiver);
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {

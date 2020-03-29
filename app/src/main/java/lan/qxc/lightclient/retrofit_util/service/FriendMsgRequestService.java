@@ -12,7 +12,7 @@ public interface FriendMsgRequestService {
 
     @POST(FriendMsgAPI.SET_MSG_HAD_READ)
     @FormUrlEncoded
-    Call<Result> setMsgHadRead(@Field("userid") Long userid);
+    Call<Result> setMsgHadRead(@Field("msgid") Long msgid);
 
 
     @POST(FriendMsgAPI.GET_USER_FRIEND_MSG_NOT_READ_MSG)

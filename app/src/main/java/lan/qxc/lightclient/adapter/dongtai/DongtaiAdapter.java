@@ -13,15 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
+import lan.qxc.lightclient.adapter.friend_menu.GuanzhuMenuAdapter;
 import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
+import lan.qxc.lightclient.util.MyTimeUtil;
 import lan.qxc.lightclient.util.PhoneSystemUtil;
 
 public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -33,6 +37,8 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private DTTuijianFragment.ClickTransmitListener transmitListener;
     private DTTuijianFragment.ClickCommonListener commonListener;
     private DTTuijianFragment.ClickLikeListener likeListener;
+
+    private DTTuijianFragment.ClickGuanzhuMenuListener guanzhuMenuListener;
 
     private MessagePicturesLayout.Callback mCallback;      //点击某张图片  放大显示
 
@@ -77,6 +83,10 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.likeListener = likeListener;
     }
 
+    public void setGuanzhuMenuListener(DTTuijianFragment.ClickGuanzhuMenuListener guanzhuMenuListener){
+        this.guanzhuMenuListener = guanzhuMenuListener;
+    }
+
     public DongtaiAdapter setPictureClickCallback(MessagePicturesLayout.Callback callback) {
         mCallback = callback;
         return this;
@@ -107,7 +117,43 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((DongtaiViewHolder)holder).tv_phone_type_dt_item.setText("来自  "+ dongtailVO.getDeviceinfo());
             }
 
-            ((DongtaiViewHolder)holder).tv_time_dt_item.setText(dongtailVO.getDtcreatetime().substring(dongtailVO.getDtcreatetime().indexOf("-")+1,dongtailVO.getDtcreatetime().lastIndexOf(":")));
+            String time = dongtailVO.getDtcreatetime();
+            Date date = MyTimeUtil.getDateByStr(time,"yyyy-MM-dd HH:mm:ss");
+            if(date!=null){
+                String timetext = MyTimeUtil.getTime(date);
+                ((DongtaiViewHolder)holder).tv_time_dt_item.setText(timetext);
+            }
+
+
+
+            int gzType = dongtailVO.getGuanzhu_type();
+
+            if(dongtailVO.getUserid()== GlobalInfoUtil.personalInfo.getUserid()){
+                ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setVisibility(View.INVISIBLE);
+            }else{
+                ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setVisibility(View.VISIBLE);
+            }
+
+            if(gzType==1||gzType==0){        //我已经关注了对方
+                ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
+                ((DongtaiViewHolder)holder).iv_guanzhu_addlable_dt_item.setVisibility(View.GONE);
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setTextColor(mContext.getResources().getColor(R.color.my_font_grey));
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setText("已关注");
+
+            }else{                           //我未关注对方
+                ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_guanzhu_layout));
+                ((DongtaiViewHolder)holder).iv_guanzhu_addlable_dt_item.setVisibility(View.VISIBLE);
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setTextColor(mContext.getResources().getColor(R.color.my_orange_light));
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setText("关注");
+            }
+
+            ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    guanzhuMenuListener.getPosition(pos);
+                }
+            });
+
 
             String headIcPath = APIUtil.getUrl(dongtailVO.getIcon());
             ImageUtil.getInstance().setNetImageToView(mContext,headIcPath,((DongtaiViewHolder)holder).iv_headic_dt_item);

@@ -101,6 +101,14 @@ public class Dongtai_catch_util {
         sortDtvos(orignList);
     }
 
+    public static void setTJDongtaiGZType(Long userid,Integer type){
+        for(DongtailVO dongtailVO : tjDongtailVOS){
+            if(dongtailVO.getUserid()==userid){
+                dongtailVO.setGuanzhu_type(type);
+            }
+        }
+    }
+
 
 
     //排序  按照dtid从大到小排序    实质上就等于按照动态发布时间排序了

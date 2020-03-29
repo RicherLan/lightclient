@@ -33,18 +33,19 @@ public interface DongtaiRequestService {
 
     @POST(DongtaiAPI.GET_DONGTAI_BACK_LIST)
     @FormUrlEncoded
-    Call<Result> getDongtai_Back_List(@Field("dtid") Long dtid);
+    Call<Result> getDongtai_Back_List(@Field("userid") Long userid,@Field("dtid") Long dtid);
 
     @POST(DongtaiAPI.GET_DONGTAI_NEW_LIST)
-    Call<Result> getDongtai_New_List();
+    @FormUrlEncoded
+    Call<Result> getDongtai_New_List(@Field("userid") Long userid);
 
     @POST(DongtaiAPI.GET_USER_DONGTAI_BACK_LIST)
     @FormUrlEncoded
-    Call<Result> getUserDongtai_Back_List(@Field("userid") Long userid,@Field("dtid") Long dtid);
+    Call<Result> getUserDongtai_Back_List(@Field("uid") Long uid,@Field("userid") Long userid,@Field("dtid") Long dtid);
 
     @POST(DongtaiAPI.GET_USER_DONGTAI_NEW_LIST)
     @FormUrlEncoded
-    Call<Result> getUserDongtai_New_List(@Field("userid") Long userid);
+    Call<Result> getUserDongtai_New_List(@Field("uid") Long uid,@Field("userid") Long userid);
 
 
     @Multipart()
