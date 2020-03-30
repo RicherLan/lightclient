@@ -55,6 +55,13 @@ public class FriendCatcheUtil {
             friendList.remove(del);
         }
 
+        for(FriendVO friendVO : fensiList){
+            if(friendVO.getUserid()==userid){
+                friendVO.setGuanzhu_type(2);
+            }
+        }
+
+
     }
 
 

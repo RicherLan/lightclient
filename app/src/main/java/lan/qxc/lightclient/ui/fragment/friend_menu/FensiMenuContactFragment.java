@@ -1,6 +1,7 @@
 package lan.qxc.lightclient.ui.fragment.friend_menu;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import lan.qxc.lightclient.entity.Guanzhu;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.GuanzhuService;
 import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
+import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.fragment.home.ContactFragment;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.MyDialog;
@@ -77,7 +79,11 @@ public class FensiMenuContactFragment extends Fragment implements View.OnClickLi
         adapter.setClickUserLayoutListener(new FensiMenuContactFragment.ClickUserLayoutListener() {
             @Override
             public void getPosition(int pos) {
-                Toast.makeText(getContext(),"点击了第"+pos+"个",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),"点击了第"+pos+"个",Toast.LENGTH_SHORT).show();
+                Long userid = FriendCatcheUtil.fensiList.get(pos).getUserid();
+                Intent intent = new Intent(getActivity(), UserDetailInfoActivity.class);
+                intent.putExtra("userid",userid);
+                startActivity(intent);
             }
         });
 

@@ -134,13 +134,18 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setVisibility(View.VISIBLE);
             }
 
-            if(gzType==1||gzType==0){        //我已经关注了对方
+            if(gzType==1){        //我已经关注了对方
                 ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
                 ((DongtaiViewHolder)holder).iv_guanzhu_addlable_dt_item.setVisibility(View.GONE);
                 ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setTextColor(mContext.getResources().getColor(R.color.my_font_grey));
                 ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setText("已关注");
 
-            }else{                           //我未关注对方
+            }else if(gzType==0){
+                ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
+                ((DongtaiViewHolder)holder).iv_guanzhu_addlable_dt_item.setVisibility(View.GONE);
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setTextColor(mContext.getResources().getColor(R.color.my_font_grey));
+                ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setText("好友");
+            } else{                           //我未关注对方
                 ((DongtaiViewHolder)holder).layout_guanzhu_dt_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_guanzhu_layout));
                 ((DongtaiViewHolder)holder).iv_guanzhu_addlable_dt_item.setVisibility(View.VISIBLE);
                 ((DongtaiViewHolder)holder).tv_guanzhu_text_dt_item.setTextColor(mContext.getResources().getColor(R.color.my_orange_light));

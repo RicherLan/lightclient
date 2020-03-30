@@ -1,5 +1,6 @@
 package lan.qxc.lightclient.ui.activity.user_activitys;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -27,13 +29,17 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 
 import java.lang.reflect.Field;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
+import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
 import lan.qxc.lightclient.adapter.home.AdapterPage;
 import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
+import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
 import lan.qxc.lightclient.service.service_callback.UserInfoExecutor;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_dongtai_fragment;
@@ -42,6 +48,7 @@ import lan.qxc.lightclient.ui.view.movingimage.MovingImageView;
 import lan.qxc.lightclient.util.DensityUtil;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
+import lan.qxc.lightclient.util.MyDialog;
 
 public class UserDetailInfoActivity extends BaseForCloseActivity implements View.OnClickListener{
 
@@ -57,6 +64,9 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
     private LinearLayout layout_guanzhu_user_detail;
     private ImageView iv_guanzhu_addlable_user_detail;
     private TextView tv_guanzhu_text_user_detail;
+
+    private TextView tv_label_qianming_user_detail;
+    private TextView tv_qianming_user_detail;
 
     private LinearLayout layout_sendmsg_user_detail;
 
@@ -122,9 +132,40 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
             }
             tv_nickname_personal.setText(name);
 
+            int gzType = friendVO.getGuanzhu_type();
+            if(gzType==1){        //我已经关注了对方
+                layout_guanzhu_user_detail.setBackground(getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
+                iv_guanzhu_addlable_user_detail.setVisibility(View.GONE);
+                tv_guanzhu_text_user_detail.setTextColor(getResources().getColor(R.color.my_font_grey));
+                tv_guanzhu_text_user_detail.setText("已关注");
+
+            }else if(gzType==0){
+                layout_guanzhu_user_detail.setBackground(getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
+                iv_guanzhu_addlable_user_detail.setVisibility(View.GONE);
+                tv_guanzhu_text_user_detail.setTextColor(getResources().getColor(R.color.my_font_grey));
+                tv_guanzhu_text_user_detail.setText("好友");
+            } else{                           //我未关注对方
+                layout_guanzhu_user_detail.setBackground(getResources().getDrawable(R.drawable.redis_guanzhu_layout));
+                iv_guanzhu_addlable_user_detail.setVisibility(View.VISIBLE);
+                tv_guanzhu_text_user_detail.setTextColor(getResources().getColor(R.color.my_orange_light));
+                tv_guanzhu_text_user_detail.setText("关注");
+            }
+
+            String intro = friendVO.getIntroduce();
+            if(intro!=null&&!intro.isEmpty()){
+                tv_label_qianming_user_detail.setVisibility(View.VISIBLE);
+                tv_qianming_user_detail.setVisibility(View.VISIBLE);
+                tv_qianming_user_detail.setText(intro);
+            }else{
+                tv_label_qianming_user_detail.setVisibility(View.INVISIBLE);
+                tv_qianming_user_detail.setVisibility(View.INVISIBLE);
+            }
+
+
             //加载头像
             String headIcPath = APIUtil.getUrl(friendVO.getIcon());
             ImageUtil.getInstance().setNetImageToView(this,headIcPath,iv_headicon_personal);
+
 
         }
 
@@ -143,6 +184,10 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
         layout_guanzhu_user_detail = this.findViewById(R.id.layout_guanzhu_user_detail);
         iv_guanzhu_addlable_user_detail = this.findViewById(R.id.iv_guanzhu_addlable_user_detail);
         tv_guanzhu_text_user_detail = this.findViewById(R.id.tv_guanzhu_text_user_detail);
+
+        tv_label_qianming_user_detail = this.findViewById(R.id.tv_label_qianming_user_detail);
+        tv_label_qianming_user_detail.setVisibility(View.INVISIBLE);
+        tv_qianming_user_detail = this.findViewById(R.id.tv_qianming_user_detail);
 
         layout_sendmsg_user_detail = this.findViewById(R.id.layout_sendmsg_user_detail);
 
@@ -236,6 +281,8 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
         });
 
 
+        layout_guanzhu_user_detail.setOnClickListener(this);
+
         imageCircleRun(iv_headicon_personal);
 
     }
@@ -258,10 +305,120 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
                 finish();
                 break;
 
+            case R.id.layout_guanzhu_user_detail:
+                clickGZMenu();
+                break;
             default:
                 break;
 
         }
+    }
+
+
+    private void clickGZMenu(){
+        FriendVO friendVO = FriendCatcheUtil.userInfoMap.get(userid);
+        if(friendVO==null){
+            return;
+        }
+        int gzType = friendVO.getGuanzhu_type();
+
+        if(gzType==0||gzType==1){
+
+            AlertDialog alertDialog2 = new AlertDialog.Builder(this)
+                    .setTitle("确定取消关注吗")
+//                    .setMessage("有多个按钮")
+//                    .setIcon(R.mipmap.ic_launcher)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            delGuanzhu();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .create();
+            alertDialog2.show();
+
+        }else{
+            guanzhu();
+        }
+
+    }
+
+    Timer guanzhuTimer;
+    void startLoading(){
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+        guanzhuTimer = new Timer();
+        MyDialog.showBottomLoadingDialog(this);
+        guanzhuTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Toast.makeText(UserDetailInfoActivity.this,"提交失败,请稍后再试!",Toast.LENGTH_SHORT).show();
+            }
+        },20000);
+    }
+
+    void cancleLoading(){
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+        MyDialog.dismissBottomLoadingDialog();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(guanzhuTimer!=null){
+            guanzhuTimer.cancel();
+        }
+    }
+
+    private void delGuanzhu(){
+        FriendVO friendVO = FriendCatcheUtil.userInfoMap.get(userid);
+        if(friendVO==null){
+            return;
+        }
+
+        startLoading();
+        GuanzhuExecutor.getInstance().delGuanzhu(this, GlobalInfoUtil.personalInfo.getUserid(), friendVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                            setData();
+                        }else{
+                            Toast.makeText(UserDetailInfoActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void guanzhu(){
+        FriendVO friendVO = FriendCatcheUtil.userInfoMap.get(userid);
+        if(friendVO==null){
+            return;
+        }
+        startLoading();
+
+        GuanzhuExecutor.getInstance().guanzhu(this, GlobalInfoUtil.personalInfo.getUserid(), friendVO.getUserid(),
+                new GuanzhuExecutor.GuanzhuListener() {
+                    @Override
+                    public void getResult(String message) {
+                        cancleLoading();
+                        if(message.equals("SUCCESS")){
+                           setData();
+                        }else{
+                            Toast.makeText(UserDetailInfoActivity.this,message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 

@@ -67,13 +67,18 @@ public class FensiMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
         int gzType = friendVO.getGuanzhu_type();
-        if(gzType==1||gzType==0){        //我已经关注了对方
+        if(gzType==1){        //我已经关注了对方
             ((GuanzhuViewHolder)holder).layout_gz_fensi_contact_list_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
             ((GuanzhuViewHolder)holder).iv_gz_addlable_fensi_contact_item.setVisibility(View.GONE);
             ((GuanzhuViewHolder)holder).tv_gz_text_fensi_contact_list_item.setTextColor(mContext.getResources().getColor(R.color.my_font_grey));
             ((GuanzhuViewHolder)holder).tv_gz_text_fensi_contact_list_item.setText("已关注");
 
-        }else{                           //我未关注对方
+        }else if(gzType==0){
+            ((GuanzhuViewHolder)holder).layout_gz_fensi_contact_list_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_has_guanzhu_layout));
+            ((GuanzhuViewHolder)holder).iv_gz_addlable_fensi_contact_item.setVisibility(View.GONE);
+            ((GuanzhuViewHolder)holder).tv_gz_text_fensi_contact_list_item.setTextColor(mContext.getResources().getColor(R.color.my_font_grey));
+            ((GuanzhuViewHolder)holder).tv_gz_text_fensi_contact_list_item.setText("好友");
+        } else{                           //我未关注对方
             ((GuanzhuViewHolder)holder).layout_gz_fensi_contact_list_item.setBackground(mContext.getResources().getDrawable(R.drawable.redis_guanzhu_layout));
             ((GuanzhuViewHolder)holder).iv_gz_addlable_fensi_contact_item.setVisibility(View.VISIBLE);
             ((GuanzhuViewHolder)holder).tv_gz_text_fensi_contact_list_item.setTextColor(mContext.getResources().getColor(R.color.my_orange_light));

@@ -45,8 +45,11 @@ public class GuanzhuExecutor {
                     //修改动态页面   该用户显示已关注
                     Dongtai_catch_util.setTJDongtaiGZType(touserid,1);
                     FriendCatcheUtil.meGuanzhuUser(touserid);
+                    FriendCatcheUtil.updateUserInfoMap();
+                    if(ContactFragment.instance!=null){
+                        ContactFragment.instance.freshAllList();
+                    }
 
-                    ContactFragment.instance.freshAllList();
                     listener.getResult(message);
                 }else{
                     listener.getResult(message);
@@ -78,7 +81,10 @@ public class GuanzhuExecutor {
                     //修改动态页面   该用户显示已关注
                     Dongtai_catch_util.setTJDongtaiGZType(touserid,4);
                     FriendCatcheUtil.meDelGuanzhuUser(touserid);
-                    ContactFragment.instance.freshAllList();
+                    FriendCatcheUtil.updateUserInfoMap();
+                    if(ContactFragment.instance!=null){
+                        ContactFragment.instance.freshAllList();
+                    }
                     listener.getResult(message);
 
                 }else{

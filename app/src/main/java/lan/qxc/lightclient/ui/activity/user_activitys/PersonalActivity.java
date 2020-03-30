@@ -91,6 +91,9 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
     private TextView tv_fenxi_num_personal;
     private TextView tv_friend_num_personal;
 
+    private TextView tv_label_qianming_personal;
+    private TextView tv_qianming_personal;
+
 
     private SmartRefreshLayout smartrefresh_personal_layout;
     private int mOffset = 0;
@@ -134,6 +137,18 @@ public class PersonalActivity extends BaseForCloseActivity implements View.OnCli
         tv_guanzhu_num_personal = this.findViewById(R.id.tv_guanzhu_num_personal);
         tv_fenxi_num_personal = this.findViewById(R.id.tv_fensi_num_personal);
         tv_friend_num_personal = this.findViewById(R.id.tv_friend_num_personal);
+
+        tv_label_qianming_personal = this.findViewById(R.id.tv_label_qianming_personal);
+        tv_qianming_personal = this.findViewById(R.id.tv_qianming_personal);
+        String intro = GlobalInfoUtil.personalInfo.getIntroduce();
+        if(intro!=null&&!intro.isEmpty()){
+            tv_label_qianming_personal.setVisibility(View.VISIBLE);
+            tv_qianming_personal.setVisibility(View.VISIBLE);
+            tv_qianming_personal.setText(intro);
+        }else{
+            tv_label_qianming_personal.setVisibility(View.INVISIBLE);
+            tv_qianming_personal.setVisibility(View.INVISIBLE);
+        }
 
         smartrefresh_personal_layout = this.findViewById(R.id.smartrefresh_personal_layout);
 
