@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_toptitle_single_chat_acti"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FAFAFA">
+
+        <ImageView
+            android:id="@+id/iv_back_single_chat_acti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_back"
+            android:layout_marginLeft="10dp">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title_single_chat_acti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="小蓝"
+            android:textSize="19sp">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/iv_more_single_chat_acti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chat_more"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            >
+        </ImageView>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_below="@+id/layout_toptitle_single_chat_acti"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@mipmap/chat_back_pic">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyview_body_single_chat_acti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_bottom_menu_single_chat_acti"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/chat_back_grey">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:background="@drawable/redis_white_back_layout">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@null">
+                    </EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/redis_myblue_back_layout"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:text="发送"
+                        android:textSize="15sp">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

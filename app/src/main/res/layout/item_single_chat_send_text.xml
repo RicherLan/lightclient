@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="13dp">
+
+    <TextView
+        android:id="@+id/tv_time_send_text_singlechat_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_headic_send_text_singlechat_item"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:id="@+id/tv_text_send_text_singlechat_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/iv_headic_send_text_singlechat_item"
+            android:background="@drawable/chat_right_qp"
+            android:maxWidth="225.0dip"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/iv_state_send_text_singlechat_item"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_text_send_text_singlechat_item"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/tv_state_send_text_singlechat_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_text_send_text_singlechat_item"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

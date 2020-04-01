@@ -42,6 +42,7 @@ import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
 import lan.qxc.lightclient.service.service_callback.UserInfoExecutor;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
+import lan.qxc.lightclient.ui.chat.activity.SingleChatActivity;
 import lan.qxc.lightclient.ui.fragment.personal.Personal_dongtai_fragment;
 import lan.qxc.lightclient.ui.fragment.user.UserInfoFragment;
 import lan.qxc.lightclient.ui.view.movingimage.MovingImageView;
@@ -285,6 +286,8 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
 
         imageCircleRun(iv_headicon_personal);
 
+        layout_sendmsg_user_detail.setOnClickListener(this);
+
     }
 
     /*
@@ -307,6 +310,12 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
 
             case R.id.layout_guanzhu_user_detail:
                 clickGZMenu();
+                break;
+
+            case R.id.layout_sendmsg_user_detail:
+                Intent intent = new Intent(this, SingleChatActivity.class);
+                intent.putExtra("userid",userid);
+                startActivity(intent);
                 break;
             default:
                 break;

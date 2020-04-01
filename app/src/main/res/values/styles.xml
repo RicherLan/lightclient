@@ -5,6 +5,12 @@
 <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
 
+    <style name="AppTheme.ChatMode" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/app_back_grey</item>
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+    </style>
+
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

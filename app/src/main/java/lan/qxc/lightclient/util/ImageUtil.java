@@ -26,6 +26,17 @@ public class ImageUtil {
 
     //显示网络图片到imageview
     public void setNetImageToView (Context context , String path, ImageView view){
+
+        if(path==null||path.isEmpty()){
+            return;
+        }
+        if(view==null){
+            return;
+        }
+        if(context==null){
+            return;
+        }
+
         RequestOptions options = new RequestOptions();
         options.placeholder(R.drawable.default_picture);
         options.error(R.drawable.default_picture);
