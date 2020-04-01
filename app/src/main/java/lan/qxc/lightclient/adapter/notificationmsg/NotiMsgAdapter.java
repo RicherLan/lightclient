@@ -17,12 +17,16 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
+import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.DongtailVO;
+import lan.qxc.lightclient.entity.message.ChatMsgType;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.MessageType;
+import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.ui.fragment.home.NotificationFragment;
+import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
 import lan.qxc.lightclient.util.MyTimeUtil;
 
@@ -91,6 +95,50 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
 
 
+        }else if(holder instanceof SingleChatMsgViewHolder){
+            ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).layout_single_chat_msg_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickLayoutListener.getPosition(position);
+                }
+            });
+            SingleChatMsg message = (SingleChatMsg)messages.get(position);
+
+            Long uid = message.getSendUid();
+            if(uid.equals(GlobalInfoUtil.personalInfo.getUserid())){
+                uid = message.getReceiveUid();
+            }
+
+                String icpath = APIUtil.getUrl(message.getSendUicon());
+                ImageUtil.getInstance().setNetImageToView(mContext,icpath,((NotiMsgAdapter.SingleChatMsgViewHolder)holder).iv_headic_single_chat_msg_item);
+
+                ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_username_single_chat_msg_item.setText(message.getSendUername());
+
+                if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_TEXT_MSG){
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText("关注了你");
+                }else if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_VOICE_MSG){
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText("语音消息");
+                }else if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_PIC_MSG){
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText("图片消息");
+                }
+
+                String time = message.getCreatetime();
+                Date date = MyTimeUtil.getDateByStr(time,"yyyy-MM-dd HH:mm:ss");
+                if(date!=null){
+                    String timetext = MyTimeUtil.getTime(date);
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_time_single_chat_msg_item.setText(timetext);
+                }
+
+            int notreadmsgNum = MessageCacheUtil.getSingleChatMsgNotReadNumOfUid(uid);
+
+                if(notreadmsgNum!=0){
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setVisibility(View.VISIBLE);
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setText(notreadmsgNum);
+                }else{
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setVisibility(View.INVISIBLE);
+                }
+
+
         }
     }
 
@@ -107,7 +155,7 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return messages.get(position).getType();
         }
 
-        return MessageType.FRIEND_MSG;
+        return MessageType.SINGLE_CHAT_MSG;
     }
 
 
@@ -133,6 +181,31 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             tv_time_friend_msg_item = view.findViewById(R.id.tv_time_friend_msg_item);
             tv_msgnum_friend_msg_item = view.findViewById(R.id.tv_msgnum_friend_msg_item);
+        }
+    }
+
+    class SingleChatMsgViewHolder extends RecyclerView.ViewHolder {
+
+        LinearLayout layout_single_chat_msg_item;
+        CircleImageView iv_headic_single_chat_msg_item;
+
+        TextView tv_username_single_chat_msg_item;
+        TextView tv_msg_single_chat_msg_item;
+
+        TextView tv_time_single_chat_msg_item;
+        TextView tv_msgnum_single_chat_msg_item;
+
+        SingleChatMsgViewHolder(View view) {
+            super(view);
+
+            layout_single_chat_msg_item = view.findViewById(R.id.layout_single_chat_msg_item);
+            iv_headic_single_chat_msg_item = view.findViewById(R.id.iv_headic_single_chat_msg_item);
+
+            tv_username_single_chat_msg_item = view.findViewById(R.id.tv_username_single_chat_msg_item);
+            tv_msg_single_chat_msg_item = view.findViewById(R.id.tv_msg_single_chat_msg_item);
+
+            tv_time_single_chat_msg_item = view.findViewById(R.id.tv_time_single_chat_msg_item);
+            tv_msgnum_single_chat_msg_item = view.findViewById(R.id.tv_msgnum_single_chat_msg_item);
         }
     }
 

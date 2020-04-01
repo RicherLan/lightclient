@@ -11,4 +11,6 @@ public interface ContextActionStr {
 
     String notification_msg_frag_action = "lan.qxc.lightclient.notification_msg_frag";
 
+    String single_chat_activity_action = "lan.qxc.lightclient.chat.single_chat";
+
 }

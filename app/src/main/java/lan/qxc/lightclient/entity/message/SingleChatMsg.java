@@ -4,7 +4,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class SingleChatMsg {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import static lan.qxc.lightclient.entity.message.MessageType.SINGLE_CHAT_MSG;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SingleChatMsg extends Message{
 
     private Long msgid;
 
@@ -21,14 +30,18 @@ public class SingleChatMsg {
     private String picbody;
     private String voicebody;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:MM:ss",timezone = "GMT+8")
-    private Date createtime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:MM:ss",timezone = "GMT+8")
-    private Date updatetime;
+    private String createtime;
+
+
+    private String updatetime;
 
 
     private Byte readstate;     //读取状态  0 未读   1已读
     private Byte is_deleted;
 
+    @Override
+    public int getType() {
+        return SINGLE_CHAT_MSG;
+    }
 }

@@ -32,10 +32,13 @@ import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.MessageType;
+import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.FriendMsgService;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
+import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
+import lan.qxc.lightclient.ui.chat.activity.SingleChatActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.JsonUtils;
@@ -93,7 +96,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
 
 
-        notiMsgAdapter = new NotiMsgAdapter(getActivity(), MessageCacheUtil.messages);
+        notiMsgAdapter = new NotiMsgAdapter(getActivity(), MessageCacheUtil.msgsFrames);
 
         recyview_msg_notifi_frag.setLayoutManager(new LinearLayoutManager(getContext()));
         recyview_msg_notifi_frag.addItemDecoration(new SpaceItemDecoration(getActivity()).setSpace(5).setSpaceColor(0xFFFFFFFF));
@@ -104,7 +107,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             @Override
             public void getPosition(int pos) {
 
-                Message message = MessageCacheUtil.messages.get(pos);
+                Message message = MessageCacheUtil.msgsFrames.get(pos);
+                //好友请求消息
                 if(message.getType()== MessageType.FRIEND_MSG){
                     FriendMsgVO friendMsgVO = (FriendMsgVO)message;
 
@@ -125,6 +129,18 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         });
 
                     }
+
+                    //聊天消息
+                }else if(message.getType()== MessageType.SINGLE_CHAT_MSG){
+                    SingleChatMsg singleChatMsg = (SingleChatMsg)message;
+
+                    Long userid = singleChatMsg.getSendUid();
+                    if(userid.equals(GlobalInfoUtil.personalInfo.getUserid())){
+                        userid=singleChatMsg.getReceiveUid();
+                    }
+                    Intent intent = new Intent(getActivity(), SingleChatActivity.class);
+                    intent.putExtra("userid",userid);
+                    startActivity(intent);
                 }
 
             }
@@ -184,6 +200,18 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
 
     public void freshNotiMsg(){
+
+        SingleChatMsgExecutor.getInstance().getSingleChatMsgNotReadOfUid(new SingleChatMsgExecutor.SingleChatMsgListener() {
+            @Override
+            public void getResult(String message) {
+                if(message.equals("SUCCESS")){
+                    notiMsgAdapter.notifyDataSetChanged();
+                }else{
+
+                }
+            }
+        });
+
 
         Call<Result> call = FriendMsgService.getInstance().getUserFriendMsgNotRead(GlobalInfoUtil.personalInfo.getUserid());
         call.enqueue(new Callback<Result>() {

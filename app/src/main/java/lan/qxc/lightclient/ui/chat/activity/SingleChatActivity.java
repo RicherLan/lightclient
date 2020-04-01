@@ -1,6 +1,9 @@
 package lan.qxc.lightclient.ui.chat.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,7 +25,9 @@ import java.util.List;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.friend_menu.FensiMenuAdapter;
+import lan.qxc.lightclient.config.ContextActionStr;
 import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
+import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.TextSingleChatMessage;
@@ -68,8 +73,6 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    List<Message> messages = new ArrayList<>();
-
 
     private void initView(){
         iv_back_single_chat_acti = this.findViewById(R.id.iv_back_single_chat_acti);
@@ -77,8 +80,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         iv_more_single_chat_acti = this.findViewById(R.id.iv_more_single_chat_acti);
         recyview_body_single_chat_acti = this.findViewById(R.id.recyview_body_single_chat_acti);
 
-        int size = messages.size();
-        chatAdapter = new SingleChatAdapter(this, messages);
+        chatAdapter = new SingleChatAdapter(this, MessageCacheUtil.getSingleChatMsgListByUid(userid));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         recyview_body_single_chat_acti.setLayoutManager(linearLayoutManager);
@@ -128,5 +130,39 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ContextActionStr.single_chat_activity_action);
+        registerReceiver(broadcastReceiver, filter);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(ContextActionStr.single_chat_activity_action.equals(intent.getAction())){
+
+                String type = intent.getStringExtra("type");
+                //收到了消息
+                if(type!=null&&type.equals("receivemsg")){
+                    Long uid = intent.getLongExtra("userid",-1);
+                    if(uid==-1){
+                        Toast.makeText(SingleChatActivity.this,"error!",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else if(userid.equals(uid)){
+
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        }
+    };
 }

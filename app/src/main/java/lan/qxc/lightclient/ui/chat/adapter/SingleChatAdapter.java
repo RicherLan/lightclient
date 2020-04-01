@@ -14,8 +14,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
+import lan.qxc.lightclient.entity.message.ChatMsgType;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.MessageType;
+import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.entity.message.TextSingleChatMessage;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
@@ -24,7 +26,7 @@ import lan.qxc.lightclient.util.ImageUtil;
 public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<Message> messages;
+    private List<SingleChatMsg> messages;
     private LayoutInflater layoutInflater;
 
     private int pos=-1;
@@ -41,7 +43,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return pos;
     }
 
-    public SingleChatAdapter(Context context,List<Message> messages){
+    public SingleChatAdapter(Context context,List<SingleChatMsg> messages){
         this.context = context;
         this.messages = messages;
         this.layoutInflater = LayoutInflater.from(context);
@@ -63,7 +65,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         if(holder instanceof TextSendViewHolder){
             TextSendViewHolder viewHolder = (TextSendViewHolder)holder;
-            TextSingleChatMessage message = (TextSingleChatMessage)messages.get(position);
+            SingleChatMsg message = messages.get(position);
             ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(message.getSendUicon()),viewHolder.iv_headic_send_text_singlechat_item);
             viewHolder.tv_text_send_text_singlechat_item.setText(message.getTextbody());
             viewHolder.tv_time_send_text_singlechat_item.setText(message.getCreatetime());
@@ -72,7 +74,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }else if(holder instanceof TextReceiveViewHolder){
             TextReceiveViewHolder viewHolder = (TextReceiveViewHolder)holder;
 
-            TextSingleChatMessage message = (TextSingleChatMessage)messages.get(position);
+            SingleChatMsg message = messages.get(position);
             ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(message.getSendUicon()),viewHolder.iv_headic_receive_text_singlechat_item);
             viewHolder.tv_text_receive_text_singlechat_item.setText(message.getTextbody());
             viewHolder.tv_time_receive_text_singlechat_item.setText(message.getCreatetime());
@@ -92,12 +94,12 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         pos = position;
 
-        Message message = messages.get(position);
-        System.out.println(message.toString());
-        int type = message.getType();
-        if(type== MessageType.SINGLE_CHAT_TEXT_MSG){
-            TextSingleChatMessage chatMessage = (TextSingleChatMessage)message;
-            if(chatMessage.getSendUid().equals( GlobalInfoUtil.personalInfo.getUserid())){
+        SingleChatMsg singleChatMsg = messages.get(position);
+
+        int msgtype = singleChatMsg.getMsgtype();
+        //文字消息
+        if(msgtype== ChatMsgType.SINGLE_CHAT_TEXT_MSG){
+            if(singleChatMsg.getSendUid().equals( GlobalInfoUtil.personalInfo.getUserid())){
                 return ITEM_TYPE.ITEM_TYPE_SEND_TEXT.ordinal();
             }
             return ITEM_TYPE.ITEM_TYPE_RECEIVE_TEXT.ordinal();
