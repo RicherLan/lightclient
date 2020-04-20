@@ -28,9 +28,15 @@ public class MyTimeUtil {
         return new Date(year-1900,month-1,day);
     }
 
+
+    public static String getTimeByTimeStamp(String timestamp,String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date(Long.valueOf(timestamp)));
+    }
+
     public static String getTimestrByDate(Date date,String timeformat){
         SimpleDateFormat sdf =new SimpleDateFormat(timeformat );
-        return sdf.format(GlobalInfoUtil.personalInfo.getBirthday());
+        return sdf.format(date);
     }
 
 

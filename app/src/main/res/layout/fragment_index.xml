@@ -97,6 +97,7 @@
       </ImageView>
 
    </RelativeLayout>
+
    <View
        android:id="@+id/view_below_title_index_frag"
        android:layout_below="@+id/layout_title_index_frag"

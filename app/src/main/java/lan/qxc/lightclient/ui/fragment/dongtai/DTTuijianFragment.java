@@ -75,6 +75,8 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
             initView();
             initEvent();
             requestNewDongtai();
+
+
         }
         tuijianFragment = this;
         return view;

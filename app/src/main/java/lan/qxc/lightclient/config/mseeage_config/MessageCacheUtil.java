@@ -33,6 +33,19 @@ public class MessageCacheUtil {
     public static List<FriendMsgVO> friendMsgs = new ArrayList<>();
 
 
+    //发送给对方一条消息
+    public static void sendSingleChatMsg(SingleChatMsg singleChatMsg){
+        Long userid = singleChatMsg.getReceiveUid();
+        if(singleChatMsgMap.containsKey(userid)){
+            singleChatMsgMap.get(userid).add(singleChatMsg);
+        }else{
+            List<SingleChatMsg> list = new ArrayList<>();
+            list.add(singleChatMsg);
+            singleChatMsgMap.put(userid,list);
+        }
+        addMsgToFrame(singleChatMsg);
+    }
+
     //收到了一条消息
     // 添加单人聊天消息至未读队列    最后刷新消息窗口
     public static void receiveSingleChatMsg(SingleChatMsg singleChatMsg){
@@ -192,19 +205,23 @@ public class MessageCacheUtil {
             FriendMsgVO friendMsgVO = (FriendMsgVO)message;
             senduserid = friendMsgVO.getUserid();
             receiveuserid = friendMsgVO.getTouserid();
-            boolean find = false;
+//            boolean find = false;
+            Message del = null;
             for(Message msg : msgsFrames){
                 if(msg.getType()==type){
                     FriendMsgVO origmsg = (FriendMsgVO)msg;
                     if(origmsg.getUserid().equals(senduserid)){
-                        msg = message;
-                        find = true;
+                        del = msg;
+//                        find = true;
                     }
                 }
             }
-            if(!find){
-                msgsFrames.add(message);
+            if(del!=null){
+                msgsFrames.remove(del);
             }
+
+            msgsFrames.add(message);
+
 
         }else if(type == MessageType.SINGLE_CHAT_MSG){
             SingleChatMsg singleChatMsg = (SingleChatMsg)message;
@@ -215,7 +232,8 @@ public class MessageCacheUtil {
             if(senduserid==GlobalInfoUtil.personalInfo.getUserid()){
                 userid = receiveuserid;
             }
-            boolean find = false;
+//            boolean find = false;
+            Message del = null;
             for(Message msg : msgsFrames){
                 if(msg.getType()==type){
                     SingleChatMsg origmsg = (SingleChatMsg)msg;
@@ -225,14 +243,18 @@ public class MessageCacheUtil {
                     }
 
                     if(userid.equals(oriUid)){
-                        msg = message;
-                        find = true;
+                        del = msg;
+//                        find = true;
                     }
                 }
             }
-            if(!find){
-                msgsFrames.add(message);
+
+            if(del!=null){
+                msgsFrames.remove(del);
             }
+
+            msgsFrames.add(message);
+
         }
 
         sortMsgFrames();

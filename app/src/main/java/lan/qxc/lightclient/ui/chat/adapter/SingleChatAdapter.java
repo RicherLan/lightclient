@@ -9,19 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lan.qxc.lightclient.R;
-import lan.qxc.lightclient.adapter.dongtai.DongtaiAdapter;
 import lan.qxc.lightclient.entity.message.ChatMsgType;
-import lan.qxc.lightclient.entity.message.Message;
-import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
-import lan.qxc.lightclient.entity.message.TextSingleChatMessage;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
+import lan.qxc.lightclient.util.MyTimeUtil;
 
 public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -68,7 +66,11 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             SingleChatMsg message = messages.get(position);
             ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(message.getSendUicon()),viewHolder.iv_headic_send_text_singlechat_item);
             viewHolder.tv_text_send_text_singlechat_item.setText(message.getTextbody());
-            viewHolder.tv_time_send_text_singlechat_item.setText(message.getCreatetime());
+
+            String time = message.getCreatetime();
+            Date date = MyTimeUtil.getDateByStr(time,"yyyy-MM-dd HH:mm:ss");
+            String timestr = MyTimeUtil.getTime(date);
+            viewHolder.tv_time_send_text_singlechat_item.setText(timestr);
 
 
         }else if(holder instanceof TextReceiveViewHolder){
@@ -77,7 +79,11 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             SingleChatMsg message = messages.get(position);
             ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(message.getSendUicon()),viewHolder.iv_headic_receive_text_singlechat_item);
             viewHolder.tv_text_receive_text_singlechat_item.setText(message.getTextbody());
-            viewHolder.tv_time_receive_text_singlechat_item.setText(message.getCreatetime());
+
+            String time = message.getCreatetime();
+            Date date = MyTimeUtil.getDateByStr(time,"yyyy-MM-dd HH:mm:ss");
+            String timestr = MyTimeUtil.getTime(date);
+            viewHolder.tv_time_receive_text_singlechat_item.setText(timestr);
 
         }
 

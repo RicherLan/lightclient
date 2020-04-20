@@ -55,6 +55,8 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if(viewType== MessageType.FRIEND_MSG){
             return new FriendMsgViewHolder(layoutInflater.inflate(R.layout.item_friend_msg_notifi,parent,false));
+        }else if(viewType==MessageType.SINGLE_CHAT_MSG){
+            return new SingleChatMsgViewHolder(layoutInflater.inflate(R.layout.item_single_chat_msg_notifi,parent,false));
         }
         return null;
     }
@@ -115,7 +117,7 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_username_single_chat_msg_item.setText(message.getSendUername());
 
                 if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_TEXT_MSG){
-                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText("关注了你");
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText(message.getTextbody());
                 }else if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_VOICE_MSG){
                     ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msg_single_chat_msg_item.setText("语音消息");
                 }else if(message.getMsgtype()==ChatMsgType.SINGLE_CHAT_PIC_MSG){
@@ -130,10 +132,10 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
             int notreadmsgNum = MessageCacheUtil.getSingleChatMsgNotReadNumOfUid(uid);
-
+//            notreadmsgNum = 10;
                 if(notreadmsgNum!=0){
                     ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setVisibility(View.VISIBLE);
-                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setText(notreadmsgNum);
+                    ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setText(notreadmsgNum+"");
                 }else{
                     ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setVisibility(View.INVISIBLE);
                 }

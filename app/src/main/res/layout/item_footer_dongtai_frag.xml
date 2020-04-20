@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="15dp"
-            android:text="到低啦"
+            android:text="到底啦"
             android:textColor="@color/gray"
             android:textSize="16sp" />
 

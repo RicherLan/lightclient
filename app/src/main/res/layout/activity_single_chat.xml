@@ -80,6 +80,7 @@
                     android:layout_weight="5"
                     android:background="@drawable/redis_white_back_layout">
                     <EditText
+                        android:id="@+id/et_chattext_single_chat_ac"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
@@ -89,6 +90,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_send_button_single_chat_ac"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

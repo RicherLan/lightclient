@@ -5,33 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TabHost;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import lan.qxc.lightclient.R;
-import lan.qxc.lightclient.adapter.friend_menu.FensiMenuAdapter;
 import lan.qxc.lightclient.config.ContextActionStr;
-import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
-import lan.qxc.lightclient.entity.PersonalInfo;
-import lan.qxc.lightclient.entity.message.Message;
-import lan.qxc.lightclient.entity.message.TextSingleChatMessage;
-import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
+import lan.qxc.lightclient.entity.message.ChatMsgType;
+import lan.qxc.lightclient.entity.message.SingleChatMsg;
+import lan.qxc.lightclient.netty.command_to_server.SendToServer;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.chat.adapter.SingleChatAdapter;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
@@ -47,6 +40,10 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView recyview_body_single_chat_acti;
 
     private SingleChatAdapter chatAdapter;
+
+
+    private EditText et_chattext_single_chat_ac;
+    private LinearLayout layout_send_button_single_chat_ac;
 
     Long userid;
 
@@ -80,6 +77,10 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         iv_more_single_chat_acti = this.findViewById(R.id.iv_more_single_chat_acti);
         recyview_body_single_chat_acti = this.findViewById(R.id.recyview_body_single_chat_acti);
 
+        et_chattext_single_chat_ac = this.findViewById(R.id.et_chattext_single_chat_ac);
+        layout_send_button_single_chat_ac = this.findViewById(R.id.layout_send_button_single_chat_ac);
+
+
         chatAdapter = new SingleChatAdapter(this, MessageCacheUtil.getSingleChatMsgListByUid(userid));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -110,6 +111,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
 
     private void initEvent(){
         iv_back_single_chat_acti.setOnClickListener(this);
+        layout_send_button_single_chat_ac.setOnClickListener(this);
     }
 
 
@@ -126,9 +128,44 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
                 break;
 
+            case R.id.layout_send_button_single_chat_ac:   //点击发送
+                sendText();
+                break;
         }
     }
 
+    //点击发送
+    void sendText(){
+        String text = et_chattext_single_chat_ac.getText().toString();
+        if(text.isEmpty()){
+            return;
+        }
+
+        SingleChatMsg singleChatMsg = new SingleChatMsg();
+
+        singleChatMsg.setSendUid(GlobalInfoUtil.personalInfo.getUserid());
+        singleChatMsg.setSendUername(GlobalInfoUtil.personalInfo.getUsername());
+        singleChatMsg.setSendUicon(GlobalInfoUtil.personalInfo.getIcon());
+
+        singleChatMsg.setReceiveUid(userid);
+        singleChatMsg.setMsgtype(ChatMsgType.SINGLE_CHAT_TEXT_MSG);
+        singleChatMsg.setTextbody(text);
+
+        String timestr = MyTimeUtil.getTimestrByDate(new Date(),"yyyy-MM-dd HH:MM:ss");
+        singleChatMsg.setCreatetime(timestr);
+        singleChatMsg.setUpdatetime(timestr);
+        singleChatMsg.setReadstate(new Byte("1"));
+
+        SendToServer.singleChatMsg(singleChatMsg);
+
+        et_chattext_single_chat_ac.setText("");
+
+        MessageCacheUtil.sendSingleChatMsg(singleChatMsg);
+
+        chatAdapter.notifyDataSetChanged();
+        recyview_body_single_chat_acti.scrollToPosition(chatAdapter.getItemCount() - 1);
+
+    }
 
     @Override
     protected void onResume() {
@@ -157,7 +194,6 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                         Toast.makeText(SingleChatActivity.this,"error!",Toast.LENGTH_SHORT).show();
                         finish();
                     }else if(userid.equals(uid)){
-
                         chatAdapter.notifyDataSetChanged();
                     }
                 }
