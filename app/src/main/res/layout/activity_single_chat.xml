@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/chat_back_pic">
 
     <RelativeLayout
         android:id="@+id/layout_toptitle_single_chat_acti"
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@mipmap/chat_back_pic">
+        android:background="@color/transparent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyview_body_single_chat_acti"
             android:layout_width="match_parent"

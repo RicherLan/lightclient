@@ -10,6 +10,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lan.qxc.lightclient.config.ContextActionStr;
 import lan.qxc.lightclient.entity.PersonalInfo;
 import lan.qxc.lightclient.entity.User;
+import lan.qxc.lightclient.netty.config.NettyConfig;
 import lan.qxc.lightclient.netty.protocol.response.user_response.LoginResponsePacket;
 import lan.qxc.lightclient.service.NettyService;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
@@ -32,6 +33,11 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         NettyService.nettyService.sendCast(intent);
 
         if(rs.equals("SUCCESS")){
+            NettyConfig.isLogined = true;
+            if(NettyService.loginTimer!=null){
+                NettyService.loginTimer.cancel();
+            }
+
             GlobalInfoUtil.personalInfo = personalInfo;
 
             GlobalInfoUtil.personalInfo.setPassword(personalInfo.getPassword());

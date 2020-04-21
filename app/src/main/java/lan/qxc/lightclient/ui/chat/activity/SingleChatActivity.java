@@ -25,6 +25,7 @@ import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.message.ChatMsgType;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.netty.command_to_server.SendToServer;
+import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.chat.adapter.SingleChatAdapter;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
@@ -88,6 +89,8 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
 //        //  recyclerview_friend_menu_contact_frag.addItemDecoration(new SpaceItemDecoration(getActivity()).setSpace(12).setSpaceColor(0xFFEEEEEE));
 
         recyview_body_single_chat_acti.setAdapter(chatAdapter);
+        recyview_body_single_chat_acti.scrollToPosition(chatAdapter.getItemCount() - 1);
+        setMsgHadRead();
 
         //弹起键盘  滚动recyclerview显示最后一条数据
         recyview_body_single_chat_acti.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -107,6 +110,19 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+    }
+
+    public void setMsgHadRead(){
+        SingleChatMsgExecutor.getInstance().setAllMsgHadReadByuid(userid,new SingleChatMsgExecutor.SingleChatMsgListener(){
+            @Override
+            public void getResult(String message) {
+                if(message.equals("SUCCESS")){
+
+                }else{
+
+                }
+            }
+        });
     }
 
     private void initEvent(){
@@ -160,6 +176,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
 
         et_chattext_single_chat_ac.setText("");
 
+
         MessageCacheUtil.sendSingleChatMsg(singleChatMsg);
 
         chatAdapter.notifyDataSetChanged();
@@ -195,10 +212,36 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                         finish();
                     }else if(userid.equals(uid)){
                         chatAdapter.notifyDataSetChanged();
+
+                        //当前未查看聊天记录(即显示最后一条消息)  那么信息来了  自动滚动到新消息
+                      if(isLastItemOfRecyclerView()){
+                          recyview_body_single_chat_acti.scrollToPosition(chatAdapter.getItemCount() - 1);
+                      }
+
+
                     }
                 }
 
             }
         }
     };
+
+    private  boolean isLastItemOfRecyclerView(){
+        RecyclerView.LayoutManager layoutManager = recyview_body_single_chat_acti.getLayoutManager();
+        //判断是当前layoutManager是否为LinearLayoutManager
+        // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+            //获取最后一个可见view的位置
+            int lastItemPosition = linearManager.findLastVisibleItemPosition();
+            //获取第一个可见view的位置
+            //  int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+            if(lastItemPosition == chatAdapter.getItemCount()-1 || lastItemPosition == chatAdapter.getItemCount()-2){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 }

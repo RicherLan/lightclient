@@ -21,7 +21,7 @@ public class NettyService extends Service implements NettyListener {
 
     public static int connetstatuscode=0;
 
-    private static Timer loginTimer;
+    public static Timer loginTimer;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

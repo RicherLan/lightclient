@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
+import lan.qxc.lightclient.entity.FriendVO;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.MessageType;
@@ -36,6 +38,14 @@ public class MessageCacheUtil {
     //发送给对方一条消息
     public static void sendSingleChatMsg(SingleChatMsg singleChatMsg){
         Long userid = singleChatMsg.getReceiveUid();
+
+        //获得昵称和头像
+        FriendVO friendVO = FriendCatcheUtil.userInfoMap.get(userid);
+        if(friendVO!=null){
+            singleChatMsg.setSendUername(friendVO.getUsername());
+            singleChatMsg.setSendUicon(friendVO.getIcon());
+        }
+
         if(singleChatMsgMap.containsKey(userid)){
             singleChatMsgMap.get(userid).add(singleChatMsg);
         }else{
@@ -74,23 +84,23 @@ public class MessageCacheUtil {
             if(!singleChatMsgMap.containsKey(userid)){
                 singleChatMsgMap.put(userid,new ArrayList<SingleChatMsg>());
             }
-            boolean find = false;
-
+            SingleChatMsg del = null;
             for(SingleChatMsg msg : singleChatMsgMap.get(userid)){
                 if(msg.getMsgid().equals(singleChatMsg.getMsgid())){
-                    msg=singleChatMsg;
-                    find = true;
+                    del=msg;
                 }
             }
-            if(!find){
-                singleChatMsgMap.get(userid).add(singleChatMsg);
+            if(del!=null){
+                singleChatMsgMap.get(userid).remove(del);
             }
+            singleChatMsgMap.get(userid).add(singleChatMsg);
+
         }
 
         //添加到消息窗口
         for(Long userid : userids){
             if(singleChatMsgMap.containsKey(userid)&&singleChatMsgMap.get(userid).size()>0){
-                addMsgToFrame(singleChatMsgMap.get(userid).get(0));
+                addMsgToFrame(singleChatMsgMap.get(userid).get(singleChatMsgMap.get(userid).size()-1));
             }
         }
 

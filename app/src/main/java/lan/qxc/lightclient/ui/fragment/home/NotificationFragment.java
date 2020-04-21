@@ -252,6 +252,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         IntentFilter filter = new IntentFilter();
         filter.addAction(ContextActionStr.notification_msg_frag_action);
         getActivity().registerReceiver(broadcastReceiver, filter);
+        if(notiMsgAdapter!=null){
+            notiMsgAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
