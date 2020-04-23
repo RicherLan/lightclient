@@ -132,6 +132,9 @@ public class NotiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
             int notreadmsgNum = MessageCacheUtil.getSingleChatMsgNotReadNumOfUid(uid);
+                if(notreadmsgNum>99){
+                    notreadmsgNum = 99;
+                }
 //            notreadmsgNum = 10;
                 if(notreadmsgNum!=0){
                     ((NotiMsgAdapter.SingleChatMsgViewHolder)holder).tv_msgnum_single_chat_msg_item.setVisibility(View.VISIBLE);

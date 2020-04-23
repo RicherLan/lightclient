@@ -23,9 +23,11 @@ import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.config.ContextActionStr;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.message.ChatMsgType;
+import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.netty.command_to_server.SendToServer;
 import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
+import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.chat.adapter.SingleChatAdapter;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
@@ -113,6 +115,9 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setMsgHadRead(){
+
+        MessageCacheUtil.setSingleChatMsgHadReadByUserid(userid);
+
         SingleChatMsgExecutor.getInstance().setAllMsgHadReadByuid(userid,new SingleChatMsgExecutor.SingleChatMsgListener(){
             @Override
             public void getResult(String message) {

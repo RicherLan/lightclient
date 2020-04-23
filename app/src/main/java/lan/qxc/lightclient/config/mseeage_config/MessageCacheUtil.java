@@ -16,6 +16,7 @@ import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
+import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 
 /**
@@ -67,7 +68,7 @@ public class MessageCacheUtil {
             list.add(singleChatMsg);
             singleChatMsgMap.put(userid,list);
         }
-
+        freshHomeMsgNum();
         addMsgToFrame(singleChatMsg);
     }
 
@@ -97,6 +98,7 @@ public class MessageCacheUtil {
 
         }
 
+        freshHomeMsgNum();
         //添加到消息窗口
         for(Long userid : userids){
             if(singleChatMsgMap.containsKey(userid)&&singleChatMsgMap.get(userid).size()>0){
@@ -106,11 +108,36 @@ public class MessageCacheUtil {
 
     }
 
+    public static void setAllMsgHadRead(){
+        //设置单人聊天消息已读
+        for(Long userid :singleChatMsgMap.keySet() ){
+            for(SingleChatMsg singleChatMsg : singleChatMsgMap.get(userid)){
+                singleChatMsg.setReadstate(new Byte("1"));
+            }
+        }
+
+        //设置好友请求信息已读
+        for(FriendMsgVO friendMsgVO : friendMsgs){
+            friendMsgVO.setReadstate(new Byte("1"));
+        }
+    }
+
     //设置单人聊天消息已读
     public static void setSingleChatMsgHadReadByUserid(Long userid){
         if(singleChatMsgMap.containsKey(userid)){
             for(SingleChatMsg singleChatMsg : singleChatMsgMap.get(userid)){
                 singleChatMsg.setReadstate(new Byte("1"));
+            }
+        }
+
+        freshHomeMsgNum();
+    }
+
+    //设置好友消息已读
+    public static void setFriendMsgsHadReadByMsgid(Long msgid){
+        for(FriendMsgVO friendMsgVO : friendMsgs){
+            if(friendMsgVO.getId().equals(msgid)){
+                friendMsgVO.setReadstate(new Byte("1"));
             }
         }
     }
@@ -203,6 +230,7 @@ public class MessageCacheUtil {
         }
         messages = null;
 
+        freshHomeMsgNum();
     }
 
     //添加信息到窗口
@@ -290,6 +318,12 @@ public class MessageCacheUtil {
             }
         });
 
+    }
+
+
+    //更新首界面底部信息数量
+    public static void freshHomeMsgNum(){
+        HomeActivity.freshMsgNum();
     }
 
 

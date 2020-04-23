@@ -8,7 +8,7 @@ import lan.qxc.lightclient.netty.protocol.request.netRequest.HeartBeatRequestPac
 
 public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
 
-    private static final int HEARTBEAT_INTERVAL = 5;
+    private static final int HEARTBEAT_INTERVAL = 30;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

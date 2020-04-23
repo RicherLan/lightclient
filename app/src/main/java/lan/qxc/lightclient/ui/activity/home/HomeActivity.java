@@ -1,9 +1,13 @@
 package lan.qxc.lightclient.ui.activity.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +20,10 @@ import java.util.List;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.WePagerAdapter;
+import lan.qxc.lightclient.config.ContextActionStr;
+import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
+import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
+import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
 import lan.qxc.lightclient.ui.activity.base_activitys.BaseForCloseActivity;
 import lan.qxc.lightclient.ui.fragment.home.IndexFragment;
 import lan.qxc.lightclient.ui.fragment.home.MineFragment;
@@ -27,10 +35,11 @@ import lan.qxc.lightclient.util.SharePerferenceUtil;
 public class HomeActivity extends BaseForCloseActivity {
 
     private List<Fragment> fragmentList;
-    private BottomNavigationBar bottomNavigationBar;
+    private static BottomNavigationBar bottomNavigationBar;
     private WePagerAdapter wePagerAdapter;
     private ViewPager mViewPager;
 
+    public static HomeActivity homeActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,16 +48,11 @@ public class HomeActivity extends BaseForCloseActivity {
 
         initview();
         initEvent();
+        homeActivity = this;
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(GlobalInfoUtil.personalInfo==null){
-            SharePerferenceUtil.getPersonalInfo(this);
-        }
-    }
+
 
     void initview(){
 
@@ -68,8 +72,10 @@ public class HomeActivity extends BaseForCloseActivity {
         bottomNavigationBar.showNum(2,0);
         bottomNavigationBar.showNum(3,0);
 
+
+
 //        bottomNavigationBar.disMissNum(1);
-        bottomNavigationBar.getViewPager();
+//        bottomNavigationBar.getViewPager();
 
         //mViewPager.setOnPageChangeListener(new MyPagerChangeListener());
         fragmentList=new ArrayList<>();
@@ -88,6 +94,51 @@ public class HomeActivity extends BaseForCloseActivity {
     }
 
 
+    //设置底部栏  数量
+    public static void freshMsgNum(){
+
+        if(bottomNavigationBar!=null){
+            int num = MessageCacheUtil.getMsgNotReadNum();
+            bottomNavigationBar.showNum(2,num);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(GlobalInfoUtil.personalInfo==null){
+            SharePerferenceUtil.getPersonalInfo(this);
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ContextActionStr.home_activity_action);
+        registerReceiver(broadcastReceiver, filter);
+        freshMsgNum();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(ContextActionStr.home_activity_action.equals(intent.getAction())){
+
+                String type = intent.getStringExtra("type");
+                //收到了聊天消息
+                if(type!=null&&type.equals("receivesinglechatmsg")){
+
+
+
+                }
+
+            }
+        }
+    };
+
 
 
     @Override
@@ -103,16 +154,9 @@ public class HomeActivity extends BaseForCloseActivity {
         return bottomNavigationBar;
     }
 
-//    public class MyPagerChangeListener implements ViewPager.OnPageChangeListener{
-//        public void onPageScrollStateChanged(int arg0) {
-//        }
-//        @Override
-//        public void onPageScrolled(int arg0, float arg1, int arg2) {
-//        }
-//        @Override
-//        public void onPageSelected(int arg0) {
-//        }
-//    }
+
+
+
 
 
 

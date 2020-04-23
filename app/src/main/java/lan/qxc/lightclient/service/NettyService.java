@@ -62,6 +62,10 @@ public class NettyService extends Service implements NettyListener {
 
             //断线
         } else {                     //停止登陆
+
+            NettyClient.getInstance().setConnectStatus(false);
+            NettyClient.getInstance().connect();
+
             if(loginTimer!=null){
                 loginTimer.cancel();
             }

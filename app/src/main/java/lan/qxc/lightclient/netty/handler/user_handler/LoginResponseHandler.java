@@ -13,6 +13,7 @@ import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.netty.config.NettyConfig;
 import lan.qxc.lightclient.netty.protocol.response.user_response.LoginResponsePacket;
 import lan.qxc.lightclient.service.NettyService;
+import lan.qxc.lightclient.service.RequestService;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
@@ -41,6 +42,11 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
             GlobalInfoUtil.personalInfo = personalInfo;
 
             GlobalInfoUtil.personalInfo.setPassword(personalInfo.getPassword());
+
+            //请求相关信息
+            RequestService.loginOkRequestMsg();
+
+
             Map<String ,String > map = new HashMap<>();
             map.put(SharePerferenceUtil.sh_login_username,personalInfo.getPhone());
             map.put(SharePerferenceUtil.sh_login_password,personalInfo.getPassword());

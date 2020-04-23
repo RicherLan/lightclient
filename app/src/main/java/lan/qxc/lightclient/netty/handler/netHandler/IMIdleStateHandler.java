@@ -10,7 +10,7 @@ import lan.qxc.lightclient.netty.netty_client.NettyListener;
 
 public class IMIdleStateHandler extends IdleStateHandler {
 
-    private static final int READER_IDLE_TIME = 15;
+    private static final int READER_IDLE_TIME = 150;
 
     public IMIdleStateHandler() {
         super(READER_IDLE_TIME, 0, 0, TimeUnit.SECONDS);
@@ -21,16 +21,13 @@ public class IMIdleStateHandler extends IdleStateHandler {
         //System.out.println(READER_IDLE_TIME + "秒内未读到数据，关闭连接");
 
         ctx.channel().close();
-        NettyClient.getInstance().setConnectStatus(false);
         NettyClient.getInstance().getListener().onNettyServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_ERROR);
-        NettyClient.getInstance().connect();
+
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        NettyClient.getInstance().setConnectStatus(false);
         NettyClient.getInstance().getListener().onNettyServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_ERROR);
-        NettyClient.getInstance().connect();
     }
 
 }

@@ -4,6 +4,7 @@ import lan.qxc.lightclient.result.Result;
 
 import lan.qxc.lightclient.service.GuanzhuService;
 
+import lan.qxc.lightclient.service.UserService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,7 +16,7 @@ public class Test {
     public static void main(String[] args) {
 
 
-            Call<Result> call = GuanzhuService.getInstance().guanzhu(new Long(3),new Long(1));
+            Call<Result> call = UserService.getInstance().login("15054190193","123");
             call.enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {

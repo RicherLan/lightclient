@@ -37,6 +37,7 @@ import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.FriendMsgService;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
+import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.chat.activity.SingleChatActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.SpaceItemDecoration;
@@ -68,7 +69,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             initView();
             initEvent();
 
-            freshNotiMsg();
+//            freshNotiMsg();
 
         }
 
@@ -117,8 +118,10 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                     intent.putExtra("userid",userid);
                     startActivity(intent);
 
+
+                    //设置消息已读
                     if(friendMsgVO.getReadstate()==0){
-                        friendMsgVO.setReadstate(new Byte("1"));
+                        MessageCacheUtil.setFriendMsgsHadReadByMsgid(friendMsgVO.getId());
                         notiMsgAdapter.notifyDataSetChanged();
 
                         FriendMsgExecutor.getInstance().setFriendMsgHadRead(friendMsgVO.getId(), new FriendMsgExecutor.FriendMsgListener() {
@@ -212,39 +215,21 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             }
         });
 
-
-        Call<Result> call = FriendMsgService.getInstance().getUserFriendMsgNotRead(GlobalInfoUtil.personalInfo.getUserid());
-        call.enqueue(new Callback<Result>() {
+        FriendMsgExecutor.getInstance().getUserFriendMsgNotRead(new FriendMsgExecutor.FriendMsgListener() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void getResult(String message) {
                 cancleTimer();
                 layout_refresh_notifi_frag.setRefreshing(false);
-
-                Result result = response.body();
-                String message = result.getMessage();
                 if(message.equals("SUCCESS")){
-
-                    String jsonstr = JsonUtils.objToJson(result.getData());
-                    List<FriendMsgVO> friendMsgVOS = new Gson().fromJson(jsonstr,new TypeToken<List<FriendMsgVO>>(){}.getType());
-
-                    MessageCacheUtil.updateFriendMsgs(friendMsgVOS);
-
                     notiMsgAdapter.notifyDataSetChanged();
-
                 }else{
                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                cancleTimer();
-                layout_refresh_notifi_frag.setRefreshing(false);
-                Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
-            }
         });
 
     }
+
 
     @Override
     public void onResume() {
