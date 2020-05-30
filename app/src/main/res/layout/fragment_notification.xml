@@ -107,13 +107,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:id="@+id/tv_text_dongtaimsg"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="动态消息"
                             android:textSize="17sp">
                         </TextView>
 
+
+                        <TextView
+                            android:id="@+id/tv_msgnum_dongtaimsg"
+                            android:layout_toLeftOf="@+id/tv_next_dongtaimsg"
+                            android:layout_width="21dp"
+                            android:layout_height="21dp"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:background="@drawable/redis_red_back_layout">
+                        </TextView>
+
                         <ImageView
+                            android:id="@+id/tv_next_dongtaimsg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"

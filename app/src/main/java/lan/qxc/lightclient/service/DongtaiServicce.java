@@ -77,4 +77,11 @@ public class DongtaiServicce {
         return service.addDongtai(parts,dttext,deviceinfo,uesrid);
     }
 
+
+    //点赞
+    public Call<Result> likeDongtai(Long dtid,Long userid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.likeDongtai(dtid,userid);
+    }
+
 }

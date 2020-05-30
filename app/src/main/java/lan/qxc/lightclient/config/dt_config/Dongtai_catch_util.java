@@ -18,6 +18,25 @@ public class Dongtai_catch_util {
     //存储用户的动态   key为用户id
     public static Map<Long,List<DongtailVO>> dtMap = new HashMap<>();
 
+
+    //用户自己对某条动态点赞/取消赞
+    public static void likeDongtai(Long dtid){
+        for(DongtailVO dongtailVO : tjDongtailVOS){
+            if(dongtailVO.getDtid().equals(dtid)){
+
+                if(dongtailVO.getIsLike().equals(new Byte("0"))){
+                    dongtailVO.setLikeNum(dongtailVO.getLikeNum()+1);
+                    dongtailVO.setIsLike(new Byte("1"));
+                }else{
+                    dongtailVO.setLikeNum(dongtailVO.getLikeNum()-1);
+                    dongtailVO.setIsLike(new Byte("0"));
+                }
+
+            }
+        }
+    }
+
+
     public static void updateNewTJDTList(Long userid,List<DongtailVO> list){
         if(dtMap.containsKey(userid)){
             updateNewTJDTList(dtMap.get(userid),list);

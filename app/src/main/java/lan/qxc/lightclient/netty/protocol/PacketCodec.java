@@ -5,6 +5,7 @@ import java.util.Map;
 
 import io.netty.buffer.ByteBuf;
 import lan.qxc.lightclient.netty.protocol.packet.chat_msg.SingleChatMsgPacket;
+import lan.qxc.lightclient.netty.protocol.packet.dongtai_msg_packet.DongtaiMsgPacket;
 import lan.qxc.lightclient.netty.protocol.packet.friend_msg_packet.FriendMsgPacket;
 import lan.qxc.lightclient.netty.protocol.request.chat_request.SingleChatRequestPacket;
 import lan.qxc.lightclient.netty.protocol.request.netRequest.HeartBeatRequestPacket;
@@ -14,6 +15,7 @@ import lan.qxc.lightclient.netty.protocol.response.user_response.LoginResponsePa
 import lan.qxc.lightclient.netty.serialize.Serializer;
 import lan.qxc.lightclient.netty.serialize.impl.JSONSerializer;
 
+import static lan.qxc.lightclient.netty.protocol.command.Command.DONGTAI_MSG_PACKET;
 import static lan.qxc.lightclient.netty.protocol.command.Command.Friend_GUANZHU_MSG;
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_REQUEST;
 import static lan.qxc.lightclient.netty.protocol.command.Command.HEARTBEAT_RESPONSE;
@@ -45,6 +47,8 @@ public class PacketCodec {
         packetTypeMap.put(SINGLE_CHAT_MSG_REQUEST, SingleChatRequestPacket.class);
 
         packetTypeMap.put(SINGLE_CHAT_MSG_PACKET, SingleChatMsgPacket.class);
+
+        packetTypeMap.put(DONGTAI_MSG_PACKET, DongtaiMsgPacket.class);
 
 
         serializerMap = new HashMap<>();

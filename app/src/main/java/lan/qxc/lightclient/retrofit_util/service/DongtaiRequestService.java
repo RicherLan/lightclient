@@ -58,5 +58,11 @@ public interface DongtaiRequestService {
 
 
 
+    @POST(DongtaiAPI.LIKE_DONGTAI)
+    @FormUrlEncoded
+    Call<Result> likeDongtai(@Field("dtid") Long dtid,@Field("userid") Long userid);
+
+
+
 
 }

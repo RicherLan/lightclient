@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import java.util.TimerTask;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.notificationmsg.NotiMsgAdapter;
 import lan.qxc.lightclient.config.ContextActionStr;
+import lan.qxc.lightclient.config.mseeage_config.DongtaiMsgCacheUtil;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.entity.message.Message;
@@ -59,6 +61,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     RecyclerView recyview_msg_notifi_frag;
     NotiMsgAdapter notiMsgAdapter;
 
+    TextView tv_msgnum_dongtaimsg;
+
 
     @Nullable
     @Override
@@ -83,6 +87,17 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         layout_dt_msg_notifi_frag = view.findViewById(R.id.layout_dt_msg_notifi_frag);
         recyview_msg_notifi_frag = view.findViewById(R.id.recyview_msg_notifi_frag);
 
+
+        tv_msgnum_dongtaimsg = view.findViewById(R.id.tv_msgnum_dongtaimsg);
+        tv_msgnum_dongtaimsg.setVisibility(View.INVISIBLE);
+
+    }
+
+    void updateDongtaiMsgNumView(){
+        if (DongtaiMsgCacheUtil.getMsgNotRead()>0){
+            tv_msgnum_dongtaimsg.setVisibility(View.VISIBLE);
+            tv_msgnum_dongtaimsg.setText(DongtaiMsgCacheUtil.getMsgNotRead());
+        }
     }
 
     private void initEvent(){
@@ -240,6 +255,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         if(notiMsgAdapter!=null){
             notiMsgAdapter.notifyDataSetChanged();
         }
+        updateDongtaiMsgNumView();
     }
 
     @Override
@@ -257,6 +273,10 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 String type = intent.getStringExtra("type");
                 if(type!=null&&type.equals("freshadapter")){
                     notiMsgAdapter.notifyDataSetChanged();
+
+                //刷新动态消息
+                }else if(type!=null&&type.equals("freshDongtaiMsg")){
+                    updateDongtaiMsgNumView();
                 }
 
             }

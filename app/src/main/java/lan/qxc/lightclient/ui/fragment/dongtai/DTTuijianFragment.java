@@ -40,6 +40,7 @@ import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.DongtaiServicce;
 import lan.qxc.lightclient.service.GuanzhuService;
 import lan.qxc.lightclient.service.service_callback.DongtaiFreshExecutor;
+import lan.qxc.lightclient.service.service_callback.DongtaiMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.GuanzhuExecutor;
 import lan.qxc.lightclient.ui.fragment.home.ContactFragment;
 import lan.qxc.lightclient.ui.widget.bigimage_looker.BigImageLookerActivity;
@@ -139,7 +140,22 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
         dongtaiAdapter.setLikeListener(new ClickLikeListener() {
             @Override
             public void clickLike(int position) {
-                Toast.makeText(getContext(),"点击点赞 "+position,Toast.LENGTH_SHORT).show();
+                DongtailVO dongtailVO = Dongtai_catch_util.tjDongtailVOS.get(position);
+                if(dongtailVO==null){
+                    Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
+                }
+                DongtaiMsgExecutor.getInstance().likeDongtai(dongtailVO.getDtid(),new DongtaiMsgExecutor.DongtaiMsgListener(){
+
+                    @Override
+                    public void getResult(String message) {
+                        if(message.equals("SUCCESS")){
+                            dongtaiAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
 

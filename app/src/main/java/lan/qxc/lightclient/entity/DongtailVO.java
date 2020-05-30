@@ -30,4 +30,15 @@ public class DongtailVO implements Serializable {
     //1代表我关注了他    2代表他关注了我   0代表好友
     private Integer guanzhu_type;
 
+    //点赞数
+    private Integer likeNum;
+    //评论数
+    private Integer commonNum;
+
+    //转发数
+    private Integer transmitNum;
+
+    //用户是否对本条动态点赞；
+    private Byte isLike;
+
 }

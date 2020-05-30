@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -175,9 +176,18 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
 
 
-            ((DongtaiViewHolder)holder).tv_transmit_text_dt_item.setText("863");
-            ((DongtaiViewHolder)holder).tv_common_text_dt_item.setText("7");
-            ((DongtaiViewHolder)holder).tv_like_text_dt_item.setText("5.3万");
+
+
+
+            ((DongtaiViewHolder)holder).tv_transmit_text_dt_item.setText(dongtailVO.getTransmitNum());
+            ((DongtaiViewHolder)holder).tv_common_text_dt_item.setText(dongtailVO.getCommonNum());
+            ((DongtaiViewHolder)holder).tv_like_text_dt_item.setText(dongtailVO.getLikeNum());
+
+            if(dongtailVO.getIsLike().equals(new Byte("0"))){
+                ((DongtaiViewHolder)holder).iv_like_label_dt_item.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_like));
+            }else{
+                ((DongtaiViewHolder)holder).iv_like_label_dt_item.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_like_selecct));
+            }
 
 
             ((DongtaiViewHolder)holder).layout_transmit_dt_item.setOnClickListener(new View.OnClickListener() {
