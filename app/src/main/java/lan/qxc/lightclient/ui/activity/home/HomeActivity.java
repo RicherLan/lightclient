@@ -21,6 +21,7 @@ import java.util.List;
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.home.WePagerAdapter;
 import lan.qxc.lightclient.config.ContextActionStr;
+import lan.qxc.lightclient.config.mseeage_config.DongtaiMsgCacheUtil;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
@@ -98,7 +99,7 @@ public class HomeActivity extends BaseForCloseActivity {
     public static void freshMsgNum(){
 
         if(bottomNavigationBar!=null){
-            int num = MessageCacheUtil.getMsgNotReadNum();
+            int num = MessageCacheUtil.getMsgNotReadNum()+ DongtaiMsgCacheUtil.msgNotReadNum;
             bottomNavigationBar.showNum(2,num);
         }
 

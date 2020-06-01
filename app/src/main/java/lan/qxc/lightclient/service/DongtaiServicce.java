@@ -84,4 +84,25 @@ public class DongtaiServicce {
         return service.likeDongtai(dtid,userid);
     }
 
+
+    public Call<Result> getDongtai_Msg_Not_Read_Num(Long userid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.getDongtai_Msg_Not_Read_Num(userid);
+    }
+
+
+    public Call<Result> getDongtai_Msg_Back_List(Long userid,Long msgid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.getDongtai_Msg_Back_List(userid,msgid);
+    }
+
+    public Call<Result> getDongtai_Msg_New_List(Long userid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.getDongtai_Msg_New_List(userid);
+    }
+
+    public Call<Result> set_Dongtai_Msg_Had_Read(Long userid){
+        DongtaiRequestService service = RetrofitHelper.getInstance().create(DongtaiRequestService.class);
+        return service.set_Dongtai_Msg_Had_Read(userid);
+    }
 }

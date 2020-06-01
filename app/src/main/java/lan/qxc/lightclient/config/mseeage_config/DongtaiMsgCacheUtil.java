@@ -5,41 +5,49 @@ import java.util.List;
 
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtaiMsg;
+import lan.qxc.lightclient.entity.DongtaiMsgVO;
+import lan.qxc.lightclient.entity.DongtailVO;
+import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 
 public class DongtaiMsgCacheUtil {
 
-    private static List<DongtaiMsg> dongtaiMsgNotReadList = new ArrayList<>();
-    private static List<Dongtai> dongtaiNotReadList = new ArrayList<>();
+    public static int msgNotReadNum = 0;
+
+    public static List<DongtaiMsgVO> dongtaiMsgList = new ArrayList<>();
+    public static List<DongtailVO> dongtaiList = new ArrayList<>();
 
 
-    private static List<DongtaiMsg> dongtaiMsgHadReadList = new ArrayList<>();
-    private static List<Dongtai> dongtaiHadReadList = new ArrayList<>();
-
+    public static void setMsgNotReadNum(int num){
+        msgNotReadNum = num;
+    }
 
     public static int getMsgNotRead(){
 
-        return dongtaiMsgNotReadList.size();
+        return msgNotReadNum;
 
     }
 
 
-    public static void addDongtaiMsg(Dongtai dongtai,DongtaiMsg dongtaiMsg){
-        dongtaiMsgNotReadList.add(dongtaiMsg);
-        dongtaiNotReadList.add(dongtai);
+    public static void addDongtaiMsg(DongtailVO dongtai,DongtaiMsgVO dongtaiMsg){
+        dongtaiMsgList.add(dongtaiMsg);
+        dongtaiList.add(dongtai);
     }
 
 
     public static void setMsgHadRead(){
 
-        if(dongtaiMsgNotReadList.size()!=0){
+        dongtaiMsgList.clear();
+        dongtaiList.clear();
 
-            dongtaiMsgHadReadList.addAll(0,dongtaiMsgNotReadList);
-            dongtaiHadReadList.addAll(0,dongtaiNotReadList);
-
-            dongtaiMsgNotReadList.clear();
-            dongtaiNotReadList.clear();
-
-        }
+//        if(dongtaiMsgNotReadList.size()!=0){
+//
+//            dongtaiMsgHadReadList.addAll(0,dongtaiMsgNotReadList);
+//            dongtaiHadReadList.addAll(0,dongtaiNotReadList);
+//
+//            dongtaiMsgNotReadList.clear();
+//            dongtaiNotReadList.clear();
+//
+//        }
 
     }
 

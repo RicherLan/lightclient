@@ -125,6 +125,12 @@
         </activity>
 
 
+        <activity
+            android:name=".ui.activity.dongtai.DongtaiMsgActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Personalinfo" />
+
     </application>
 
 </manifest>

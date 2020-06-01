@@ -2,6 +2,7 @@ package lan.qxc.lightclient.service;
 
 import android.widget.Toast;
 
+import lan.qxc.lightclient.service.service_callback.DongtaiMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.FreshFriendListExecutor;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
@@ -34,6 +35,16 @@ public class RequestService {
 //                }else{
 //
 //                }
+            }
+        });
+
+
+        //请求动态消息未读消息
+        DongtaiMsgExecutor.getInstance().getDongtai_Msg_Not_Read_Num(new DongtaiMsgExecutor.DongtaiMsgListener() {
+
+            @Override
+            public void getResult(String message) {
+
             }
         });
 

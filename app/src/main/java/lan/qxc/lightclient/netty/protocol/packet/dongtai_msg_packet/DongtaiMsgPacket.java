@@ -3,6 +3,8 @@ package lan.qxc.lightclient.netty.protocol.packet.dongtai_msg_packet;
 
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtaiMsg;
+import lan.qxc.lightclient.entity.DongtaiMsgVO;
+import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.netty.protocol.Packet;
 
 import lombok.AllArgsConstructor;
@@ -17,8 +19,8 @@ import static lan.qxc.lightclient.netty.protocol.command.Command.DONGTAI_MSG_PAC
 @AllArgsConstructor
 public class DongtaiMsgPacket extends Packet {
 
-    Dongtai dongtai;
-    DongtaiMsg dongtaiMsg;
+    DongtailVO dongtailVO;
+    DongtaiMsgVO dongtaiMsgVO;
 
     @Override
     public int getCommand() {

@@ -137,6 +137,7 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
         });
 
 
+        //点赞
         dongtaiAdapter.setLikeListener(new ClickLikeListener() {
             @Override
             public void clickLike(int position) {
@@ -144,6 +145,12 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
                 if(dongtailVO==null){
                     Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
                 }
+
+                //自己不能给自己点赞
+                if(dongtailVO.getUserid().equals(GlobalInfoUtil.personalInfo.getUserid())){
+                    return;
+                }
+
                 DongtaiMsgExecutor.getInstance().likeDongtai(dongtailVO.getDtid(),new DongtaiMsgExecutor.DongtaiMsgListener(){
 
                     @Override

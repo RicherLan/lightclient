@@ -179,9 +179,9 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
 
-            ((DongtaiViewHolder)holder).tv_transmit_text_dt_item.setText(dongtailVO.getTransmitNum());
-            ((DongtaiViewHolder)holder).tv_common_text_dt_item.setText(dongtailVO.getCommonNum());
-            ((DongtaiViewHolder)holder).tv_like_text_dt_item.setText(dongtailVO.getLikeNum());
+            ((DongtaiViewHolder)holder).tv_transmit_text_dt_item.setText(dongtailVO.getTransmitNum()+"");
+            ((DongtaiViewHolder)holder).tv_common_text_dt_item.setText(dongtailVO.getCommonNum()+"");
+            ((DongtaiViewHolder)holder).tv_like_text_dt_item.setText(dongtailVO.getLikeNum()+"");
 
             if(dongtailVO.getIsLike().equals(new Byte("0"))){
                 ((DongtaiViewHolder)holder).iv_like_label_dt_item.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_like));

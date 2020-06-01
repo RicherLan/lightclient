@@ -13,6 +13,8 @@ import lan.qxc.lightclient.config.mseeage_config.DongtaiMsgCacheUtil;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
 import lan.qxc.lightclient.entity.Dongtai;
 import lan.qxc.lightclient.entity.DongtaiMsg;
+import lan.qxc.lightclient.entity.DongtaiMsgVO;
+import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.entity.message.FriendMsgVO;
 import lan.qxc.lightclient.netty.protocol.packet.dongtai_msg_packet.DongtaiMsgPacket;
 import lan.qxc.lightclient.netty.protocol.packet.friend_msg_packet.FriendMsgPacket;
@@ -24,10 +26,11 @@ public class DongtaiMsgResponseHandler extends SimpleChannelInboundHandler<Dongt
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DongtaiMsgPacket packet) throws Exception {
 
-        Dongtai dongtai = packet.getDongtai();
-        DongtaiMsg dongtaiMsg = packet.getDongtaiMsg();
+        DongtailVO dongtai = packet.getDongtailVO();
+        DongtaiMsgVO dongtaiMsg = packet.getDongtaiMsgVO();
 
         DongtaiMsgCacheUtil.addDongtaiMsg(dongtai,dongtaiMsg);
+        DongtaiMsgCacheUtil.setMsgNotReadNum(DongtaiMsgCacheUtil.msgNotReadNum+1);
 
 
         //刷新消息窗口界面

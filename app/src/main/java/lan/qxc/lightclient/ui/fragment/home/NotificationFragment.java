@@ -37,8 +37,10 @@ import lan.qxc.lightclient.entity.message.MessageType;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
 import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.FriendMsgService;
+import lan.qxc.lightclient.service.service_callback.DongtaiMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.FriendMsgExecutor;
 import lan.qxc.lightclient.service.service_callback.SingleChatMsgExecutor;
+import lan.qxc.lightclient.ui.activity.dongtai.DongtaiMsgActivity;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.chat.activity.SingleChatActivity;
@@ -96,7 +98,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     void updateDongtaiMsgNumView(){
         if (DongtaiMsgCacheUtil.getMsgNotRead()>0){
             tv_msgnum_dongtaimsg.setVisibility(View.VISIBLE);
-            tv_msgnum_dongtaimsg.setText(DongtaiMsgCacheUtil.getMsgNotRead());
+            tv_msgnum_dongtaimsg.setText(DongtaiMsgCacheUtil.getMsgNotRead()+"");
+        }else{
+            tv_msgnum_dongtaimsg.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -182,7 +186,12 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             case R.id.layout_search_notifi_frag:
                 break;
 
+
+                //点击动态消息    进入动态消息界面
             case R.id.layout_dt_msg_notifi_frag:
+
+                Intent intent = new Intent(getContext(), DongtaiMsgActivity.class);
+                startActivity(intent);
 
                 break;
         }
@@ -243,6 +252,20 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             }
         });
 
+
+        //请求动态消息未读消息
+        DongtaiMsgExecutor.getInstance().getDongtai_Msg_Not_Read_Num(new DongtaiMsgExecutor.DongtaiMsgListener() {
+
+            @Override
+            public void getResult(String message) {
+                if(message.equals("SUCCESS")){
+                    updateDongtaiMsgNumView();
+                }else{
+
+                }
+            }
+        });
+
     }
 
 
@@ -256,6 +279,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             notiMsgAdapter.notifyDataSetChanged();
         }
         updateDongtaiMsgNumView();
+        HomeActivity.freshMsgNum();
     }
 
     @Override
@@ -273,10 +297,11 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 String type = intent.getStringExtra("type");
                 if(type!=null&&type.equals("freshadapter")){
                     notiMsgAdapter.notifyDataSetChanged();
-
+                    HomeActivity.freshMsgNum();
                 //刷新动态消息
                 }else if(type!=null&&type.equals("freshDongtaiMsg")){
                     updateDongtaiMsgNumView();
+                    HomeActivity.freshMsgNum();
                 }
 
             }

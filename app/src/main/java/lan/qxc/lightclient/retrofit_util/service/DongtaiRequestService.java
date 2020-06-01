@@ -65,4 +65,19 @@ public interface DongtaiRequestService {
 
 
 
+    @POST(DongtaiAPI.GET_DONGTAI_MSG_NOT_READ_NUM)
+    @FormUrlEncoded
+    Call<Result> getDongtai_Msg_Not_Read_Num(@Field("userid") Long userid);
+
+    @POST(DongtaiAPI.GET_DONGTAI_MSG_BACK_LIST)
+    @FormUrlEncoded
+    Call<Result> getDongtai_Msg_Back_List(@Field("userid") Long userid,@Field("msgid") Long msgid);
+
+    @POST(DongtaiAPI.GET_DONGTAI_MSG_NEW_LIST)
+    @FormUrlEncoded
+    Call<Result> getDongtai_Msg_New_List(@Field("userid") Long userid);
+
+    @POST(DongtaiAPI.SET_DONGTAI_MSG_AHD_READ)
+    @FormUrlEncoded
+    Call<Result> set_Dongtai_Msg_Had_Read(@Field("userid") Long userid);
 }
