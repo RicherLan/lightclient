@@ -1,6 +1,7 @@
 package lan.qxc.lightclient.adapter.dongtai;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,10 @@ import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.adapter.friend_menu.GuanzhuMenuAdapter;
 import lan.qxc.lightclient.entity.DongtailVO;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
+import lan.qxc.lightclient.ui.activity.user_activitys.PersonalActivity;
+import lan.qxc.lightclient.ui.activity.user_activitys.UserDetailInfoActivity;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
+import lan.qxc.lightclient.ui.fragment.home.MineFragment;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
 import lan.qxc.lightclient.util.GlobalInfoUtil;
 import lan.qxc.lightclient.util.ImageUtil;
@@ -114,6 +118,22 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(holder instanceof DongtaiViewHolder){
             DongtailVO dongtailVO = dongtais.get(position);
             ((DongtaiViewHolder)holder).tv_nickname_dt_item.setText(dongtailVO.getUsername());
+
+            ((DongtaiViewHolder)holder).tv_nickname_dt_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(dongtailVO.getUserid().equals(GlobalInfoUtil.personalInfo.getUserid())){
+                        Intent intent = new Intent(mContext, PersonalActivity.class);
+                        mContext.startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(mContext, UserDetailInfoActivity.class);
+                        intent.putExtra("userid",dongtailVO.getUserid());
+                        mContext.startActivity(intent);
+                    }
+
+                }
+            });
+
             if(dongtailVO.getDeviceinfo()!=null){
                 ((DongtaiViewHolder)holder).tv_phone_type_dt_item.setText("来自  "+ dongtailVO.getDeviceinfo());
             }
@@ -163,6 +183,21 @@ public class DongtaiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             String headIcPath = APIUtil.getUrl(dongtailVO.getIcon());
             ImageUtil.getInstance().setNetImageToView(mContext,headIcPath,((DongtaiViewHolder)holder).iv_headic_dt_item);
+
+            ((DongtaiViewHolder)holder).iv_headic_dt_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(dongtailVO.getUserid().equals(GlobalInfoUtil.personalInfo.getUserid())){
+                        Intent intent = new Intent(mContext, PersonalActivity.class);
+                        mContext.startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(mContext, UserDetailInfoActivity.class);
+                        intent.putExtra("userid",dongtailVO.getUserid());
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
 
             ((DongtaiViewHolder)holder).tv_dongtai_text_dt_item.setText(dongtailVO.getDtcontent());
             if(dongtailVO.getDtpic()!=null&&!dongtailVO.getDtpic().isEmpty()){

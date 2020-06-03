@@ -39,7 +39,8 @@ public class Dongtai_catch_util {
 
     public static void updateNewTJDTList(Long userid,List<DongtailVO> list){
         if(dtMap.containsKey(userid)){
-            updateNewTJDTList(dtMap.get(userid),list);
+            dtMap.get(userid).clear();
+            dtMap.get(userid).addAll(list);
         }else{
             dtMap.put(userid,list);
         }
@@ -54,38 +55,40 @@ public class Dongtai_catch_util {
     }
 
     //请求服务器新的动态列表
-    public static void updateNewTJDTList(List<DongtailVO> orignList,List<DongtailVO> list){
-
-        if(orignList==null){
-            orignList = new ArrayList<DongtailVO>();
-        }
-        //更新头像
-        for(DongtailVO newdt : list){
-            for(DongtailVO  dongtailVO : orignList){
-                if(dongtailVO.getDtid()==newdt.getDtid()){
-                    dongtailVO.setIcon(newdt.getIcon());
-                }
-            }
-        }
-
-        List<DongtailVO> del = new ArrayList<>();
-        for(DongtailVO  dongtailVO : orignList){
-
-            for(DongtailVO newdt : list){
-                if(newdt.getDtid()==dongtailVO.getDtid()){
-                    del.add(dongtailVO);
-                }
-            }
-        }
-
-        for(DongtailVO dongtailVO : del){
-            orignList.remove(dongtailVO);
-        }
-        del = null;
-
-        orignList.addAll(list);
-
-        sortDtvos(orignList);
+    public static void updateNewTJDTList(List<DongtailVO> list){
+//
+//        if(orignList==null){
+//            orignList = new ArrayList<DongtailVO>();
+//        }
+//        //更新头像
+//        for(DongtailVO newdt : list){
+//            for(DongtailVO  dongtailVO : orignList){
+//                if(dongtailVO.getDtid()==newdt.getDtid()){
+//                    dongtailVO.setIcon(newdt.getIcon());
+//                }
+//            }
+//        }
+//
+//        List<DongtailVO> del = new ArrayList<>();
+//        for(DongtailVO  dongtailVO : orignList){
+//
+//            for(DongtailVO newdt : list){
+//                if(newdt.getDtid()==dongtailVO.getDtid()){
+//                    del.add(dongtailVO);
+//                }
+//            }
+//        }
+//
+//        for(DongtailVO dongtailVO : del){
+//            orignList.remove(dongtailVO);
+//        }
+//        del = null;
+//
+//        orignList.addAll(list);
+        tjDongtailVOS.clear();
+        tjDongtailVOS.addAll(list);
+        list = null;
+        sortDtvos(tjDongtailVOS);
     }
 
     //请求服务器旧的动态列表

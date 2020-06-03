@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,7 +127,8 @@ public class DongtaiMsgAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).iv_item_dongtaimsg_pic.setVisibility(View.INVISIBLE);     //显示动态的第一张图片
             }else{
                 ((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).iv_item_dongtaimsg_pic.setVisibility(View.VISIBLE);
-                ImageUtil.getInstance().setNetImageToView(mContext,headIcPath,((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).iv_item_dongtaimsg_pic);
+//                Glide.with(mContext).load(picpath).into(((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).iv_item_dongtaimsg_pic);
+                ImageUtil.getInstance().setNetImageToView(mContext,picpath,((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).iv_item_dongtaimsg_pic);
             }
 
             ((DongtaiMsgAdapter.DongtaiMsgViewHolder)holder).tv_item_dongtaimsg_text.setText(dongtailVO.getUsername()+"："+dongtailVO.getDtcontent());    //显示的内容

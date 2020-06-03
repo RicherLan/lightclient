@@ -34,6 +34,7 @@ import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.retrofit_util.api.APIUtil;
 import lan.qxc.lightclient.service.DongtaiServicce;
 import lan.qxc.lightclient.service.service_callback.DongtaiFreshExecutor;
+import lan.qxc.lightclient.service.service_callback.DongtaiMsgExecutor;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.widget.bigimage_looker.BigImageLookerActivity;
 import lan.qxc.lightclient.ui.widget.imagewarker.MessagePicturesLayout;
@@ -89,10 +90,10 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
         layout_refresh_dt_tuijian_frag.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.my_orange_light));
 
 
-        if(!Dongtai_catch_util.dtMap.containsKey(GlobalInfoUtil.personalInfo.getUserid())){
-            Dongtai_catch_util.dtMap.put(GlobalInfoUtil.personalInfo.getUserid(),new ArrayList<DongtailVO>());
+        if(!Dongtai_catch_util.dtMap.containsKey(userid)){
+            Dongtai_catch_util.dtMap.put(userid,new ArrayList<DongtailVO>());
         }
-        dongtaiAdapter = new DongtaiAdapter(getActivity(), Dongtai_catch_util.dtMap.get(GlobalInfoUtil.personalInfo.getUserid()));
+        dongtaiAdapter = new DongtaiAdapter(getActivity(), Dongtai_catch_util.dtMap.get(userid));
 
         recyclerview_dt_tuijian_frag.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview_dt_tuijian_frag.addItemDecoration(new SpaceItemDecoration(getActivity()).setSpace(12).setSpaceColor(0xFFEEEEEE));
@@ -136,7 +137,28 @@ public class Personal_dongtai_fragment extends Fragment implements View.OnClickL
         dongtaiAdapter.setLikeListener(new DTTuijianFragment.ClickLikeListener() {
             @Override
             public void clickLike(int position) {
-                Toast.makeText(getContext(),"点击点赞 "+position,Toast.LENGTH_SHORT).show();
+                
+                DongtailVO dongtailVO = Dongtai_catch_util.dtMap.get(userid).get(position);
+                if(dongtailVO==null){
+                    Toast.makeText(getContext(),"error!",Toast.LENGTH_SHORT).show();
+                }
+
+                //自己不能给自己点赞
+                if(dongtailVO.getUserid().equals(GlobalInfoUtil.personalInfo.getUserid())){
+                    return;
+                }
+
+                DongtaiMsgExecutor.getInstance().likeDongtai(dongtailVO.getDtid(),new DongtaiMsgExecutor.DongtaiMsgListener(){
+
+                    @Override
+                    public void getResult(String message) {
+                        if(message.equals("SUCCESS")){
+                            dongtaiAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 

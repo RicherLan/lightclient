@@ -108,7 +108,8 @@
             <ImageView
                 android:id="@+id/iv_item_dongtaimsg_pic"
                 android:layout_width="85dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop">
             </ImageView>
 
             <TextView

@@ -75,8 +75,6 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
 
             initView();
             initEvent();
-            requestNewDongtai();
-
 
         }
         tuijianFragment = this;
@@ -229,6 +227,12 @@ public class DTTuijianFragment extends Fragment implements View.OnClickListener 
         MyDialog.dismissBottomLoadingDialog();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestNewDongtai();
+    }
 
     @Override
     public void onDestroy() {

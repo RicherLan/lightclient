@@ -52,7 +52,7 @@ public class DongtaiFreshExecutor {
                 if(message.equals("SUCCESS")){
                     String jsonstr = JsonUtils.objToJson(result.getData());
                     List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateNewTJDTList(Dongtai_catch_util.tjDongtailVOS,dongtailVOs);
+                    Dongtai_catch_util.updateNewTJDTList(dongtailVOs);
                 }else{
 
                 }
@@ -110,7 +110,7 @@ public class DongtaiFreshExecutor {
     //下拉刷新  某指定用户的动态
     public void requestUserNewDongtai(Long userid,DongtaiFreshListener listener){
 
-        Call<Result> call = DongtaiServicce.getInstance().getUserDongtai_New_List(userid,userid);
+        Call<Result> call = DongtaiServicce.getInstance().getUserDongtai_New_List(GlobalInfoUtil.personalInfo.getUserid(),userid);
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
@@ -123,7 +123,7 @@ public class DongtaiFreshExecutor {
                 if(message.equals("SUCCESS")){
                     String jsonstr = JsonUtils.objToJson(result.getData());
                     List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateNewTJDTList(GlobalInfoUtil.personalInfo.getUserid(),dongtailVOs);
+                    Dongtai_catch_util.updateNewTJDTList(userid,dongtailVOs);
                 }else{
 
                 }
@@ -164,7 +164,7 @@ public class DongtaiFreshExecutor {
 
                     String jsonstr = JsonUtils.objToJson(result.getData());
                     List<DongtailVO> dongtailVOs = new Gson().fromJson(jsonstr,new TypeToken<List<DongtailVO>>(){}.getType());
-                    Dongtai_catch_util.updateOldTJDTList(GlobalInfoUtil.personalInfo.getUserid(),dongtailVOs);
+                    Dongtai_catch_util.updateOldTJDTList(userid,dongtailVOs);
                     if(dongtailVOs.size()==0){
                         listener.getResult("SUCCESS_END");
                     }else{
