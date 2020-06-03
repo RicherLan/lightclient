@@ -99,8 +99,13 @@ public class HomeActivity extends BaseForCloseActivity {
     public static void freshMsgNum(){
 
         if(bottomNavigationBar!=null){
-            int num = MessageCacheUtil.getMsgNotReadNum()+ DongtaiMsgCacheUtil.msgNotReadNum;
-            bottomNavigationBar.showNum(2,num);
+            int num = MessageCacheUtil.getMsgNotReadNum()+ DongtaiMsgCacheUtil.getMsgNotRead();
+            if(num<=0){
+                bottomNavigationBar.disMissNum(2);
+            }else{
+                bottomNavigationBar.showNum(2,num);
+            }
+
         }
 
     }

@@ -260,6 +260,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             public void getResult(String message) {
                 if(message.equals("SUCCESS")){
                     updateDongtaiMsgNumView();
+                    HomeActivity.freshMsgNum();
                 }else{
 
                 }

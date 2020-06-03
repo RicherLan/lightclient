@@ -169,9 +169,9 @@ public class DongtaiMsgExecutor {
                     }
 
                 }else{
-
+                    listener.getResult(message);
                 }
-                listener.getResult(message);
+
             }
 
             @Override
