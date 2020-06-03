@@ -21,7 +21,10 @@ import java.util.Date;
 
 import lan.qxc.lightclient.R;
 import lan.qxc.lightclient.config.ContextActionStr;
+import lan.qxc.lightclient.config.friends_config.FriendCatcheUtil;
 import lan.qxc.lightclient.config.mseeage_config.MessageCacheUtil;
+import lan.qxc.lightclient.entity.FriendVO;
+import lan.qxc.lightclient.entity.User;
 import lan.qxc.lightclient.entity.message.ChatMsgType;
 import lan.qxc.lightclient.entity.message.Message;
 import lan.qxc.lightclient.entity.message.SingleChatMsg;
@@ -49,6 +52,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout layout_send_button_single_chat_ac;
 
     Long userid;
+    FriendVO user;
 
 
     @Override
@@ -66,6 +70,11 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this,"error!",Toast.LENGTH_SHORT).show();
             finish();
         }
+        user =  FriendCatcheUtil.userInfoMap.get(userid);
+        if(user==null){
+            Toast.makeText(this,"error!",Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         initView();
         initEvent();
@@ -77,6 +86,13 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private void initView(){
         iv_back_single_chat_acti = this.findViewById(R.id.iv_back_single_chat_acti);
         tv_title_single_chat_acti = this.findViewById(R.id.tv_title_single_chat_acti);
+        if(user.getRemark().isEmpty()){
+            tv_title_single_chat_acti.setText(user.getUsername());
+        }else{
+            tv_title_single_chat_acti.setText(user.getRemark());
+        }
+
+
         iv_more_single_chat_acti = this.findViewById(R.id.iv_more_single_chat_acti);
         recyview_body_single_chat_acti = this.findViewById(R.id.recyview_body_single_chat_acti);
 
