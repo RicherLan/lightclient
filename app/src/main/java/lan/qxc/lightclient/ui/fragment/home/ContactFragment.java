@@ -39,6 +39,7 @@ import lan.qxc.lightclient.result.Result;
 import lan.qxc.lightclient.service.GuanzhuService;
 import lan.qxc.lightclient.service.service_callback.FreshFriendListExecutor;
 import lan.qxc.lightclient.ui.activity.home.HomeActivity;
+import lan.qxc.lightclient.ui.activity.user_activitys.FindUserActivity;
 import lan.qxc.lightclient.ui.activity.user_activitys.LoginActivity;
 import lan.qxc.lightclient.ui.fragment.dongtai.DTTuijianFragment;
 import lan.qxc.lightclient.ui.fragment.friend_menu.FensiMenuContactFragment;
@@ -200,7 +201,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_add_contact_frag:
-
+                Intent intent = new Intent(getContext(), FindUserActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.layout_search_contact_frag:

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FAFAFA">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="#FAFAFA">
+        <ImageView
+            android:id="@+id/iv_back_find_user"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back_black_30">
+        </ImageView>
+
+
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查找联系人"
+            android:textColor="#000000"
+            android:textSize="19sp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
+        </TextView>
+
+
+    </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/layout_search_find_user"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:background="@drawable/redis_grey_back_layout"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search">
+            </ImageView>
+            <EditText
+                android:id="@+id/et_search_find_user"
+                android:layout_marginLeft="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="账号"
+
+                android:textColor="@color/my_grey_label">
+
+            </EditText>
+
+        </LinearLayout>
+
+
+    <Button
+        android:id="@+id/bt_search_find_user"
+        android:layout_gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/redis_myblue_back_layout"
+        android:text="搜索">
+
+    </Button>
+
+
+</LinearLayout>

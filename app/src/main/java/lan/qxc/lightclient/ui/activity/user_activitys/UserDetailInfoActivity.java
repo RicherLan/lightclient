@@ -286,7 +286,9 @@ public class UserDetailInfoActivity extends BaseForCloseActivity implements View
 
         imageCircleRun(iv_headicon_personal);
 
+
         layout_sendmsg_user_detail.setOnClickListener(this);
+
 
     }
 

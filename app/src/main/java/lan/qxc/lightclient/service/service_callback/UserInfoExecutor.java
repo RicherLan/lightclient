@@ -28,7 +28,7 @@ public class UserInfoExecutor {
     }
 
 
-    //关注用户
+    //
     public void getUserDetailInfo(Context context, Long userid, UserListener listener){
 
         Call<Result> call = UserService.getInstance().getUserDetailInfo(GlobalInfoUtil.personalInfo.getUserid(),userid);

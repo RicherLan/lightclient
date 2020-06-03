@@ -23,6 +23,21 @@ public class NumberUtil {
     }
 
     /**
+     * 判断是否为数字
+     * @param str
+     * @return
+     */
+    public static boolean isNumber(String str){
+        for(int i =0;i<str.length();++i){
+            char ch = str.charAt(i);
+            if(ch<'0'||ch>'9'){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 生成指定长度的随机数
      *
      * @param length
