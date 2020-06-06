@@ -5,12 +5,14 @@ import java.util.Map;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lan.qxc.lightclient.netty.handler.user_handler.DongtaiMsgResponseHandler;
 import lan.qxc.lightclient.netty.handler.user_handler.FriendMsgResponseHandler;
 import lan.qxc.lightclient.netty.handler.user_handler.LoginResponseHandler;
 import lan.qxc.lightclient.netty.handler.user_handler.SingleChatMsgHandler;
 import lan.qxc.lightclient.netty.netty_client.NettyClient;
 import lan.qxc.lightclient.netty.protocol.Packet;
 
+import static lan.qxc.lightclient.netty.protocol.command.Command.DONGTAI_MSG_PACKET;
 import static lan.qxc.lightclient.netty.protocol.command.Command.Friend_GUANZHU_MSG;
 import static lan.qxc.lightclient.netty.protocol.command.Command.LOGIN_RESPONSE;
 import static lan.qxc.lightclient.netty.protocol.command.Command.SINGLE_CHAT_MSG_PACKET;
@@ -26,6 +28,10 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
         handlerMap.put(Friend_GUANZHU_MSG, new FriendMsgResponseHandler());
 
         handlerMap.put(SINGLE_CHAT_MSG_PACKET, new SingleChatMsgHandler());
+
+        handlerMap.put(DONGTAI_MSG_PACKET, new DongtaiMsgResponseHandler());
+
+
 
     }
 

@@ -86,7 +86,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private void initView(){
         iv_back_single_chat_acti = this.findViewById(R.id.iv_back_single_chat_acti);
         tv_title_single_chat_acti = this.findViewById(R.id.tv_title_single_chat_acti);
-        if(user.getRemark().isEmpty()){
+        if(user.getRemark()==null||user.getRemark().isEmpty()){
             tv_title_single_chat_acti.setText(user.getUsername());
         }else{
             tv_title_single_chat_acti.setText(user.getRemark());

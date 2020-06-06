@@ -276,7 +276,7 @@ public class MessageCacheUtil {
                 if(msg.getType()==type){
                     SingleChatMsg origmsg = (SingleChatMsg)msg;
                     Long oriUid = origmsg.getSendUid();
-                    if(origmsg.equals(GlobalInfoUtil.personalInfo.getUserid())){
+                    if(oriUid.equals(GlobalInfoUtil.personalInfo.getUserid())){
                         oriUid = origmsg.getReceiveUid();
                     }
 

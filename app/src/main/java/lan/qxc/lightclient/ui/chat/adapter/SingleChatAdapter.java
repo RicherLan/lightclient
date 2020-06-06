@@ -64,7 +64,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(holder instanceof TextSendViewHolder){
             TextSendViewHolder viewHolder = (TextSendViewHolder)holder;
             SingleChatMsg message = messages.get(position);
-            ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(message.getSendUicon()),viewHolder.iv_headic_send_text_singlechat_item);
+            ImageUtil.getInstance().setNetImageToView(context, APIUtil.getUrl(GlobalInfoUtil.personalInfo.getIcon()),viewHolder.iv_headic_send_text_singlechat_item);
             viewHolder.tv_text_send_text_singlechat_item.setText(message.getTextbody());
 
             String time = message.getCreatetime();
